@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+*.env
+
+# Docker
+*.log
+
+# Django
+local_settings.py
+
+# Database
+*.sqlite3

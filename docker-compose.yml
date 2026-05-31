@@ -1,0 +1,36 @@
+services:
+  db:
+    image: imresamu/postgis:15-3.5-bookworm
+    platform: linux/arm64          # Force ARM64 manifest explicitly
+    container_name: brazda_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=brazda_db
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=secretpass
+    ports:
+      - "5432:5432"
+    healthcheck:                   # Django waits until DB is truly ready
+      test: ["CMD-SHELL", "pg_isready -U admin -d brazda_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s            # PostGIS needs extra init time on ARM
+
+  backend:
+    build: ./backend
+    container_name: brazda_backend
+    volumes:
+      - ./backend:/app
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy # Wait for healthcheck, not just container start
+    environment:
+      - DATABASE_URL=postgres://admin:secretpass@db:5432/brazda_db
+
+volumes:
+  postgres_data:

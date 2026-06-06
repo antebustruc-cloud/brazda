@@ -29,8 +29,15 @@ services:
     depends_on:
       db:
         condition: service_healthy # Wait for healthcheck, not just container start
+
     environment:
-      - DATABASE_URL=postgres://admin:secretpass@db:5432/brazda_db
+      - SECRET_KEY=django-insecure-j-s=^=)bi^4hiv2x567g1fpec)1lvj5blibie0-(l9ad$1l*if
+      - DEBUG=True
+      - DB_NAME=brazda_db
+      - DB_USER=admin
+      - DB_PASSWORD=secretpass
+      - DB_HOST=db
+      - DB_PORT=5432
 
 volumes:
   postgres_data:

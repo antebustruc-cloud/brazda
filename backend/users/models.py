@@ -15,10 +15,10 @@ class SellerProfile(models.Model):
     bio = models.TextField(blank=True)
     allows_self_pick = models.BooleanField(default=False)
     delivery_available = models.BooleanField(default=False)
+    delivery_radius_km = models.FloatField(default=0)
     has_stand = models.BooleanField(default=False)
     rating = models.FloatField(default=0.0)
     rating_count = models.IntegerField(default=0)
 
     def __str__(self):
         return f"{self.user.username} - Seller"
-# Create your models here.

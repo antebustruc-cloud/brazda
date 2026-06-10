@@ -12,3 +12,4 @@ local_settings.py
 
 # Database
 *.sqlite3
+frontend/node_modules/

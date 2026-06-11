@@ -8,8 +8,8 @@ class Parcel(models.Model):
         on_delete=models.CASCADE,
         related_name='parcels'
     )
-    area_sq_m = models.FloatField(help_text="Area in square meters")
-    location = models.PolygonField()
+    area_sq_m = models.FloatField(help_text="Area in square meters", null=True, blank=True)
+    location = models.PointField()
     is_active = models.BooleanField(default=True)
 
     def __str__(self):

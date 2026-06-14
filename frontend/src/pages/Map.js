@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import Navbar from '../components/Navbar';
 import axios from 'axios';
 import 'leaflet/dist/leaflet.css';
+import { API } from '../config';
 
-const API = 'http://192.168.0.14:8000/api';
 
 function LocationPicker({ onPick }) {
   useMapEvents({
@@ -19,7 +19,23 @@ function Map() {
   const [parcelName, setParcelName] = useState('');
   const [pin, setPin] = useState(null);
   const [message, setMessage] = useState('');
+  const [parcels, setParcels] = useState([]);
   const token = localStorage.getItem('access_token');
+
+  const fetchParcels = async () => {
+    try {
+      const res = await axios.get(`${API}/parcels/`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setParcels(res.data);
+    } catch (err) {
+      console.log('Could not load parcels', err.response?.data);
+    }
+  };
+
+  useEffect(() => {
+    fetchParcels();
+  }, []);
 
   const handleSave = async () => {
     if (!parcelName || !pin) {
@@ -29,16 +45,15 @@ function Map() {
     try {
       await axios.post(`${API}/parcels/`, {
         name: parcelName,
-        location: {
-          type: 'Point',
-          coordinates: [pin.lng, pin.lat]
-        }
+        lat: pin.lat,
+        lng: pin.lng
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage('Parcel saved! ✅');
       setParcelName('');
       setPin(null);
+      fetchParcels();
     } catch (err) {
       setMessage('Error saving parcel. Try again.');
       console.log(err.response?.data);
@@ -73,6 +88,18 @@ function Map() {
         <LocationPicker onPick={setPin} />
         {pin && <Marker position={pin} />}
       </MapContainer>
+      <div style={{ padding: '20px' }}>
+        <h3>My Parcels ({parcels.length})</h3>
+        {parcels.length === 0 && <p>No parcels yet. Click the map to add one!</p>}
+        {parcels.map(p => (
+          <div key={p.id} style={{ border: '1px solid #ccc', padding: '12px', marginBottom: '8px', borderRadius: '8px' }}>
+            <strong>{p.name}</strong>
+            <span style={{ color: '#666', marginLeft: '10px' }}>
+              📍 {p.latitude?.toFixed(4)}, {p.longitude?.toFixed(4)}
+            </span>
+          </div>
+        ))}
+      </div>
     </>
   );
 }

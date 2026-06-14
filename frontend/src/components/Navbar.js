@@ -16,7 +16,7 @@ function Navbar() {
       alignItems: 'center'
     }}>
       <a href="/dashboard" style={{ color: 'white', textDecoration: 'none', fontSize: '20px', fontWeight: 'bold' }}>
-        🌾 Brazda
+        🌾 Ubrano
       </a>
       <div>
         <a href="/dashboard" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Products</a>

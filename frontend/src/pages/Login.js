@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const API = 'http://192.168.0.14:8000/api';
+import { API } from '../config';
 
 function Login() {
   const [username, setUsername] = useState('');

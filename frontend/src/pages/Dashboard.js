@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
 
-const API = 'http://192.168.0.14:8000/api';
+import { API } from '../config';
 
 function Dashboard() {
   const [products, setProducts] = useState([]);

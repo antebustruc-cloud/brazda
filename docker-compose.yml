@@ -1,7 +1,6 @@
 services:
   db:
     image: imresamu/postgis:15-3.5-bookworm
-    platform: linux/arm64          # Force ARM64 manifest explicitly
     container_name: brazda_db
     volumes:
       - postgres_data:/var/lib/postgresql/data/
@@ -10,7 +9,7 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=secretpass
     ports:
-      - "5432:5432"
+      - "5433:5432"
     healthcheck:                   # Django waits until DB is truly ready
       test: ["CMD-SHELL", "pg_isready -U admin -d brazda_db"]
       interval: 10s

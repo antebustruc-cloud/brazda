@@ -18,8 +18,8 @@ class Product(models.Model):
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     description = models.TextField(blank=True)
     price_per_kg = models.DecimalField(max_digits=6, decimal_places=2)
-    ready_from = models.DateField()
-    ready_until = models.DateField()
+    ready_from = models.DateField(null=True, blank=True)
+    ready_until = models.DateField(null=True, blank=True)
     is_available = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

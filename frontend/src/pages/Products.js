@@ -123,8 +123,6 @@ const [form, setForm] = useState({
             </button>
           </div>
         ))}
-
-))}
       </div>
     </>
   );

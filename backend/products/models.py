@@ -1,8 +1,7 @@
 from django.db import models
-
-from django.db import models
 from users.models import User
 from parcels.models import Parcel
+from stands.models import Stand
 
 class Product(models.Model):
     CATEGORY_CHOICES = [
@@ -14,6 +13,7 @@ class Product(models.Model):
 
     seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products')
     parcel = models.ForeignKey(Parcel, on_delete=models.SET_NULL, null=True, blank=True, related_name='products')
+    stand = models.ForeignKey(Stand, on_delete=models.SET_NULL, null=True, blank=True, related_name='products')
     name = models.CharField(max_length=100)
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     description = models.TextField(blank=True)

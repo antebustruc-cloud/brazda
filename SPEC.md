@@ -44,3 +44,29 @@
 4. Fields / PickYourOwn (full loop + request + ratings)
 5. Delivery events (full loop + request)
 6. Tailwind polish
+
+
+## Controlled Product Catalog (admin-managed)
+- Admin maintains master product list in Django admin
+- ProductCatalog: unique ID, name (e.g. "Apple"), category, image
+- Variety (optional sub-product): "Apple > Pink Lady, Idared" — info only, not mandatory
+- Farmers PICK from catalog when listing — no free-text (prevents apple/appl/jabuka fragmentation, makes search reliable)
+
+## Product structure (refactored)
+- ProductCatalog (admin controls): name, category, image, varieties
+- ProductListing (farmer creates): references a catalog item + a channel (stand/field/event) + price + active toggle + optional variety
+
+## Per-channel product management
+- Open a specific stand/field/event → manage ITS products there
+- Same reusable view for all three channels
+- Farmer picks product from catalog, sets price, toggles active
+
+## Build order (updated)
+1. ✅ OPG model + registration
+2. ✅ Stand model + creation
+3. ProductCatalog model + admin (with images) + varieties
+4. Refit ProductListing to reference catalog
+5. Per-channel "manage products" view (stand/field/event)
+6. Buyer search: stands near me, fields near me, delivery
+7. Ratings (PickYourOwn)
+8. Tailwind polish

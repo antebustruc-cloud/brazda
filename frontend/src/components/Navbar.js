@@ -22,6 +22,7 @@ function Navbar() {
         <a href="/dashboard" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Browse</a>
         <a href="/map" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>My Parcels</a>
         <a href="/products" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>My Products</a>
+        <a href="/stands" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>My Stands</a>
         <button onClick={logout} style={{ background: 'transparent', border: '1px solid white', color: 'white', padding: '5px 10px', cursor: 'pointer' }}>
           Logout
         </button>

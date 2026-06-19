@@ -5,3 +5,4 @@ django-cors-headers
 djangorestframework-gis
 django-environ
 djangorestframework-simplejwt
+Pillow

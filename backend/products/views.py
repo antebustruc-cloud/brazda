@@ -10,7 +10,14 @@ class ProductListCreateView(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
     permission_classes = [permissions.IsAuthenticated]
     def get_queryset(self):
-        return Product.objects.filter(seller=self.request.user)
+        qs = Product.objects.filter(seller=self.request.user)
+        stand_id = self.request.query_params.get('stand')
+        parcel_id = self.request.query_params.get('parcel')
+        if stand_id:
+            qs = qs.filter(stand=stand_id)
+        if parcel_id:
+            qs = qs.filter(parcel=parcel_id)
+        return qs
     def perform_create(self, serializer):
         serializer.save(seller=self.request.user)
 

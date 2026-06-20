@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import axios from 'axios';
 import 'leaflet/dist/leaflet.css';
 import { API } from '../config';
+import ProductManager from '../components/ProductManager';
 
 
 function LocationPicker({ onPick }) {
@@ -20,6 +21,7 @@ function Map() {
   const [pin, setPin] = useState(null);
   const [message, setMessage] = useState('');
   const [parcels, setParcels] = useState([]);
+  const [expandedParcel, setExpandedParcel] = useState(null);
   const token = localStorage.getItem('access_token');
 
   const fetchParcels = async () => {
@@ -93,10 +95,19 @@ function Map() {
         {parcels.length === 0 && <p>No parcels yet. Click the map to add one!</p>}
         {parcels.map(p => (
           <div key={p.id} style={{ border: '1px solid #ccc', padding: '12px', marginBottom: '8px', borderRadius: '8px' }}>
-            <strong>{p.name}</strong>
-            <span style={{ color: '#666', marginLeft: '10px' }}>
-              📍 {p.latitude?.toFixed(4)}, {p.longitude?.toFixed(4)}
-            </span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <strong>{p.name}</strong>
+                <span style={{ color: '#666', marginLeft: '10px' }}>
+                  📍 {p.latitude?.toFixed(4)}, {p.longitude?.toFixed(4)}
+                </span>
+              </div>
+              <button onClick={() => setExpandedParcel(expandedParcel === p.id ? null : p.id)}
+                style={{ padding: '6px 14px', background: '#2d6a4f', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+                {expandedParcel === p.id ? 'Close' : 'Manage products'}
+              </button>
+            </div>
+            {expandedParcel === p.id && <ProductManager channelType="parcel" channelId={p.id} />}
           </div>
         ))}
       </div>

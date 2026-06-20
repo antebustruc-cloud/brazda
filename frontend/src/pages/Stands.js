@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import axios from 'axios';
 import 'leaflet/dist/leaflet.css';
 import { API } from '../config';
+import ProductManager from '../components/ProductManager';
 
 function LocationPicker({ onPick }) {
   useMapEvents({
@@ -19,6 +20,7 @@ function Stands() {
   const [pin, setPin] = useState(null);
   const [message, setMessage] = useState('');
   const [stands, setStands] = useState([]);
+  const [expandedStand, setExpandedStand] = useState(null);
   const token = localStorage.getItem('access_token');
   const authHeader = { headers: { Authorization: `Bearer ${token}` } };
 
@@ -84,15 +86,24 @@ function Stands() {
       <div style={{ padding: '20px' }}>
         <h3>My Stands ({stands.length})</h3>
         {stands.length === 0 && <p>No stands yet. Click the map to add one!</p>}
-        {stands.map(s => (
+       {stands.map(s => (
           <div key={s.id} style={{ border: '1px solid #ccc', padding: '12px', marginBottom: '8px', borderRadius: '8px' }}>
-            <strong>{s.name}</strong>
-            <span style={{ color: '#666', marginLeft: '10px' }}>
-              📍 {s.latitude?.toFixed(4)}, {s.longitude?.toFixed(4)}
-            </span>
-            <span style={{ marginLeft: '10px', color: s.is_active ? 'green' : '#999' }}>
-              {s.is_active ? '🟢 Active' : '⚪ Inactive'}
-            </span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <strong>{s.name}</strong>
+                <span style={{ color: '#666', marginLeft: '10px' }}>
+                  📍 {s.latitude?.toFixed(4)}, {s.longitude?.toFixed(4)}
+                </span>
+                <span style={{ marginLeft: '10px', color: s.is_active ? 'green' : '#999' }}>
+                  {s.is_active ? '🟢 Active' : '⚪ Inactive'}
+                </span>
+              </div>
+              <button onClick={() => setExpandedStand(expandedStand === s.id ? null : s.id)}
+                style={{ padding: '6px 14px', background: '#2d6a4f', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+                {expandedStand === s.id ? 'Close' : 'Manage products'}
+              </button>
+            </div>
+            {expandedStand === s.id && <ProductManager channelType="stand" channelId={s.id} />}
           </div>
         ))}
       </div>

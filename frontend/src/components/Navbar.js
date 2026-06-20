@@ -28,7 +28,8 @@ function Navbar() {
         <a href="/delivery" style={linkStyle}>My Delivery</a>
         <span style={{ color: '#a8d5ba', margin: '0 10px', fontSize: '13px' }}>BUY:</span>
         <a href="/buy-stands" style={linkStyle}>Find Stands</a>
-        <button onClick={logout} style={{ background: 'transparent', border: '1px solid white', color: 'white', padding: '5px 10px', cursor: 'pointer', marginLeft: '10px' }}>
+        <a href="/buy-fields" style={linkStyle}>Find Fields</a>
+        <a href="/buy-delivery" style={linkStyle}>Find Delivery</a>        <button onClick={logout} style={{ background: 'transparent', border: '1px solid white', color: 'white', padding: '5px 10px', cursor: 'pointer', marginLeft: '10px' }}>
           Logout
         </button>
       </div>

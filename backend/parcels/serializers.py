@@ -3,12 +3,13 @@ from django.contrib.gis.geos import Point
 from .models import Parcel
 from products.models import Product
 
-class ParcelProductSerializer(serializers.ModelSerializer):
+class ParcelParcelsSerializer(serializers.ModelSerializer):
     catalog_name = serializers.CharField(source='catalog_item.name', read_only=True)
     variety_name = serializers.CharField(source='variety.name', read_only=True, default=None)
+    category = serializers.CharField(source='catalog_item.category', read_only=True)
     class Meta:
         model = Product
-        fields = ['id', 'catalog_name', 'variety_name', 'price_per_kg', 'is_available']
+        fields = ['id', 'catalog_name', 'variety_name', 'category', 'price_per_kg', 'is_available']
 
 class ParcelSerializer(serializers.ModelSerializer):
     lat = serializers.FloatField(write_only=True)
@@ -32,19 +33,7 @@ class ParcelSerializer(serializers.ModelSerializer):
 
     def get_products(self, obj):
         active = obj.products.filter(is_available=True)
-        return ParcelProductSerializer(active, many=True).data
-
-    def create(self, validated_data):
-        lat = validated_data.pop('lat')
-        lng = validated_data.pop('lng')
-        validated_data['location'] = Point(lng, lat, srid=4326)
-        return super().create(validated_data)
-
-    def get_latitude(self, obj):
-        return obj.location.y if obj.location else None
-
-    def get_longitude(self, obj):
-        return obj.location.x if obj.location else None
+        return ParcelParcelsSerializer(active, many=True).data
 
     def create(self, validated_data):
         lat = validated_data.pop('lat')

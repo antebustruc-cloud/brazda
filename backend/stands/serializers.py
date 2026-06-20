@@ -3,12 +3,13 @@ from django.contrib.gis.geos import Point
 from .models import Stand, StandSupplierRequest
 from products.models import Product
 
-class StandProductSerializer(serializers.ModelSerializer):
+class ParcelStandsSerializer(serializers.ModelSerializer):
     catalog_name = serializers.CharField(source='catalog_item.name', read_only=True)
     variety_name = serializers.CharField(source='variety.name', read_only=True, default=None)
+    category = serializers.CharField(source='catalog_item.category', read_only=True)
     class Meta:
         model = Product
-        fields = ['id', 'catalog_name', 'variety_name', 'price_per_kg', 'is_available']
+        fields = ['id', 'catalog_name', 'variety_name', 'category', 'price_per_kg', 'is_available']
 
 class StandSerializer(serializers.ModelSerializer):
     owner_username = serializers.CharField(source='owner.username', read_only=True)
@@ -26,7 +27,7 @@ class StandSerializer(serializers.ModelSerializer):
 
     def get_products(self, obj):
         active = obj.products.filter(is_available=True)
-        return StandProductSerializer(active, many=True).data
+        return ParcelStandsSerializer(active, many=True).data
 
     def get_latitude(self, obj):
         return obj.location.y if obj.location else None

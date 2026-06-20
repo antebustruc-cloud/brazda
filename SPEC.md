@@ -70,3 +70,33 @@
 6. Buyer search: stands near me, fields near me, delivery
 7. Ratings (PickYourOwn)
 8. Tailwind polish
+
+## Updated Architecture (Catalog + Channels + Ratings)
+
+### Master Catalog (admin-only)
+- Admin maintains master product list (Apple Idared, Pear...) + varieties + images
+- Farmers can ONLY list products that exist in master catalog
+- Phase 2: farmers can request "please add X" if missing
+
+### No standalone Products page
+- Farmers add products directly ON each channel (field/stand/delivery event)
+- Pick from master catalog → set price → active toggle
+- Same product can be listed on multiple channels
+- Farmer portfolio/history = DERIVED from listings, queried for analytics
+
+### Per-channel product management (identical UX across all three)
+- Click a field/stand/event → expand inline → manage its products
+- Pick from catalog, set price, toggle active, remove
+
+### Delivery events (when built)
+- Create event: date + approx time + destination pin + radius
+- Buyer "delivery near me": date OPTIONAL (blank = all active) + filters
+
+### Ratings — MODEL + DISPLAY in MVP, trigger in Phase 2
+- Channel-agnostic by design (one reputation follows farmer everywhere)
+- FarmerRating: (rater, farmer) → overall, lives on OPG
+- ProductRating: (rater, farmer, catalog_item) → ONE reputation across ALL his channels
+- Unified rating closes fraud loophole (can't hide bad stand behind good field)
+- MVP: store + average + display in search; seed via admin
+- Phase 2: order-triggered "rate after visit" flow, no-show/dispute lifecycle
+- Filters: min farmer rating + min product rating

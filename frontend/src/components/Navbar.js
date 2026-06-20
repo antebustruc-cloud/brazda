@@ -7,24 +7,28 @@ function Navbar() {
     window.location.href = '/';
   };
 
+  const linkStyle = { color: 'white', marginRight: '15px', textDecoration: 'none' };
+
   return (
     <nav style={{
       background: '#2d6a4f',
       padding: '10px 20px',
       display: 'flex',
       justifyContent: 'space-between',
-      alignItems: 'center'
+      alignItems: 'center',
+      flexWrap: 'wrap'
     }}>
-      <a href="/dashboard" style={{ color: 'white', textDecoration: 'none', fontSize: '20px', fontWeight: 'bold' }}>
+      <a href="/dashboard" style={{ color: 'white', textDecoration: 'none', fontSize: '20px', fontWeight: 'bold', marginRight: '20px' }}>
         🌾 Ubrano
       </a>
-      <div>
-        <a href="/dashboard" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Browse</a>
-        <a href="/map" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>My Parcels</a>
-        <a href="/products" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>My Products</a>
-        <a href="/stands" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>My Stands</a>
-        <a href="/delivery" style={{ color: 'white', marginRight: '20px', textDecoration: 'none' }}>Delivery</a>
-        <button onClick={logout} style={{ background: 'transparent', border: '1px solid white', color: 'white', padding: '5px 10px', cursor: 'pointer' }}>
+      <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+        <span style={{ color: '#a8d5ba', marginRight: '10px', fontSize: '13px' }}>SELL:</span>
+        <a href="/map" style={linkStyle}>My Fields</a>
+        <a href="/stands" style={linkStyle}>My Stands</a>
+        <a href="/delivery" style={linkStyle}>My Delivery</a>
+        <span style={{ color: '#a8d5ba', margin: '0 10px', fontSize: '13px' }}>BUY:</span>
+        <a href="/buy-stands" style={linkStyle}>Find Stands</a>
+        <button onClick={logout} style={{ background: 'transparent', border: '1px solid white', color: 'white', padding: '5px 10px', cursor: 'pointer', marginLeft: '10px' }}>
           Logout
         </button>
       </div>

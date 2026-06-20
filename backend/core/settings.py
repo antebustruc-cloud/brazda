@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'stands',
     'opg',
     'catalog',
+    'delivery',
 ]
 
 MIDDLEWARE = [

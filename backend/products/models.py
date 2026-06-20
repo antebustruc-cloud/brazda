@@ -3,6 +3,7 @@ from users.models import User
 from parcels.models import Parcel
 from stands.models import Stand
 from catalog.models import ProductCatalog, ProductVariety
+from delivery.models import DeliveryEvent
 
 class Product(models.Model):
     CATEGORY_CHOICES = [
@@ -15,6 +16,7 @@ class Product(models.Model):
     seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products')
     parcel = models.ForeignKey(Parcel, on_delete=models.SET_NULL, null=True, blank=True, related_name='products')
     stand = models.ForeignKey(Stand, on_delete=models.SET_NULL, null=True, blank=True, related_name='products')
+    delivery_event = models.ForeignKey(DeliveryEvent, on_delete=models.SET_NULL, null=True, blank=True, related_name='products')
     catalog_item = models.ForeignKey(ProductCatalog, on_delete=models.PROTECT, null=True, blank=True, related_name='listings')
     variety = models.ForeignKey(ProductVariety, on_delete=models.SET_NULL, null=True, blank=True, related_name='listings')
     name = models.CharField(max_length=100, blank=True)

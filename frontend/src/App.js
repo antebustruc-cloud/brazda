@@ -6,6 +6,7 @@ import Register from './pages/Register';
 import Map from './pages/Map';
 import Products from './pages/Products';
 import Stands from './pages/Stands';
+import Delivery from './pages/Delivery';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path="/map" element={<Map />} />
           <Route path="/products" element={<Products />} />
           <Route path="/stands" element={<Stands />} />
+          <Route path="/delivery" element={<Delivery />} />
         </Routes>
       </div>
     </Router>

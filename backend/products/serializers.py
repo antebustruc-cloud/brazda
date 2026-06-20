@@ -11,6 +11,6 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'catalog_item', 'catalog_name', 'variety', 'variety_name',
             'category', 'description', 'price_per_kg',
-            'is_available', 'parcel', 'stand', 'created_at'
+            'is_available', 'parcel', 'stand', 'delivery_event', 'created_at'
         ]
         read_only_fields = ['seller', 'created_at']

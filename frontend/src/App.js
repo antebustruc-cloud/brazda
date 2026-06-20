@@ -8,6 +8,8 @@ import Products from './pages/Products';
 import Stands from './pages/Stands';
 import Delivery from './pages/Delivery';
 import BuyStands from './pages/BuyStands';
+import BuyFields from './pages/BuyFields';
+import BuyDelivery from './pages/BuyDelivery';
 
 
 function App() {
@@ -23,6 +25,8 @@ function App() {
           <Route path="/stands" element={<Stands />} />
           <Route path="/delivery" element={<Delivery />} />
           <Route path="/buy-stands" element={<BuyStands />} />
+          <Route path="/buy-fields" element={<BuyFields />} />
+          <Route path="/buy-delivery" element={<BuyDelivery />} />
         </Routes>
       </div>
     </Router>

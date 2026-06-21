@@ -100,3 +100,32 @@
 - MVP: store + average + display in search; seed via admin
 - Phase 2: order-triggered "rate after visit" flow, no-show/dispute lifecycle
 - Filters: min farmer rating + min product rating
+
+
+## PHASE: Transactions + Ratings (the pillar — post-MVP, defining phase)
+
+### Why these are one phase
+- Ratings have NO honest trigger without proof of transaction
+- Trust-based = gameable (rejected). Two-sided confirmation = farmer who sold bad goods just denies buyer ever came (rejected, asymmetric incentive)
+- The ONLY real proof a deal happened = the financial transaction
+- So: payments unlock trustworthy ratings. Same phase.
+
+### Ratings rules (locked)
+- Rating = once per (buyer + product + farmer), NOT per purchase (buy 10x = 1 rating)
+- Ratings are updatable/removable
+- Every user gets a "My Ratings" page to edit/remove their ratings
+- Channel-agnostic: one reputation per (farmer + product) across all channels
+- Rating creation GATED by a real transaction (financial proof)
+- Ratings are a core pillar — the whole value prop is trustworthy reputation that can't be bought. Not pay-to-win. Quality/reputation = the moat (like SEO > PPC)
+
+### Payments — honest technical reality
+- NFC phone-to-phone tap-to-pay: NOT buildable (Apple locks NFC chip to Apple Pay; Android heavily restricted). Do not design around it.
+- REAL options:
+  1. Marketplace card processor (Stripe Connect-style): buyer pays in-app, money routes to farmer's connected account/IBAN, platform takes cut. Standard marketplace path. Gives transaction proof.
+  2. QR / IBAN bank payment (HUB-3): farmer's app shows payment QR, buyer scans with own bank app, pays to IBAN. Croatia-friendly, low/no card fees, fits local banking habits. Most pragmatic.
+  3. Instant SEPA / pay-by-bank APIs: account-to-account, direct to IBAN. More complex.
+- Investigate: KEKS Pay (Croatian mobile payment app) as a local rail.
+
+### Outcome of this phase
+- Turns Ubrano from "find farmer + call" into "buy + build real reputation"
+- Transaction = rating trigger, naturally

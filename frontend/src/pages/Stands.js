@@ -21,6 +21,8 @@ function Stands() {
   const [message, setMessage] = useState('');
   const [stands, setStands] = useState([]);
   const [expandedStand, setExpandedStand] = useState(null);
+  const [editingId, setEditingId] = useState(null);
+  const [editName, setEditName] = useState('');
   const token = localStorage.getItem('access_token');
   const authHeader = { headers: { Authorization: `Bearer ${token}` } };
 
@@ -58,6 +60,31 @@ function Stands() {
     }
   };
 
+  const startEdit = (s) => {
+    setEditingId(s.id);
+    setEditName(s.name);
+  };
+
+  const saveEdit = async (s) => {
+    try {
+      await axios.patch(`${API}/stands/${s.id}/`, { name: editName }, authHeader);
+      setEditingId(null);
+      fetchStands();
+    } catch (err) {
+      console.log('Edit error', err.response?.data);
+    }
+  };
+
+  const deleteStand = async (s) => {
+    if (!window.confirm(`Delete stand "${s.name}"? This cannot be undone.`)) return;
+    try {
+      await axios.delete(`${API}/stands/${s.id}/`, authHeader);
+      fetchStands();
+    } catch (err) {
+      console.log('Delete error', err.response?.data);
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -78,19 +105,24 @@ function Stands() {
       <p style={{ padding: '5px 10px', margin: 0, background: '#e8f5e9', fontSize: '14px' }}>
         👆 Click the map to set your stand location
       </p>
-      <MapContainer center={[45.1, 16.5]} zoom={7} style={{ height: '60vh', width: '100%' }}>
+      <MapContainer center={[45.1, 16.5]} zoom={7} style={{ height: '35vh', width: '100%' }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='© OpenStreetMap' />
         <LocationPicker onPick={setPin} />
         {pin && <Marker position={pin} />}
       </MapContainer>
       <div style={{ padding: '20px' }}>
-        <h3>My Stands ({stands.length})</h3>
+        <h3 style={{ marginTop: 0 }}>My Stands ({stands.length})</h3>
         {stands.length === 0 && <p>No stands yet. Click the map to add one!</p>}
-       {stands.map(s => (
+        {stands.map(s => (
           <div key={s.id} style={{ border: '1px solid #ccc', padding: '12px', marginBottom: '8px', borderRadius: '8px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
               <div>
-                <strong>{s.name}</strong>
+                {editingId === s.id ? (
+                  <input value={editName} onChange={e => setEditName(e.target.value)}
+                    style={{ padding: '6px', width: '200px' }} />
+                ) : (
+                  <strong>{s.name}</strong>
+                )}
                 <span style={{ color: '#666', marginLeft: '10px' }}>
                   📍 {s.latitude?.toFixed(4)}, {s.longitude?.toFixed(4)}
                 </span>
@@ -98,10 +130,35 @@ function Stands() {
                   {s.is_active ? '🟢 Active' : '⚪ Inactive'}
                 </span>
               </div>
-              <button onClick={() => setExpandedStand(expandedStand === s.id ? null : s.id)}
-                style={{ padding: '6px 14px', background: '#2d6a4f', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-                {expandedStand === s.id ? 'Close' : 'Manage products'}
-              </button>
+              <div style={{ display: 'flex', gap: '6px' }}>
+                {editingId === s.id ? (
+                  <>
+                    <button onClick={() => saveEdit(s)}
+                      style={{ padding: '6px 12px', background: '#2d6a4f', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+                      Save
+                    </button>
+                    <button onClick={() => setEditingId(null)}
+                      style={{ padding: '6px 12px', background: '#999', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+                      Cancel
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button onClick={() => setExpandedStand(expandedStand === s.id ? null : s.id)}
+                      style={{ padding: '6px 12px', background: '#2d6a4f', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+                      {expandedStand === s.id ? 'Close' : 'Products'}
+                    </button>
+                    <button onClick={() => startEdit(s)}
+                      style={{ padding: '6px 12px', background: '#5a8f73', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+                      Edit
+                    </button>
+                    <button onClick={() => deleteStand(s)}
+                      style={{ padding: '6px 12px', background: '#c0392b', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+                      Delete
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
             {expandedStand === s.id && <ProductManager channelType="stand" channelId={s.id} />}
           </div>

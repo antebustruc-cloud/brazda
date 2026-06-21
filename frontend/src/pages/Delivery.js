@@ -21,6 +21,8 @@ function Delivery() {
   const [message, setMessage] = useState('');
   const [events, setEvents] = useState([]);
   const [expanded, setExpanded] = useState(null);
+  const [editingId, setEditingId] = useState(null);
+  const [editName, setEditName] = useState('');
   const token = localStorage.getItem('access_token');
   const authHeader = { headers: { Authorization: `Bearer ${token}` } };
 
@@ -62,6 +64,31 @@ function Delivery() {
     }
   };
 
+  const startEdit = (ev) => {
+    setEditingId(ev.id);
+    setEditName(ev.name);
+  };
+
+  const saveEdit = async (ev) => {
+    try {
+      await axios.patch(`${API}/delivery/${ev.id}/`, { name: editName }, authHeader);
+      setEditingId(null);
+      fetchEvents();
+    } catch (err) {
+      console.log('Edit error', err.response?.data);
+    }
+  };
+
+  const deleteEvent = async (ev) => {
+    if (!window.confirm(`Delete delivery "${ev.name}"? This cannot be undone.`)) return;
+    try {
+      await axios.delete(`${API}/delivery/${ev.id}/`, authHeader);
+      fetchEvents();
+    } catch (err) {
+      console.log('Delete error', err.response?.data);
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -89,19 +116,24 @@ function Delivery() {
       <p style={{ padding: '5px 10px', margin: 0, background: '#e8f5e9', fontSize: '14px' }}>
         👆 Click the map to set your delivery destination (e.g. Split center)
       </p>
-      <MapContainer center={[45.1, 16.5]} zoom={7} style={{ height: '50vh', width: '100%' }}>
+      <MapContainer center={[45.1, 16.5]} zoom={7} style={{ height: '35vh', width: '100%' }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='© OpenStreetMap' />
         <LocationPicker onPick={setPin} />
         {pin && <Marker position={pin} />}
       </MapContainer>
       <div style={{ padding: '20px' }}>
-        <h3>My Delivery Events ({events.length})</h3>
+        <h3 style={{ marginTop: 0 }}>My Delivery Events ({events.length})</h3>
         {events.length === 0 && <p>No delivery events yet.</p>}
         {events.map(ev => (
           <div key={ev.id} style={{ border: '1px solid #ccc', padding: '12px', marginBottom: '8px', borderRadius: '8px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
               <div>
-                <strong>{ev.name}</strong>
+                {editingId === ev.id ? (
+                  <input value={editName} onChange={e => setEditName(e.target.value)}
+                    style={{ padding: '6px', width: '200px' }} />
+                ) : (
+                  <strong>{ev.name}</strong>
+                )}
                 <span style={{ color: '#666', marginLeft: '10px' }}>
                   📅 {ev.delivery_date} · {ev.radius_km}km radius
                 </span>
@@ -109,10 +141,35 @@ function Delivery() {
                   {ev.is_active ? '🟢 Active' : '⚪ Inactive'}
                 </span>
               </div>
-              <button onClick={() => setExpanded(expanded === ev.id ? null : ev.id)}
-                style={{ padding: '6px 14px', background: '#2d6a4f', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-                {expanded === ev.id ? 'Close' : 'Manage products'}
-              </button>
+              <div style={{ display: 'flex', gap: '6px' }}>
+                {editingId === ev.id ? (
+                  <>
+                    <button onClick={() => saveEdit(ev)}
+                      style={{ padding: '6px 12px', background: '#2d6a4f', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+                      Save
+                    </button>
+                    <button onClick={() => setEditingId(null)}
+                      style={{ padding: '6px 12px', background: '#999', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+                      Cancel
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button onClick={() => setExpanded(expanded === ev.id ? null : ev.id)}
+                      style={{ padding: '6px 12px', background: '#2d6a4f', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+                      {expanded === ev.id ? 'Close' : 'Products'}
+                    </button>
+                    <button onClick={() => startEdit(ev)}
+                      style={{ padding: '6px 12px', background: '#5a8f73', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+                      Edit
+                    </button>
+                    <button onClick={() => deleteEvent(ev)}
+                      style={{ padding: '6px 12px', background: '#c0392b', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+                      Delete
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
             {expanded === ev.id && <ProductManager channelType="delivery_event" channelId={ev.id} />}
           </div>

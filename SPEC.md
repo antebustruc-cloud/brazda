@@ -149,3 +149,28 @@
 ### Reality check
 - NFC phone-to-phone tap-to-pay: still NOT buildable (confirmed)
 - Ratings trigger needs VERIFIED payment = provider API, not bare barcode
+
+## Payment + Ratings ROADMAP (phased, pulled by users/volume not time)
+
+### MVP
+- Directory + 3 channels + contact (phone/Call). No payments, no ratings.
+- Audience: friends + friends-of-friends.
+
+### Phase 2 — Barcode payments + first ratings
+- HUB-3A PDF417 barcode: farmer enters weight → app computes total (price × kg) → generates barcode on screen (farmer's OPG IBAN + amount) → buyer scans with own m-banking app → pays
+- Farmer presses "Payment confirmed" button → this is the proof-of-sale
+- Confirmation is asymmetric in the RIGHT direction: farmer confirms his own incoming money (wants to), which unlocks the BUYER's rating. Farmer has no incentive to fake-confirm a non-sale.
+- This unlocks the first honest ratings (the pillar) with zero processor/fees/approvals
+- Buildable entirely in-house
+
+### Phase 3 — KEKS Pay / Aircash
+- Move when there's traction (= leverage + they become free marketing; with 0 users we're invisible to them)
+- Marketplace routing (pay each farmer's account) + payment-confirmation webhook = verified ratings trigger, automated
+- Single-merchant KEKS is available even to small merchants (cafes/stalls); marketplace version likely needs proof we're real
+
+### Phase 4 (maybe earlier) — Stripe for tourists
+- Foreign cards / Apple-Google Pay, no local account needed
+- Coastal summer tourist demand: "don't bring your own tomato — pick a fresh one here"
+- Could be pulled forward if tourist revenue spikes near the coast
+
+### Rule: phase transitions triggered by USERS + VOLUME, not calendar time

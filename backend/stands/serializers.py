@@ -3,7 +3,7 @@ from django.contrib.gis.geos import Point
 from .models import Stand, StandSupplierRequest
 from products.models import Product
 
-class ParcelStandsSerializer(serializers.ModelSerializer):
+class StandProductSerializer(serializers.ModelSerializer):
     catalog_name = serializers.CharField(source='catalog_item.name', read_only=True)
     variety_name = serializers.CharField(source='variety.name', read_only=True, default=None)
     category = serializers.CharField(source='catalog_item.category', read_only=True)
@@ -12,7 +12,7 @@ class ParcelStandsSerializer(serializers.ModelSerializer):
         fields = ['id', 'catalog_name', 'variety_name', 'category', 'price_per_kg', 'is_available']
 
 class StandSerializer(serializers.ModelSerializer):
-    owner_username = serializers.CharField(source='owner.username', read_only=True)
+    opg_name = serializers.CharField(source='owner.opg.name', read_only=True, default='')
     lat = serializers.FloatField(write_only=True)
     lng = serializers.FloatField(write_only=True)
     latitude = serializers.SerializerMethodField(read_only=True)
@@ -21,13 +21,13 @@ class StandSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Stand
-        fields = ['id', 'name', 'owner_username', 'address', 'is_active', 'created_at',
+        fields = ['id', 'name', 'opg_name', 'address', 'is_active', 'created_at',
                   'lat', 'lng', 'latitude', 'longitude', 'products']
         read_only_fields = ['owner', 'created_at']
 
     def get_products(self, obj):
         active = obj.products.filter(is_available=True)
-        return ParcelStandsSerializer(active, many=True).data
+        return StandProductSerializer(active, many=True).data
 
     def get_latitude(self, obj):
         return obj.location.y if obj.location else None
@@ -40,7 +40,6 @@ class StandSerializer(serializers.ModelSerializer):
         lng = validated_data.pop('lng')
         validated_data['location'] = Point(lng, lat, srid=4326)
         return super().create(validated_data)
-
 
 class StandSupplierRequestSerializer(serializers.ModelSerializer):
     farmer_username = serializers.CharField(source='farmer.username', read_only=True)

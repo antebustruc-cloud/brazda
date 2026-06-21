@@ -15,7 +15,6 @@ function OPGLocationPicker({ onPick }) {
 
 function Register() {
   const [form, setForm] = useState({
-    username: '',
     email: '',
     password: '',
     is_buyer: true,
@@ -37,9 +36,16 @@ function Register() {
 
   const handleRegister = async () => {
     setError('');
-    // Build the payload
+    if (!form.email || !form.password) {
+      setError('Email and password are required.');
+      return;
+    }
     const payload = { ...form };
     if (form.is_seller) {
+      if (!form.phone) {
+        setError('As a farmer you must enter a phone number so buyers can contact you.');
+        return;
+      }
       if (!opg.opg_name || !opg.mibpg || !opgPin) {
         setError('As a farmer you must enter OPG name, MIBPG, and drop your OPG pin on the map.');
         return;
@@ -64,13 +70,11 @@ function Register() {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {success && <p style={{ color: 'green' }}>{success}</p>}
 
-      <input name="username" placeholder="Username" onChange={handleChange}
-        style={{ width: '100%', padding: '10px', marginBottom: '10px' }} />
       <input name="email" type="email" placeholder="Email" onChange={handleChange}
         style={{ width: '100%', padding: '10px', marginBottom: '10px' }} />
       <input name="password" type="password" placeholder="Password" onChange={handleChange}
         style={{ width: '100%', padding: '10px', marginBottom: '10px' }} />
-      <input name="phone" placeholder="Phone" onChange={handleChange}
+      <input name="phone" placeholder="Phone (e.g. 091 234 5678 or +385 91 234 5678)" onChange={handleChange}
         style={{ width: '100%', padding: '10px', marginBottom: '10px' }} />
 
       <p style={{ marginBottom: '5px' }}>I am here as: *</p>

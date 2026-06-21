@@ -71,7 +71,7 @@ function BuyFields() {
   return (
     <>
       <Navbar />
-      <div style={{ padding: '15px', background: '#f5f5f5', display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+      <div style={{ padding: '12px 15px', background: '#f5f5f5', display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
         <button onClick={useMyLocation}
           style={{ padding: '8px 14px', background: '#2d6a4f', color: 'white', border: 'none', cursor: 'pointer' }}>
           📍 Use my location
@@ -88,7 +88,7 @@ function BuyFields() {
       </div>
 
       {fields.length > 0 && (
-        <div style={{ padding: '12px 15px', background: '#eef6f0', display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+        <div style={{ padding: '10px 15px', background: '#eef6f0', display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
           <strong style={{ fontSize: '14px' }}>Filter:</strong>
           <input placeholder="Product (e.g. apple)" value={fName} onChange={e => setFName(e.target.value)}
             style={{ padding: '6px', width: '150px' }} />
@@ -107,10 +107,7 @@ function BuyFields() {
         </div>
       )}
 
-      <p style={{ padding: '5px 10px', margin: 0, background: '#e8f5e9', fontSize: '14px' }}>
-        👆 Or click the map to search from a different spot
-      </p>
-      <MapContainer center={[45.1, 16.5]} zoom={7} style={{ height: '40vh', width: '100%' }}>
+      <MapContainer center={[45.1, 16.5]} zoom={7} style={{ height: '30vh', width: '100%' }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='© OpenStreetMap' />
         <LocationPicker onPick={setPin} />
         {pin && <Marker position={pin} />}
@@ -118,14 +115,27 @@ function BuyFields() {
           f.latitude && f.longitude ? <Marker key={f.id} position={[f.latitude, f.longitude]} /> : null
         ))}
       </MapContainer>
-      <div style={{ padding: '20px' }}>
-        <h3>Fields ({visibleFields.length})</h3>
+      <div style={{ padding: '15px' }}>
+        <h3 style={{ marginTop: 0 }}>Fields ({visibleFields.length})</h3>
         {visibleFields.map(f => (
           <div key={f.id} style={{ border: '1px solid #ccc', padding: '14px', marginBottom: '10px', borderRadius: '8px' }}>
-            <strong>{f.name}</strong> <span style={{ color: '#666' }}>by {f.owner_username}</span>
-            <span style={{ marginLeft: '10px', color: '#888', fontSize: '13px' }}>
-              📍 {f.latitude?.toFixed(4)}, {f.longitude?.toFixed(4)}
-            </span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <div>
+                <strong>{f.name}</strong> <span style={{ color: '#666' }}>· {f.opg_name}</span>
+                <div style={{ color: '#888', fontSize: '13px', marginTop: '2px' }}>
+                  📍 {f.latitude?.toFixed(4)}, {f.longitude?.toFixed(4)}
+                </div>
+                {f.owner_phone && (
+                  <div style={{ fontSize: '14px', marginTop: '4px' }}>📞 {f.owner_phone}</div>
+                )}
+              </div>
+              {f.owner_phone && (
+                <a href={`tel:${f.owner_phone}`}
+                  style={{ padding: '8px 14px', background: '#2d6a4f', color: 'white', borderRadius: '4px', textDecoration: 'none', whiteSpace: 'nowrap' }}>
+                  📞 Call
+                </a>
+              )}
+            </div>
             <div style={{ marginTop: '8px' }}>
               {f.filtered.map(p => (
                 <div key={p.id} style={{ fontSize: '14px', padding: '2px 0' }}>

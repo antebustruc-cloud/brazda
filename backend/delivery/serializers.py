@@ -12,7 +12,8 @@ class DeliveryProductSerializer(serializers.ModelSerializer):
         fields = ['id', 'catalog_name', 'variety_name', 'category', 'price_per_kg', 'is_available']
 
 class DeliveryEventSerializer(serializers.ModelSerializer):
-    owner_username = serializers.CharField(source='owner.username', read_only=True)
+    opg_name = serializers.CharField(source='owner.opg.name', read_only=True, default='')
+    owner_phone = serializers.CharField(source='owner.phone', read_only=True)
     lat = serializers.FloatField(write_only=True)
     lng = serializers.FloatField(write_only=True)
     latitude = serializers.SerializerMethodField(read_only=True)
@@ -21,7 +22,7 @@ class DeliveryEventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DeliveryEvent
-        fields = ['id', 'name', 'owner_username', 'radius_km', 'delivery_date',
+        fields = ['id', 'name', 'opg_name', 'owner_phone', 'radius_km', 'delivery_date',
                   'time_from', 'time_until', 'is_active', 'created_at',
                   'lat', 'lng', 'latitude', 'longitude', 'products']
         read_only_fields = ['owner', 'created_at']

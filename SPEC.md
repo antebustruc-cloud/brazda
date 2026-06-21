@@ -174,3 +174,10 @@
 - Could be pulled forward if tourist revenue spikes near the coast
 
 ### Rule: phase transitions triggered by USERS + VOLUME, not calendar time
+
+## Frontend modernization (deliberate task, before more frontend / React Native)
+- Current: create-react-app (CRA) — deprecated, slow, fights Tailwind. Styling is inline.
+- DECISION: migrate CRA → Vite, then add Tailwind. Vite+Tailwind is the modern, supported, scalable combo; skills carry into React Native.
+- Do NOT waste effort on Tailwind-on-CRA (throwaway).
+- MVP ships plain (inline styles). "Judge the idea and functionality, not the looks."
+- Bootstrap = optional quick coat if ever needed, but Vite+Tailwind is the real answer.

@@ -5,17 +5,15 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_DB=brazda_db
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=secretpass
-    ports:
-      - "5433:5432"
-    healthcheck:                   # Django waits until DB is truly ready
-      test: ["CMD-SHELL", "pg_isready -U admin -d brazda_db"]
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 30s            # PostGIS needs extra init time on ARM
+      start_period: 30s
 
   backend:
     build: ./backend
@@ -27,16 +25,9 @@ services:
       - "8000:8000"
     depends_on:
       db:
-        condition: service_healthy # Wait for healthcheck, not just container start
-
-    environment:
-      - SECRET_KEY=django-insecure-j-s=^=)bi^4hiv2x567g1fpec)1lvj5blibie0-(l9ad$1l*if
-      - DEBUG=True
-      - DB_NAME=brazda_db
-      - DB_USER=admin
-      - DB_PASSWORD=secretpass
-      - DB_HOST=db
-      - DB_PORT=5432
+        condition: service_healthy
+    env_file:
+      - .env
 
 volumes:
   postgres_data:

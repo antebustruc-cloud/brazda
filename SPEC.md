@@ -129,3 +129,23 @@
 ### Outcome of this phase
 - Turns Ubrano from "find farmer + call" into "buy + build real reputation"
 - Transaction = rating trigger, naturally
+
+
+## Payment research findings (for Transactions phase)
+
+### Candidates
+- KEKS Pay (Erste Bank): QR/deep-link merchant payments, bank-agnostic, funds next day, small % fee, no Erste account needed. Contact: kekspaysupport@erstebank.hr
+- Aircash: CNB-licensed EMI, top-rated in Croatia, EU-valid. Has documented MARKETPLACE flow (user picks merchant in-app, merchant approves/declines) — closest fit to Ubrano's many-farmers model. NOTE: detailed API appears to route via Nuvei (orchestrator) — ask about direct vs middleman, and cost.
+- Stripe Connect: gold-standard marketplace plumbing (platform + many sellers + auto split), card-based, EU-ready. Fallback if local rails don't offer marketplace API. More fees, less "local" feel.
+- Card gateways (Monri/WSPay, Nexi): card-only, not the cheap local rail we want.
+
+### HUB-3A 2D barcode (buildable now, cheap)
+- Croatian standard payment barcode (PDF417) — encodes payee IBAN, amount, reference, description
+- Flow: store farmer OPG IBAN → farmer enters weight → app computes total → generates HUB-3A barcode on screen → buyer scans with their OWN m-banking app → pays
+- PRO: no processor, no fees, every Croatian bank app reads it, very local
+- CON: NOT auto-confirmed back to Ubrano (bank-to-bank). So alone it can't verify payment for the ratings trigger. Needs API (KEKS/Aircash) or bank feed for verification.
+- Likely end state: barcode for easy UX + provider API for verified confirmation (ratings trigger)
+
+### Reality check
+- NFC phone-to-phone tap-to-pay: still NOT buildable (confirmed)
+- Ratings trigger needs VERIFIED payment = provider API, not bare barcode

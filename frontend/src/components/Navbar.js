@@ -7,31 +7,26 @@ function Navbar() {
     window.location.href = '/';
   };
 
-  const linkStyle = { color: 'white', marginRight: '15px', textDecoration: 'none' };
-
   return (
-    <nav style={{
-      background: '#2d6a4f',
-      padding: '10px 20px',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      flexWrap: 'wrap'
-    }}>
-      <a href="/dashboard" style={{ color: 'white', textDecoration: 'none', fontSize: '20px', fontWeight: 'bold', marginRight: '20px' }}>
-        🌾 Ubrano
-      </a>
-      <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
-        <span style={{ color: '#a8d5ba', marginRight: '10px', fontSize: '13px' }}>SELL:</span>
-        <a href="/map" style={linkStyle}>My Fields</a>
-        <a href="/stands" style={linkStyle}>My Stands</a>
-        <a href="/delivery" style={linkStyle}>My Delivery</a>
-        <span style={{ color: '#a8d5ba', margin: '0 10px', fontSize: '13px' }}>BUY:</span>
-        <a href="/buy-stands" style={linkStyle}>Find Stands</a>
-        <a href="/buy-fields" style={linkStyle}>Find Fields</a>
-        <a href="/buy-delivery" style={linkStyle}>Find Delivery</a>        <button onClick={logout} style={{ background: 'transparent', border: '1px solid white', color: 'white', padding: '5px 10px', cursor: 'pointer', marginLeft: '10px' }}>
-          Logout
+    <nav className="navbar navbar-expand-lg navbar-dark" style={{ background: '#2d6a4f' }}>
+      <div className="container-fluid">
+        <a className="navbar-brand fw-bold" href="/dashboard">🌾 Ubrano</a>
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+          <span className="navbar-toggler-icon"></span>
         </button>
+        <div className="collapse navbar-collapse" id="nav">
+          <ul className="navbar-nav me-auto">
+            <li className="nav-item"><span className="nav-link text-white-50 small">SELL</span></li>
+            <li className="nav-item"><a className="nav-link" href="/map">My Fields</a></li>
+            <li className="nav-item"><a className="nav-link" href="/stands">My Stands</a></li>
+            <li className="nav-item"><a className="nav-link" href="/delivery">My Delivery</a></li>
+            <li className="nav-item"><span className="nav-link text-white-50 small">BUY</span></li>
+            <li className="nav-item"><a className="nav-link" href="/buy-fields">Find Fields</a></li>
+            <li className="nav-item"><a className="nav-link" href="/buy-stands">Find Stands</a></li>
+            <li className="nav-item"><a className="nav-link" href="/buy-delivery">Find Delivery</a></li>
+          </ul>
+          <button onClick={logout} className="btn btn-outline-light btn-sm">Logout</button>
+        </div>
       </div>
     </nav>
   );

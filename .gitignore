@@ -12,3 +12,4 @@ frontend/build/
 
 # Docker helper
 get-docker.sh
+docker-compose.override.yml

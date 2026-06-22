@@ -65,56 +65,83 @@ function Register() {
   };
 
   return (
-    <div style={{ maxWidth: '500px', margin: '40px auto', padding: '20px' }}>
-      <h2>Join Ubrano 🌾</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {success && <p style={{ color: 'green' }}>{success}</p>}
+    <div className="container" style={{ maxWidth: '520px', marginTop: '40px', marginBottom: '40px' }}>
+      <div className="card shadow-sm border-0">
+        <div className="card-body p-4">
+          <h2 className="text-center mb-1" style={{ color: '#2d6a4f', fontWeight: 'bold' }}>
+            🌾 Join Ubrano
+          </h2>
+          <p className="text-center text-muted mb-4">Fresh from local farmers</p>
 
-      <input name="email" type="email" placeholder="Email" onChange={handleChange}
-        style={{ width: '100%', padding: '10px', marginBottom: '10px' }} />
-      <input name="password" type="password" placeholder="Password" onChange={handleChange}
-        style={{ width: '100%', padding: '10px', marginBottom: '10px' }} />
-      <input name="phone" placeholder="Phone (e.g. 091 234 5678 or +385 91 234 5678)" onChange={handleChange}
-        style={{ width: '100%', padding: '10px', marginBottom: '10px' }} />
+          {error && <div className="alert alert-danger py-2">{error}</div>}
+          {success && <div className="alert alert-success py-2">{success}</div>}
 
-      <p style={{ marginBottom: '5px' }}>I am here as: *</p>
-      <label style={{ display: 'block', marginBottom: '5px' }}>
-        <input type="radio" name="role" value="buyer" required
-          onChange={() => setForm({ ...form, is_buyer: true, is_seller: false })} /> Buyer only
-      </label>
-      <label style={{ display: 'block', marginBottom: '5px' }}>
-        <input type="radio" name="role" value="seller"
-          onChange={() => setForm({ ...form, is_buyer: false, is_seller: true })} /> Farmer/Seller only
-      </label>
-      <label style={{ display: 'block', marginBottom: '10px' }}>
-        <input type="radio" name="role" value="both"
-          onChange={() => setForm({ ...form, is_buyer: true, is_seller: true })} /> Both
-      </label>
+          <div className="mb-3">
+            <label className="form-label">Email</label>
+            <input name="email" type="email" className="form-control"
+              onChange={handleChange} placeholder="you@example.com" />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Password</label>
+            <input name="password" type="password" className="form-control"
+              onChange={handleChange} placeholder="Choose a password" />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Phone</label>
+            <input name="phone" className="form-control"
+              onChange={handleChange} placeholder="091 234 5678 or +385 91 234 5678" />
+          </div>
 
-      {form.is_seller && (
-        <div style={{ border: '1px solid #2d6a4f', padding: '15px', borderRadius: '8px', marginBottom: '10px' }}>
-          <h4>Your OPG details</h4>
-          <input name="opg_name" placeholder="OPG name (e.g. OPG Bustruc)" onChange={handleOpgChange}
-            style={{ width: '100%', padding: '10px', marginBottom: '10px' }} />
-          <input name="mibpg" placeholder="MIBPG (your farm's unique number)" onChange={handleOpgChange}
-            style={{ width: '100%', padding: '10px', marginBottom: '10px' }} />
-          <p style={{ fontSize: '14px', margin: '5px 0' }}>📍 Click the map to set your OPG location (private):</p>
-          <MapContainer center={[45.1, 16.5]} zoom={7} style={{ height: '250px', width: '100%', marginBottom: '10px' }}>
-            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='© OpenStreetMap' />
-            <OPGLocationPicker onPick={setOpgPin} />
-            {opgPin && <Marker position={opgPin} />}
-          </MapContainer>
-          {opgPin && <p style={{ fontSize: '13px', color: '#666' }}>Pin set: {opgPin.lat.toFixed(4)}, {opgPin.lng.toFixed(4)}</p>}
+          <label className="form-label">I am here as:</label>
+          <div className="mb-3">
+            <div className="form-check">
+              <input className="form-check-input" type="radio" name="role" id="roleBuyer"
+                onChange={() => setForm({ ...form, is_buyer: true, is_seller: false })} />
+              <label className="form-check-label" htmlFor="roleBuyer">Buyer only</label>
+            </div>
+            <div className="form-check">
+              <input className="form-check-input" type="radio" name="role" id="roleSeller"
+                onChange={() => setForm({ ...form, is_buyer: false, is_seller: true })} />
+              <label className="form-check-label" htmlFor="roleSeller">Farmer / Seller only</label>
+            </div>
+            <div className="form-check">
+              <input className="form-check-input" type="radio" name="role" id="roleBoth"
+                onChange={() => setForm({ ...form, is_buyer: true, is_seller: true })} />
+              <label className="form-check-label" htmlFor="roleBoth">Both</label>
+            </div>
+          </div>
+
+          {form.is_seller && (
+            <div className="card mb-3" style={{ borderColor: '#2d6a4f' }}>
+              <div className="card-body">
+                <h5 className="card-title">Your OPG details</h5>
+                <div className="mb-2">
+                  <input name="opg_name" className="form-control"
+                    onChange={handleOpgChange} placeholder="OPG name (e.g. OPG Bustruc)" />
+                </div>
+                <div className="mb-2">
+                  <input name="mibpg" className="form-control"
+                    onChange={handleOpgChange} placeholder="MIBPG (your farm's unique number)" />
+                </div>
+                <p className="small mb-2">📍 Click the map to set your OPG location (private):</p>
+                <MapContainer center={[45.1, 16.5]} zoom={7} style={{ height: '250px', width: '100%' }}>
+                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='© OpenStreetMap' />
+                  <OPGLocationPicker onPick={setOpgPin} />
+                  {opgPin && <Marker position={opgPin} />}
+                </MapContainer>
+                {opgPin && <p className="small text-muted mt-2 mb-0">Pin set: {opgPin.lat.toFixed(4)}, {opgPin.lng.toFixed(4)}</p>}
+              </div>
+            </div>
+          )}
+
+          <button onClick={handleRegister} className="btn w-100 text-white" style={{ background: '#2d6a4f' }}>
+            Register
+          </button>
+          <p className="text-center mt-3 mb-0 text-muted">
+            Already have an account? <a href="/" style={{ color: '#2d6a4f' }}>Log in</a>
+          </p>
         </div>
-      )}
-
-      <button onClick={handleRegister}
-        style={{ width: '100%', padding: '12px', background: 'green', color: 'white', border: 'none', cursor: 'pointer' }}>
-        Register
-      </button>
-      <p style={{ textAlign: 'center', marginTop: '10px' }}>
-        Already have an account? <a href="/">Login</a>
-      </p>
+      </div>
     </div>
   );
 }

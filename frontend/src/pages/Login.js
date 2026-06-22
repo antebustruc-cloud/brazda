@@ -21,35 +21,34 @@ function Login() {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '100px auto', padding: '20px' }}>
-      <h2>Login to Ubrano 🌾</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleLogin}>
-        <div>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            style={{ width: '100%', padding: '10px', marginBottom: '10px' }}
-          />
+    <div className="container" style={{ maxWidth: '420px', marginTop: '80px' }}>
+      <div className="card shadow-sm border-0">
+        <div className="card-body p-4">
+          <h2 className="text-center mb-1" style={{ color: '#2d6a4f', fontWeight: 'bold' }}>
+            🌾 Ubrano
+          </h2>
+          <p className="text-center text-muted mb-4">Fresh from local farmers</p>
+          {error && <div className="alert alert-danger py-2">{error}</div>}
+          <form onSubmit={handleLogin}>
+            <div className="mb-3">
+              <label className="form-label">Email</label>
+              <input type="email" className="form-control" value={email}
+                onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Password</label>
+              <input type="password" className="form-control" value={password}
+                onChange={(e) => setPassword(e.target.value)} placeholder="Your password" />
+            </div>
+            <button type="submit" className="btn w-100 text-white" style={{ background: '#2d6a4f' }}>
+              Log In
+            </button>
+          </form>
+          <p className="text-center mt-3 mb-0 text-muted">
+            Don't have an account? <a href="/register" style={{ color: '#2d6a4f' }}>Register</a>
+          </p>
         </div>
-        <div>
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            style={{ width: '100%', padding: '10px', marginBottom: '10px' }}
-          />
-        </div>
-        <button type="submit" style={{ width: '100%', padding: '10px', background: 'green', color: 'white', border: 'none', cursor: 'pointer' }}>
-          Login
-        </button>
-      </form>
-      <p style={{ textAlign: 'center', marginTop: '10px' }}>
-        Don't have an account? <a href="/register">Register</a>
-      </p>
+      </div>
     </div>
   );
 }

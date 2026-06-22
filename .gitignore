@@ -1,15 +1,14 @@
 # Python
 __pycache__/
 *.pyc
-venv/
-*.env
+backend/staticfiles/
 
-# Docker
-*.log
+# Secrets
+.env
 
-# Django
-local_settings.py
-
-# Database
-*.sqlite3
+# Node
 frontend/node_modules/
+frontend/build/
+
+# Docker helper
+get-docker.sh

@@ -163,7 +163,8 @@ REST_FRAMEWORK = {
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",      # React web dev
-    "http://165.245.248.246:3000",   # React on local network
+    "http://165.245.248.246:3000",
+    "http://165.245.248.246",   # React on local network
 ]
 
 CORS_ALLOW_CREDENTIALS = True

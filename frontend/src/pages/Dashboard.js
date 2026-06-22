@@ -1,32 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import Navbar from '../components/Navbar';
 
-import { API } from '../config';
-
 function Dashboard() {
-  const [products, setProducts] = useState([]);
-  const token = localStorage.getItem('access_token');
-
-  useEffect(() => {
-    axios.get(`${API}/products/`, {
-      headers: { Authorization: `Bearer ${token}` }
-    }).then(res => setProducts(res.data));
-  }, [token]);
-
   return (
     <>
       <Navbar />
-      <div style={{ maxWidth: '800px', margin: '40px auto', padding: '20px' }}>
-        <h2>Welcome to Brazda 🌾</h2>
-        <h3>Available Products</h3>
-        {products.map(p => (
-          <div key={p.id} style={{ border: '1px solid #ccc', padding: '15px', marginBottom: '10px', borderRadius: '8px' }}>
-            <h4>{p.name} — €{p.price_per_kg}/kg</h4>
-            <p>{p.description}</p>
-            <p>Ready: {p.ready_from} → {p.ready_until}</p>
+      <div className="container" style={{ maxWidth: '900px', marginTop: '40px' }}>
+        <div className="text-center mb-5">
+          <h2 style={{ color: '#2d6a4f', fontWeight: 'bold' }}>Welcome to Ubrano 🌾</h2>
+          <p className="text-muted">Fresh produce, direct from local farmers.</p>
+        </div>
+
+        <div className="row g-4">
+          <div className="col-md-6">
+            <div className="card h-100 shadow-sm border-0">
+              <div className="card-body text-center p-4">
+                <h3 style={{ color: '#2d6a4f' }}>🧺 I want to buy</h3>
+                <p className="text-muted">Find fresh produce near you — pick it yourself, grab it from a stand, or get it delivered.</p>
+                <a href="/buy-fields" className="btn text-white m-1" style={{ background: '#2d6a4f' }}>Find Fields</a>
+                <a href="/buy-stands" className="btn text-white m-1" style={{ background: '#2d6a4f' }}>Find Stands</a>
+                <a href="/buy-delivery" className="btn text-white m-1" style={{ background: '#2d6a4f' }}>Find Delivery</a>
+              </div>
+            </div>
           </div>
-        ))}
+
+          <div className="col-md-6">
+            <div className="card h-100 shadow-sm border-0">
+              <div className="card-body text-center p-4">
+                <h3 style={{ color: '#2d6a4f' }}>🚜 I want to sell</h3>
+                <p className="text-muted">List your produce — open your fields for picking, set up a stand, or announce a delivery run.</p>
+                <a href="/map" className="btn text-white m-1" style={{ background: '#2d6a4f' }}>My Fields</a>
+                <a href="/stands" className="btn text-white m-1" style={{ background: '#2d6a4f' }}>My Stands</a>
+                <a href="/delivery" className="btn text-white m-1" style={{ background: '#2d6a4f' }}>My Delivery</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );

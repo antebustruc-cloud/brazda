@@ -92,88 +92,97 @@ function Delivery() {
   return (
     <>
       <Navbar />
-      <div style={{ padding: '15px', background: '#f5f5f5' }}>
-        <h3 style={{ marginTop: 0 }}>Create a Delivery Event 🚚</h3>
-        <input name="name" placeholder="Event name (e.g. Tuesday Split run)" value={form.name}
-          onChange={handleChange} style={{ padding: '8px', width: '250px', marginRight: '8px' }} />
-        <label style={{ marginRight: '8px' }}>
-          Date:
-          <input name="delivery_date" type="date" value={form.delivery_date}
-            onChange={handleChange} style={{ padding: '8px', marginLeft: '5px' }} />
-        </label>
-        <label style={{ marginRight: '8px' }}>
-          Radius (km):
-          <input name="radius_km" type="number" value={form.radius_km}
-            onChange={handleChange} style={{ padding: '8px', width: '70px', marginLeft: '5px' }} />
-        </label>
-
-        <button onClick={handleSave}
-          style={{ padding: '8px 16px', background: '#2d6a4f', color: 'white', border: 'none', cursor: 'pointer' }}>
-          Save Delivery
-        </button>
-        {message && <span style={{ color: '#2d6a4f', marginLeft: '10px' }}>{message}</span>}
+      <div className="container-fluid py-3" style={{ background: '#f5f5f5' }}>
+        <h5 className="mb-3" style={{ color: '#2d6a4f' }}>Create a Delivery Event 🚚</h5>
+        <div className="row g-2 align-items-center">
+          <div className="col-auto" style={{ minWidth: '250px' }}>
+            <input name="name" className="form-control" placeholder="Event name (e.g. Tuesday Split run)"
+              value={form.name} onChange={handleChange} />
+          </div>
+          <div className="col-auto">
+            <div className="input-group">
+              <span className="input-group-text">Date</span>
+              <input name="delivery_date" type="date" className="form-control" value={form.delivery_date} onChange={handleChange} />
+            </div>
+          </div>
+          <div className="col-auto">
+            <div className="input-group">
+              <span className="input-group-text">Radius (km)</span>
+              <input name="radius_km" type="number" className="form-control" style={{ maxWidth: '90px' }}
+                value={form.radius_km} onChange={handleChange} />
+            </div>
+          </div>
+          <div className="col-auto">
+            <button onClick={handleSave} className="btn text-white" style={{ background: '#2d6a4f' }}>
+              Save Delivery
+            </button>
+          </div>
+          {message && <div className="col-auto text-success">{message}</div>}
+        </div>
       </div>
-      <p style={{ padding: '5px 10px', margin: 0, background: '#e8f5e9', fontSize: '14px' }}>
+      <div className="container-fluid py-2 small" style={{ background: '#eef6f0' }}>
         👆 Click the map to set your delivery destination (e.g. Split center)
-      </p>
+      </div>
       <MapContainer center={[45.1, 16.5]} zoom={7} style={{ height: '35vh', width: '100%' }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='© OpenStreetMap' />
         <LocationPicker onPick={setPin} />
         {pin && <Marker position={pin} />}
       </MapContainer>
-      <div style={{ padding: '20px' }}>
-        <h3 style={{ marginTop: 0 }}>My Delivery Events ({events.length})</h3>
-        {events.length === 0 && <p>No delivery events yet.</p>}
-        {events.map(ev => (
-          <div key={ev.id} style={{ border: '1px solid #ccc', padding: '12px', marginBottom: '8px', borderRadius: '8px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
-              <div>
-                {editingId === ev.id ? (
-                  <input value={editName} onChange={e => setEditName(e.target.value)}
-                    style={{ padding: '6px', width: '200px' }} />
-                ) : (
-                  <strong>{ev.name}</strong>
-                )}
-                <span style={{ color: '#666', marginLeft: '10px' }}>
-                  📅 {ev.delivery_date} · {ev.radius_km}km radius
-                </span>
-                <span style={{ marginLeft: '10px', color: ev.is_active ? 'green' : '#999' }}>
-                  {ev.is_active ? '🟢 Active' : '⚪ Inactive'}
-                </span>
-              </div>
-              <div style={{ display: 'flex', gap: '6px' }}>
-                {editingId === ev.id ? (
-                  <>
-                    <button onClick={() => saveEdit(ev)}
-                      style={{ padding: '6px 12px', background: '#2d6a4f', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-                      Save
-                    </button>
-                    <button onClick={() => setEditingId(null)}
-                      style={{ padding: '6px 12px', background: '#999', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-                      Cancel
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button onClick={() => setExpanded(expanded === ev.id ? null : ev.id)}
-                      style={{ padding: '6px 12px', background: '#2d6a4f', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-                      {expanded === ev.id ? 'Close' : 'Products'}
-                    </button>
-                    <button onClick={() => startEdit(ev)}
-                      style={{ padding: '6px 12px', background: '#5a8f73', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-                      Edit
-                    </button>
-                    <button onClick={() => deleteEvent(ev)}
-                      style={{ padding: '6px 12px', background: '#c0392b', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-                      Delete
-                    </button>
-                  </>
-                )}
+      <div className="container py-3">
+        <h3 className="mb-3">My Delivery Events ({events.length})</h3>
+        {events.length === 0 && <p className="text-muted">No delivery events yet.</p>}
+        <div className="row g-3">
+          {events.map(ev => (
+            <div className="col-12" key={ev.id}>
+              <div className="card shadow-sm border-0">
+                <div className="card-body">
+                  <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div>
+                      {editingId === ev.id ? (
+                        <input className="form-control d-inline-block" style={{ width: '200px' }}
+                          value={editName} onChange={e => setEditName(e.target.value)} />
+                      ) : (
+                        <strong>{ev.name}</strong>
+                      )}
+                      <span className="text-muted small ms-2">
+                        📅 {ev.delivery_date} · {ev.radius_km}km radius
+                      </span>
+                      <span className={`badge ms-2 ${ev.is_active ? 'bg-success' : 'bg-secondary'}`}>
+                        {ev.is_active ? 'Active' : 'Inactive'}
+                      </span>
+                    </div>
+                    <div className="d-flex gap-2">
+                      {editingId === ev.id ? (
+                        <>
+                          <button onClick={() => saveEdit(ev)} className="btn btn-sm text-white" style={{ background: '#2d6a4f' }}>
+                            Save
+                          </button>
+                          <button onClick={() => setEditingId(null)} className="btn btn-sm btn-secondary">
+                            Cancel
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button onClick={() => setExpanded(expanded === ev.id ? null : ev.id)}
+                            className="btn btn-sm text-white" style={{ background: '#2d6a4f' }}>
+                            {expanded === ev.id ? 'Close' : 'Products'}
+                          </button>
+                          <button onClick={() => startEdit(ev)} className="btn btn-sm text-white" style={{ background: '#5a8f73' }}>
+                            Edit
+                          </button>
+                          <button onClick={() => deleteEvent(ev)} className="btn btn-sm btn-outline-danger">
+                            Delete
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  {expanded === ev.id && <ProductManager channelType="delivery_event" channelId={ev.id} />}
+                </div>
               </div>
             </div>
-            {expanded === ev.id && <ProductManager channelType="delivery_event" channelId={ev.id} />}
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </>
   );

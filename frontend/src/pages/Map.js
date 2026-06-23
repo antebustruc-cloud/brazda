@@ -88,23 +88,28 @@ function Map() {
   return (
     <>
       <Navbar />
-      <div style={{ padding: '10px', background: '#f5f5f5', display: 'flex', gap: '10px', alignItems: 'center' }}>
-        <input
-          placeholder="Field name (e.g. Apple orchard)"
-          value={parcelName}
-          onChange={e => setParcelName(e.target.value)}
-          style={{ padding: '8px', width: '300px' }}
-        />
-        <button onClick={handleSave}
-          style={{ padding: '8px 16px', background: '#2d6a4f', color: 'white', border: 'none', cursor: 'pointer' }}>
-          Save Field
-        </button>
-        {message && <span style={{ color: '#2d6a4f' }}>{message}</span>}
-        {pin && <span>📍 {pin.lat.toFixed(4)}, {pin.lng.toFixed(4)}</span>}
+      <div className="container-fluid py-3" style={{ background: '#f5f5f5' }}>
+        <div className="row g-2 align-items-center">
+          <div className="col-auto" style={{ minWidth: '300px' }}>
+            <input
+              className="form-control"
+              placeholder="Field name (e.g. Apple orchard)"
+              value={parcelName}
+              onChange={e => setParcelName(e.target.value)}
+            />
+          </div>
+          <div className="col-auto">
+            <button onClick={handleSave} className="btn text-white" style={{ background: '#2d6a4f' }}>
+              Save Field
+            </button>
+          </div>
+          {message && <div className="col-auto text-success">{message}</div>}
+          {pin && <div className="col-auto text-muted small">📍 {pin.lat.toFixed(4)}, {pin.lng.toFixed(4)}</div>}
+        </div>
       </div>
-      <p style={{ padding: '5px 10px', margin: 0, background: '#e8f5e9', fontSize: '14px' }}>
+      <div className="container-fluid py-2 small" style={{ background: '#eef6f0' }}>
         👆 Click anywhere on the map to drop a pin for your field entrance
-      </p>
+      </div>
       <MapContainer center={[45.1, 16.5]} zoom={7} style={{ height: '35vh', width: '100%' }}>
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -113,56 +118,58 @@ function Map() {
         <LocationPicker onPick={setPin} />
         {pin && <Marker position={pin} />}
       </MapContainer>
-      <div style={{ padding: '20px' }}>
-        <h3 style={{ marginTop: 0 }}>My Fields ({parcels.length})</h3>
-        {parcels.length === 0 && <p>No fields yet. Click the map to add one!</p>}
-        {parcels.map(p => (
-          <div key={p.id} style={{ border: '1px solid #ccc', padding: '12px', marginBottom: '8px', borderRadius: '8px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
-              <div>
-                {editingId === p.id ? (
-                  <input value={editName} onChange={e => setEditName(e.target.value)}
-                    style={{ padding: '6px', width: '200px' }} />
-                ) : (
-                  <strong>{p.name}</strong>
-                )}
-                <span style={{ color: '#666', marginLeft: '10px' }}>
-                  📍 {p.latitude?.toFixed(4)}, {p.longitude?.toFixed(4)}
-                </span>
-              </div>
-              <div style={{ display: 'flex', gap: '6px' }}>
-                {editingId === p.id ? (
-                  <>
-                    <button onClick={() => saveEdit(p)}
-                      style={{ padding: '6px 12px', background: '#2d6a4f', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-                      Save
-                    </button>
-                    <button onClick={() => setEditingId(null)}
-                      style={{ padding: '6px 12px', background: '#999', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-                      Cancel
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button onClick={() => setExpandedParcel(expandedParcel === p.id ? null : p.id)}
-                      style={{ padding: '6px 12px', background: '#2d6a4f', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-                      {expandedParcel === p.id ? 'Close' : 'Products'}
-                    </button>
-                    <button onClick={() => startEdit(p)}
-                      style={{ padding: '6px 12px', background: '#5a8f73', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-                      Edit
-                    </button>
-                    <button onClick={() => deleteParcel(p)}
-                      style={{ padding: '6px 12px', background: '#c0392b', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-                      Delete
-                    </button>
-                  </>
-                )}
+      <div className="container py-3">
+        <h3 className="mb-3">My Fields ({parcels.length})</h3>
+        {parcels.length === 0 && <p className="text-muted">No fields yet. Click the map to add one!</p>}
+        <div className="row g-3">
+          {parcels.map(p => (
+            <div className="col-12" key={p.id}>
+              <div className="card shadow-sm border-0">
+                <div className="card-body">
+                  <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div>
+                      {editingId === p.id ? (
+                        <input className="form-control d-inline-block" style={{ width: '200px' }}
+                          value={editName} onChange={e => setEditName(e.target.value)} />
+                      ) : (
+                        <strong>{p.name}</strong>
+                      )}
+                      <span className="text-muted small ms-2">
+                        📍 {p.latitude?.toFixed(4)}, {p.longitude?.toFixed(4)}
+                      </span>
+                    </div>
+                    <div className="d-flex gap-2">
+                      {editingId === p.id ? (
+                        <>
+                          <button onClick={() => saveEdit(p)} className="btn btn-sm text-white" style={{ background: '#2d6a4f' }}>
+                            Save
+                          </button>
+                          <button onClick={() => setEditingId(null)} className="btn btn-sm btn-secondary">
+                            Cancel
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button onClick={() => setExpandedParcel(expandedParcel === p.id ? null : p.id)}
+                            className="btn btn-sm text-white" style={{ background: '#2d6a4f' }}>
+                            {expandedParcel === p.id ? 'Close' : 'Products'}
+                          </button>
+                          <button onClick={() => startEdit(p)} className="btn btn-sm text-white" style={{ background: '#5a8f73' }}>
+                            Edit
+                          </button>
+                          <button onClick={() => deleteParcel(p)} className="btn btn-sm btn-outline-danger">
+                            Delete
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  {expandedParcel === p.id && <ProductManager channelType="parcel" channelId={p.id} />}
+                </div>
               </div>
             </div>
-            {expandedParcel === p.id && <ProductManager channelType="parcel" channelId={p.id} />}
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </>
   );

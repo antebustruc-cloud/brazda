@@ -88,82 +88,88 @@ function ProductManager({ channelType, channelId }) {
   };
 
   return (
-    <div style={{ background: '#fafafa', padding: '15px', borderRadius: '8px', marginTop: '10px' }}>
-      <h4 style={{ marginTop: 0 }}>Products here</h4>
-      {message && <p style={{ color: '#2d6a4f', fontSize: '14px' }}>{message}</p>}
+    <div className="border-top mt-3 pt-3">
+      <h6 style={{ color: '#2d6a4f' }}>Products here</h6>
+      {message && <div className="small text-success">{message}</div>}
 
-      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '12px' }}>
-        <select name="catalog_item" value={form.catalog_item} onChange={handleChange}
-          style={{ padding: '8px', flex: '1 1 150px' }}>
-          <option value="">-- Product --</option>
-          {catalog.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-        </select>
+      <div className="row g-2 align-items-center mb-3">
+        <div className="col-auto" style={{ minWidth: '150px' }}>
+          <select name="catalog_item" className="form-select" value={form.catalog_item} onChange={handleChange}>
+            <option value="">-- Product --</option>
+            {catalog.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+          </select>
+        </div>
 
         {selectedCatalog && selectedCatalog.varieties.length > 0 && (
-          <select name="variety" value={form.variety} onChange={handleChange}
-            style={{ padding: '8px', flex: '1 1 120px' }}>
-            <option value="">-- Variety --</option>
-            {selectedCatalog.varieties.map(v => <option key={v.id} value={v.id}>{v.name}</option>)}
-          </select>
+          <div className="col-auto" style={{ minWidth: '120px' }}>
+            <select name="variety" className="form-select" value={form.variety} onChange={handleChange}>
+              <option value="">-- Variety --</option>
+              {selectedCatalog.varieties.map(v => <option key={v.id} value={v.id}>{v.name}</option>)}
+            </select>
+          </div>
         )}
 
-        <input name="price_per_kg" type="number" placeholder="€/kg" value={form.price_per_kg}
-          onChange={handleChange} style={{ padding: '8px', width: '90px' }} />
-
-        <button onClick={handleAdd}
-          style={{ padding: '8px 16px', background: '#2d6a4f', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-          Add
-        </button>
-      </div>
-
-      {products.length === 0 && <p style={{ fontSize: '14px', color: '#999' }}>No products here yet.</p>}
-      {products.map(p => (
-        <div key={p.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px', borderBottom: '1px solid #eee', flexWrap: 'wrap', gap: '6px' }}>
-          <div>
-            <strong>{p.catalog_name}</strong>
-            {p.variety_name && <span style={{ color: '#666' }}> ({p.variety_name})</span>}
-            {' '}—{' '}
-            {editingId === p.id ? (
-              <input type="number" value={editPrice} onChange={e => setEditPrice(e.target.value)}
-                style={{ padding: '4px', width: '70px' }} />
-            ) : (
-              <span>€{p.price_per_kg}/kg</span>
-            )}
-            <span style={{ marginLeft: '8px', color: p.is_available ? 'green' : '#999' }}>
-              {p.is_available ? '🟢' : '⚪'}
-            </span>
-          </div>
-          <div style={{ display: 'flex', gap: '6px' }}>
-            {editingId === p.id ? (
-              <>
-                <button onClick={() => savePrice(p)}
-                  style={{ padding: '4px 10px', background: '#2d6a4f', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '13px' }}>
-                  Save
-                </button>
-                <button onClick={() => setEditingId(null)}
-                  style={{ padding: '4px 10px', background: '#999', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '13px' }}>
-                  Cancel
-                </button>
-              </>
-            ) : (
-              <>
-                <button onClick={() => startPriceEdit(p)}
-                  style={{ padding: '4px 10px', background: '#5a8f73', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '13px' }}>
-                  € Edit
-                </button>
-                <button onClick={() => toggleActive(p)}
-                  style={{ padding: '4px 10px', background: p.is_available ? '#999' : '#2d6a4f', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '13px' }}>
-                  {p.is_available ? 'Off' : 'On'}
-                </button>
-                <button onClick={() => removeProduct(p)}
-                  style={{ padding: '4px 10px', background: '#c0392b', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '13px' }}>
-                  ✕
-                </button>
-              </>
-            )}
+        <div className="col-auto">
+          <div className="input-group">
+            <span className="input-group-text">€/kg</span>
+            <input name="price_per_kg" type="number" className="form-control" style={{ maxWidth: '90px' }}
+              value={form.price_per_kg} onChange={handleChange} />
           </div>
         </div>
-      ))}
+
+        <div className="col-auto">
+          <button onClick={handleAdd} className="btn text-white" style={{ background: '#2d6a4f' }}>
+            Add
+          </button>
+        </div>
+      </div>
+
+      {products.length === 0 && <p className="small text-muted">No products here yet.</p>}
+      <div className="list-group">
+        {products.map(p => (
+          <div key={p.id} className="list-group-item d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div>
+              <strong>{p.catalog_name}</strong>
+              {p.variety_name && <span className="text-muted"> ({p.variety_name})</span>}
+              {' '}—{' '}
+              {editingId === p.id ? (
+                <input type="number" className="form-control d-inline-block" style={{ width: '90px' }}
+                  value={editPrice} onChange={e => setEditPrice(e.target.value)} />
+              ) : (
+                <span>€{p.price_per_kg}/kg</span>
+              )}
+              <span className={`badge ms-2 ${p.is_available ? 'bg-success' : 'bg-secondary'}`}>
+                {p.is_available ? 'Active' : 'Off'}
+              </span>
+            </div>
+            <div className="d-flex gap-2">
+              {editingId === p.id ? (
+                <>
+                  <button onClick={() => savePrice(p)} className="btn btn-sm text-white" style={{ background: '#2d6a4f' }}>
+                    Save
+                  </button>
+                  <button onClick={() => setEditingId(null)} className="btn btn-sm btn-secondary">
+                    Cancel
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button onClick={() => startPriceEdit(p)} className="btn btn-sm text-white" style={{ background: '#5a8f73' }}>
+                    € Edit
+                  </button>
+                  <button onClick={() => toggleActive(p)} className={`btn btn-sm ${p.is_available ? 'btn-secondary' : 'text-white'}`}
+                    style={!p.is_available ? { background: '#2d6a4f' } : {}}>
+                    {p.is_available ? 'Off' : 'On'}
+                  </button>
+                  <button onClick={() => removeProduct(p)} className="btn btn-sm btn-outline-danger">
+                    ✕
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

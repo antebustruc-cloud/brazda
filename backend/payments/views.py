@@ -7,14 +7,17 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from opg.models import OPG
+from parcels.models import Parcel
+from stands.models import Stand
+from delivery.models import DeliveryEvent
 from .models import Transaction
 from .serializers import TransactionSerializer
 from .hub3 import build_hub3_text, render_hub3_barcode_png
 
-CHANNEL_FIELDS = {
-    'parcel': 'parcel_id',
-    'stand': 'stand_id',
-    'delivery_event': 'delivery_event_id',
+CHANNEL_MODELS = {
+    'parcel': (Parcel, 'parcel_id'),
+    'stand': (Stand, 'stand_id'),
+    'delivery_event': (DeliveryEvent, 'delivery_event_id'),
 }
 
 
@@ -51,8 +54,15 @@ class CreateTransactionView(APIView):
         channel_id = request.data.get('channel_id')
 
         txn = Transaction(farmer=request.user, amount=amount)
-        field_name = CHANNEL_FIELDS.get(channel_type)
-        if field_name and channel_id:
+        channel_spec = CHANNEL_MODELS.get(channel_type)
+        if channel_spec and channel_id:
+            model, field_name = channel_spec
+            try:
+                channel = model.objects.get(pk=channel_id)
+            except model.DoesNotExist:
+                return Response({'detail': 'Channel not found.'}, status=status.HTTP_404_NOT_FOUND)
+            if channel.owner != request.user:
+                return Response({'detail': "That's not your field/stand/delivery event."}, status=status.HTTP_403_FORBIDDEN)
             setattr(txn, field_name, channel_id)
         txn.reference = 'UBR' + secrets.token_hex(4).upper()
         txn.save()

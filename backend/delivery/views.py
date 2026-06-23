@@ -5,10 +5,11 @@ from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
 from .models import DeliveryEvent
 from .serializers import DeliveryEventSerializer
+from users.permissions import IsSeller
 
 class DeliveryListCreateView(generics.ListCreateAPIView):
     serializer_class = DeliveryEventSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsSeller]
     def get_queryset(self):
         return DeliveryEvent.objects.filter(owner=self.request.user)
     def perform_create(self, serializer):
@@ -16,7 +17,7 @@ class DeliveryListCreateView(generics.ListCreateAPIView):
 
 class DeliveryDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = DeliveryEventSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsSeller]
     def get_queryset(self):
         return DeliveryEvent.objects.filter(owner=self.request.user)
 

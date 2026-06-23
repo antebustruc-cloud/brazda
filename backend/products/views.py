@@ -1,15 +1,17 @@
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.exceptions import PermissionDenied
 from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
 from .models import Product
 from .serializers import ProductSerializer
+from users.permissions import IsSeller
 
 class ProductListCreateView(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
-    permission_classes = [permissions.IsAuthenticated]
-    
+    permission_classes = [permissions.IsAuthenticated, IsSeller]
+
     def get_queryset(self):
         qs = Product.objects.filter(seller=self.request.user)
         stand_id = self.request.query_params.get('stand')
@@ -22,12 +24,20 @@ class ProductListCreateView(generics.ListCreateAPIView):
         if delivery_id:
             qs = qs.filter(delivery_event=delivery_id)
         return qs
+
     def perform_create(self, serializer):
+        channel = (
+            serializer.validated_data.get('parcel')
+            or serializer.validated_data.get('stand')
+            or serializer.validated_data.get('delivery_event')
+        )
+        if channel is None or channel.owner != self.request.user:
+            raise PermissionDenied("You can only add products to your own field, stand, or delivery event.")
         serializer.save(seller=self.request.user)
 
 class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsSeller]
 
     def get_queryset(self):
         return Product.objects.filter(seller=self.request.user)

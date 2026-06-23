@@ -5,10 +5,11 @@ from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
 from .models import Stand, StandSupplierRequest
 from .serializers import StandSerializer, StandSupplierRequestSerializer
+from users.permissions import IsSeller
 
 class StandListCreateView(generics.ListCreateAPIView):
     serializer_class = StandSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsSeller]
 
     def get_queryset(self):
         return Stand.objects.filter(owner=self.request.user)
@@ -18,7 +19,7 @@ class StandListCreateView(generics.ListCreateAPIView):
 
 class StandDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = StandSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsSeller]
 
     def get_queryset(self):
         return Stand.objects.filter(owner=self.request.user)
@@ -49,7 +50,7 @@ class NearbyStandsView(APIView):
 
 class StandSupplierRequestView(generics.ListCreateAPIView):
     serializer_class = StandSupplierRequestSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsSeller]
 
     def get_queryset(self):
         return StandSupplierRequest.objects.filter(farmer=self.request.user)

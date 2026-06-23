@@ -5,10 +5,11 @@ from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
 from .models import Parcel
 from .serializers import ParcelSerializer
+from users.permissions import IsSeller
 
 class ParcelListCreateView(generics.ListCreateAPIView):
     serializer_class = ParcelSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsSeller]
 
     def get_queryset(self):
         return Parcel.objects.filter(owner=self.request.user)
@@ -18,7 +19,7 @@ class ParcelListCreateView(generics.ListCreateAPIView):
 
 class ParcelDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ParcelSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsSeller]
 
     def get_queryset(self):
         return Parcel.objects.filter(owner=self.request.user)

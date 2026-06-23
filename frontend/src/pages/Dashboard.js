@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Navbar from '../components/Navbar';
+import { API } from '../config';
 
 function Dashboard() {
+  const [isSeller, setIsSeller] = useState(false);
+  const token = localStorage.getItem('access_token');
+
+  useEffect(() => {
+    axios.get(`${API}/users/profile/`, { headers: { Authorization: `Bearer ${token}` } })
+      .then(res => setIsSeller(!!res.data.is_seller))
+      .catch(() => setIsSeller(false));
+  }, [token]);
+
   return (
     <>
       <Navbar />
@@ -12,7 +23,7 @@ function Dashboard() {
         </div>
 
         <div className="row g-4">
-          <div className="col-md-6">
+          <div className={isSeller ? 'col-md-6' : 'col-md-12'}>
             <div className="card h-100 shadow-sm border-0">
               <div className="card-body text-center p-4">
                 <h3 style={{ color: '#2d6a4f' }}>🧺 I want to buy</h3>
@@ -24,17 +35,19 @@ function Dashboard() {
             </div>
           </div>
 
-          <div className="col-md-6">
-            <div className="card h-100 shadow-sm border-0">
-              <div className="card-body text-center p-4">
-                <h3 style={{ color: '#2d6a4f' }}>🚜 I want to sell</h3>
-                <p className="text-muted">List your produce — open your fields for picking, set up a stand, or announce a delivery run.</p>
-                <a href="/map" className="btn text-white m-1" style={{ background: '#2d6a4f' }}>My Fields</a>
-                <a href="/stands" className="btn text-white m-1" style={{ background: '#2d6a4f' }}>My Stands</a>
-                <a href="/delivery" className="btn text-white m-1" style={{ background: '#2d6a4f' }}>My Delivery</a>
+          {isSeller && (
+            <div className="col-md-6">
+              <div className="card h-100 shadow-sm border-0">
+                <div className="card-body text-center p-4">
+                  <h3 style={{ color: '#2d6a4f' }}>🚜 I want to sell</h3>
+                  <p className="text-muted">List your produce — open your fields for picking, set up a stand, or announce a delivery run.</p>
+                  <a href="/map" className="btn text-white m-1" style={{ background: '#2d6a4f' }}>My Fields</a>
+                  <a href="/stands" className="btn text-white m-1" style={{ background: '#2d6a4f' }}>My Stands</a>
+                  <a href="/delivery" className="btn text-white m-1" style={{ background: '#2d6a4f' }}>My Delivery</a>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </>

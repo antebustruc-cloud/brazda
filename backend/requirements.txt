@@ -1,9 +1,10 @@
 django
 djangorestframework
 psycopg2-binary
-django-cors-headers
 djangorestframework-gis
 django-environ
 djangorestframework-simplejwt
 Pillow
 whitenoise
+django-cors-headers
+gunicorn

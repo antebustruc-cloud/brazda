@@ -28,7 +28,7 @@ DEBUG = env.bool('DEBUG', default=False)
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 
-ALLOWED_HOSTS = ['165.245.248.246', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['165.245.248.246', '127.0.0.1', 'localhost', 'ubrano.com.hr', 'www.ubrano.com.hr']
 
 
 # Application definition
@@ -165,6 +165,10 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",      # React web dev
     "http://165.245.248.246:3000",
     "http://165.245.248.246",   # React on local network
+    "http://ubrano.com.hr",
+    "https://ubrano.com.hr",
+    "http://www.ubrano.com.hr",
+    "https://www.ubrano.com.hr",
 ]
 
 CORS_ALLOW_CREDENTIALS = True

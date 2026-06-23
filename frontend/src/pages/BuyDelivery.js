@@ -6,9 +6,7 @@ import 'leaflet/dist/leaflet.css';
 import { API } from '../config';
 
 function LocationPicker({ onPick }) {
-  useMapEvents({
-    click(e) { onPick(e.latlng); }
-  });
+  useMapEvents({ click(e) { onPick(e.latlng); } });
   return null;
 }
 
@@ -24,26 +22,17 @@ function BuyDelivery() {
   const authHeader = { headers: { Authorization: `Bearer ${token}` } };
 
   const useMyLocation = () => {
-    if (!navigator.geolocation) {
-      setMessage('GPS not available, click the map instead.');
-      return;
-    }
+    if (!navigator.geolocation) { setMessage('GPS not available, tap the map instead.'); return; }
     navigator.geolocation.getCurrentPosition(
       (pos) => setPin({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
-      () => setMessage('Could not get GPS, click the map instead.')
+      () => setMessage('Could not get GPS, tap the map instead.')
     );
   };
 
   const search = async () => {
-    if (!pin) {
-      setMessage('Set your location first (GPS or click the map).');
-      return;
-    }
+    if (!pin) { setMessage('Set a location first — use GPS or tap the map.'); return; }
     try {
-      const res = await axios.get(
-        `${API}/delivery/nearby/?lat=${pin.lat}&lng=${pin.lng}`,
-        authHeader
-      );
+      const res = await axios.get(`${API}/delivery/nearby/?lat=${pin.lat}&lng=${pin.lng}`, authHeader);
       setEvents(res.data);
       setMessage(res.data.length === 0 ? 'No deliveries reach this location.' : '');
     } catch (err) {
@@ -69,35 +58,41 @@ function BuyDelivery() {
   return (
     <>
       <Navbar />
-      <div style={{ padding: '12px 15px', background: '#f5f5f5', display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
-        <button onClick={useMyLocation}
-          style={{ padding: '8px 14px', background: '#2d6a4f', color: 'white', border: 'none', cursor: 'pointer' }}>
-          📍 Use my location
-        </button>
-        <button onClick={search}
-          style={{ padding: '8px 16px', background: '#2d6a4f', color: 'white', border: 'none', cursor: 'pointer' }}>
-          Find deliveries to me
-        </button>
-        {message && <span style={{ color: '#2d6a4f' }}>{message}</span>}
+      <div className="container-fluid py-3" style={{ background: '#f5f5f5' }}>
+        <div className="row g-2 align-items-center">
+          <div className="col-auto">
+            <button onClick={useMyLocation} className="btn text-white" style={{ background: '#2d6a4f' }}>📍 Use my location</button>
+          </div>
+          <div className="col-auto">
+            <button onClick={search} className="btn text-white" style={{ background: '#2d6a4f' }}>Find deliveries</button>
+          </div>
+          {message && <div className="col-auto text-success">{message}</div>}
+        </div>
+        <div className="small text-muted mt-2">👆 Set where you want delivery — use GPS or tap the map. Shows deliveries whose range covers that spot.</div>
       </div>
 
       {events.length > 0 && (
-        <div style={{ padding: '10px 15px', background: '#eef6f0', display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
-          <strong style={{ fontSize: '14px' }}>Filter:</strong>
-          <input placeholder="Product (e.g. apple)" value={fName} onChange={e => setFName(e.target.value)}
-            style={{ padding: '6px', width: '150px' }} />
-          <select value={fType} onChange={e => setFType(e.target.value)} style={{ padding: '6px' }}>
-            <option value="">Any type</option>
-            <option value="fruit">Fruit</option>
-            <option value="vegetable">Vegetable</option>
-            <option value="herb">Herb</option>
-            <option value="other">Other</option>
-          </select>
-          <label style={{ fontSize: '14px' }}>Max €/kg:
-            <input type="number" value={fMaxPrice} onChange={e => setFMaxPrice(e.target.value)}
-              style={{ padding: '6px', width: '80px', marginLeft: '5px' }} />
-          </label>
-          <span style={{ fontSize: '13px', color: '#666' }}>{visibleEvents.length} match</span>
+        <div className="container-fluid py-2" style={{ background: '#eef6f0' }}>
+          <div className="row g-2 align-items-center">
+            <div className="col-auto fw-bold">Filter:</div>
+            <div className="col-auto"><input className="form-control" placeholder="Product (e.g. apple)" value={fName} onChange={e => setFName(e.target.value)} /></div>
+            <div className="col-auto">
+              <select className="form-select" value={fType} onChange={e => setFType(e.target.value)}>
+                <option value="">Any type</option>
+                <option value="fruit">Fruit</option>
+                <option value="vegetable">Vegetable</option>
+                <option value="herb">Herb</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div className="col-auto">
+              <div className="input-group">
+                <span className="input-group-text">Max €/kg</span>
+                <input type="number" className="form-control" style={{ maxWidth: '90px' }} value={fMaxPrice} onChange={e => setFMaxPrice(e.target.value)} />
+              </div>
+            </div>
+            <div className="col-auto text-muted">{visibleEvents.length} match</div>
+          </div>
         </div>
       )}
 
@@ -106,36 +101,37 @@ function BuyDelivery() {
         <LocationPicker onPick={setPin} />
         {pin && <Marker position={pin} />}
       </MapContainer>
-      <div style={{ padding: '15px' }}>
+
+      <div className="container py-3">
         <h3 style={{ marginTop: 0 }}>Deliveries available ({visibleEvents.length})</h3>
-        {visibleEvents.map(ev => (
-          <div key={ev.id} style={{ border: '1px solid #ccc', padding: '14px', marginBottom: '10px', borderRadius: '8px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-              <div>
-                <strong>{ev.name}</strong> <span style={{ color: '#666' }}>· {ev.opg_name}</span>
-                <div style={{ color: '#888', fontSize: '13px', marginTop: '2px' }}>
-                  📅 {ev.delivery_date} · delivers within {ev.radius_km}km
+        <div className="row g-3">
+          {visibleEvents.map(ev => (
+            <div className="col-md-6" key={ev.id}>
+              <div className="card shadow-sm border-0 h-100">
+                <div className="card-body">
+                  <div className="d-flex justify-content-between align-items-start">
+                    <div>
+                      <h5 className="mb-0">{ev.name}</h5>
+                      <span className="text-muted small">{ev.opg_name}</span>
+                      <div className="text-muted small">📅 {ev.delivery_date} · within {ev.radius_km}km</div>
+                      {ev.owner_phone && <div className="small mt-1">📞 {ev.owner_phone}</div>}
+                    </div>
+                    {ev.owner_phone && (
+                      <a href={`tel:${ev.owner_phone}`} className="btn btn-sm text-white" style={{ background: '#2d6a4f' }}>📞 Call</a>
+                    )}
+                  </div>
+                  <ul className="list-unstyled mt-2 mb-0">
+                    {ev.filtered.map(p => (
+                      <li key={p.id} className="small py-1 border-top">
+                        🚚 {p.catalog_name}{p.variety_name ? ` (${p.variety_name})` : ''} — <strong>€{p.price_per_kg}/kg</strong>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                {ev.owner_phone && (
-                  <div style={{ fontSize: '14px', marginTop: '4px' }}>📞 {ev.owner_phone}</div>
-                )}
               </div>
-              {ev.owner_phone && (
-                <a href={`tel:${ev.owner_phone}`}
-                  style={{ padding: '8px 14px', background: '#2d6a4f', color: 'white', borderRadius: '4px', textDecoration: 'none', whiteSpace: 'nowrap' }}>
-                  📞 Call
-                </a>
-              )}
             </div>
-            <div style={{ marginTop: '8px' }}>
-              {ev.filtered.map(p => (
-                <div key={p.id} style={{ fontSize: '14px', padding: '2px 0' }}>
-                  🚚 {p.catalog_name}{p.variety_name ? ` (${p.variety_name})` : ''} — €{p.price_per_kg}/kg
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </>
   );

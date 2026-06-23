@@ -6,9 +6,7 @@ import 'leaflet/dist/leaflet.css';
 import { API } from '../config';
 
 function LocationPicker({ onPick }) {
-  useMapEvents({
-    click(e) { onPick(e.latlng); }
-  });
+  useMapEvents({ click(e) { onPick(e.latlng); } });
   return null;
 }
 
@@ -25,26 +23,17 @@ function BuyStands() {
   const authHeader = { headers: { Authorization: `Bearer ${token}` } };
 
   const useMyLocation = () => {
-    if (!navigator.geolocation) {
-      setMessage('GPS not available, click the map instead.');
-      return;
-    }
+    if (!navigator.geolocation) { setMessage('GPS not available, tap the map instead.'); return; }
     navigator.geolocation.getCurrentPosition(
       (pos) => setPin({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
-      () => setMessage('Could not get GPS, click the map instead.')
+      () => setMessage('Could not get GPS, tap the map instead.')
     );
   };
 
   const search = async () => {
-    if (!pin) {
-      setMessage('Set your location first (GPS or click the map).');
-      return;
-    }
+    if (!pin) { setMessage('Set a location first — use GPS or tap the map.'); return; }
     try {
-      const res = await axios.get(
-        `${API}/stands/nearby/?lat=${pin.lat}&lng=${pin.lng}&radius=${radius}`,
-        authHeader
-      );
+      const res = await axios.get(`${API}/stands/nearby/?lat=${pin.lat}&lng=${pin.lng}&radius=${radius}`, authHeader);
       setStands(res.data);
       setMessage(res.data.length === 0 ? 'No stands found in this area.' : '');
     } catch (err) {
@@ -70,39 +59,47 @@ function BuyStands() {
   return (
     <>
       <Navbar />
-      <div style={{ padding: '12px 15px', background: '#f5f5f5', display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
-        <button onClick={useMyLocation}
-          style={{ padding: '8px 14px', background: '#2d6a4f', color: 'white', border: 'none', cursor: 'pointer' }}>
-          📍 Use my location
-        </button>
-        <label>Radius (km):
-          <input type="number" value={radius} onChange={e => setRadius(e.target.value)}
-            style={{ padding: '8px', width: '70px', marginLeft: '5px' }} />
-        </label>
-        <button onClick={search}
-          style={{ padding: '8px 16px', background: '#2d6a4f', color: 'white', border: 'none', cursor: 'pointer' }}>
-          Find stands near me
-        </button>
-        {message && <span style={{ color: '#2d6a4f' }}>{message}</span>}
+      <div className="container-fluid py-3" style={{ background: '#f5f5f5' }}>
+        <div className="row g-2 align-items-center">
+          <div className="col-auto">
+            <button onClick={useMyLocation} className="btn text-white" style={{ background: '#2d6a4f' }}>📍 Use my location</button>
+          </div>
+          <div className="col-auto">
+            <div className="input-group">
+              <span className="input-group-text">Radius (km)</span>
+              <input type="number" className="form-control" style={{ maxWidth: '90px' }} value={radius} onChange={e => setRadius(e.target.value)} />
+            </div>
+          </div>
+          <div className="col-auto">
+            <button onClick={search} className="btn text-white" style={{ background: '#2d6a4f' }}>Find stands</button>
+          </div>
+          {message && <div className="col-auto text-success">{message}</div>}
+        </div>
+        <div className="small text-muted mt-2">👆 Use GPS, or tap the map to search a different spot (e.g. where you're heading).</div>
       </div>
 
       {stands.length > 0 && (
-        <div style={{ padding: '10px 15px', background: '#eef6f0', display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
-          <strong style={{ fontSize: '14px' }}>Filter:</strong>
-          <input placeholder="Product (e.g. apple)" value={fName} onChange={e => setFName(e.target.value)}
-            style={{ padding: '6px', width: '150px' }} />
-          <select value={fType} onChange={e => setFType(e.target.value)} style={{ padding: '6px' }}>
-            <option value="">Any type</option>
-            <option value="fruit">Fruit</option>
-            <option value="vegetable">Vegetable</option>
-            <option value="herb">Herb</option>
-            <option value="other">Other</option>
-          </select>
-          <label style={{ fontSize: '14px' }}>Max €/kg:
-            <input type="number" value={fMaxPrice} onChange={e => setFMaxPrice(e.target.value)}
-              style={{ padding: '6px', width: '80px', marginLeft: '5px' }} />
-          </label>
-          <span style={{ fontSize: '13px', color: '#666' }}>{visibleStands.length} match</span>
+        <div className="container-fluid py-2" style={{ background: '#eef6f0' }}>
+          <div className="row g-2 align-items-center">
+            <div className="col-auto fw-bold">Filter:</div>
+            <div className="col-auto"><input className="form-control" placeholder="Product (e.g. apple)" value={fName} onChange={e => setFName(e.target.value)} /></div>
+            <div className="col-auto">
+              <select className="form-select" value={fType} onChange={e => setFType(e.target.value)}>
+                <option value="">Any type</option>
+                <option value="fruit">Fruit</option>
+                <option value="vegetable">Vegetable</option>
+                <option value="herb">Herb</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div className="col-auto">
+              <div className="input-group">
+                <span className="input-group-text">Max €/kg</span>
+                <input type="number" className="form-control" style={{ maxWidth: '90px' }} value={fMaxPrice} onChange={e => setFMaxPrice(e.target.value)} />
+              </div>
+            </div>
+            <div className="col-auto text-muted">{visibleStands.length} match</div>
+          </div>
         </div>
       )}
 
@@ -111,20 +108,28 @@ function BuyStands() {
         <LocationPicker onPick={setPin} />
         {pin && <Marker position={pin} />}
       </MapContainer>
-      <div style={{ padding: '15px' }}>
+
+      <div className="container py-3">
         <h3 style={{ marginTop: 0 }}>Stands ({visibleStands.length})</h3>
-        {visibleStands.map(s => (
-          <div key={s.id} style={{ border: '1px solid #ccc', padding: '14px', marginBottom: '10px', borderRadius: '8px' }}>
-            <strong>{s.name}</strong> <span style={{ color: '#666' }}>· {s.opg_name}</span>
-            <div style={{ marginTop: '8px' }}>
-              {s.filtered.map(p => (
-                <div key={p.id} style={{ fontSize: '14px', padding: '2px 0' }}>
-                  🥬 {p.catalog_name}{p.variety_name ? ` (${p.variety_name})` : ''} — €{p.price_per_kg}/kg
+        <div className="row g-3">
+          {visibleStands.map(s => (
+            <div className="col-md-6" key={s.id}>
+              <div className="card shadow-sm border-0 h-100">
+                <div className="card-body">
+                  <h5 className="mb-0">{s.name}</h5>
+                  <span className="text-muted small">{s.opg_name}</span>
+                  <ul className="list-unstyled mt-2 mb-0">
+                    {s.filtered.map(p => (
+                      <li key={p.id} className="small py-1 border-top">
+                        🥬 {p.catalog_name}{p.variety_name ? ` (${p.variety_name})` : ''} — <strong>€{p.price_per_kg}/kg</strong>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </>
   );

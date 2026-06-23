@@ -72,7 +72,7 @@ function BuyFields() {
             </div>
           </div>
           <div className="col-auto">
-            <button onClick={search} className="btn text-white" style={{ background: '#2d6a4f' }}>Find fields near me</button>
+            <button onClick={search} className="btn text-white" style={{ background: '#2d6a4f' }}>Find fields</button>
           </div>
           {message && <div className="col-auto text-success">{message}</div>}
         </div>

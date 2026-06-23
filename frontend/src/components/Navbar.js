@@ -17,6 +17,7 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="nav">
           <ul className="navbar-nav me-auto">
             <li className="nav-item"><span className="nav-link text-white-50 small">SELL</span></li>
+            <li className="nav-item"><a className="nav-link" href="/opg">My OPG</a></li>
             <li className="nav-item"><a className="nav-link" href="/map">My Fields</a></li>
             <li className="nav-item"><a className="nav-link" href="/stands">My Stands</a></li>
             <li className="nav-item"><a className="nav-link" href="/delivery">My Delivery</a></li>

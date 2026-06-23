@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'opg',
     'catalog',
     'delivery',
+    'payments',
 ]
 
 MIDDLEWARE = [

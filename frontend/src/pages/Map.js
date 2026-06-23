@@ -5,6 +5,7 @@ import axios from 'axios';
 import 'leaflet/dist/leaflet.css';
 import { API } from '../config';
 import ProductManager from '../components/ProductManager';
+import GetPaid from '../components/GetPaid';
 
 function LocationPicker({ onPick }) {
   useMapEvents({
@@ -164,7 +165,12 @@ function Map() {
                       )}
                     </div>
                   </div>
-                  {expandedParcel === p.id && <ProductManager channelType="parcel" channelId={p.id} />}
+                  {expandedParcel === p.id && (
+                    <>
+                      <ProductManager channelType="parcel" channelId={p.id} />
+                      <GetPaid channelType="parcel" channelId={p.id} />
+                    </>
+                  )}
                 </div>
               </div>
             </div>

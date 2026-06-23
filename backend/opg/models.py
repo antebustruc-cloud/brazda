@@ -9,6 +9,7 @@ class OPG(models.Model):
     )
     name = models.CharField(max_length=150)
     mibpg = models.CharField(max_length=20, unique=True)
+    iban = models.CharField(max_length=21, blank=True, help_text="Croatian IBAN for receiving payments (HR + 19 digits)")
     location = models.PointField()  # private origin pin
     rating = models.FloatField(default=0.0)
     rating_count = models.IntegerField(default=0)

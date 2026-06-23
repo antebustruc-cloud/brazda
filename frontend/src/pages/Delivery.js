@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import Navbar from '../components/Navbar';
 import ProductManager from '../components/ProductManager';
+import GetPaid from '../components/GetPaid';
 import axios from 'axios';
 import 'leaflet/dist/leaflet.css';
 import { API } from '../config';
@@ -177,7 +178,12 @@ function Delivery() {
                       )}
                     </div>
                   </div>
-                  {expanded === ev.id && <ProductManager channelType="delivery_event" channelId={ev.id} />}
+                  {expanded === ev.id && (
+                    <>
+                      <ProductManager channelType="delivery_event" channelId={ev.id} />
+                      <GetPaid channelType="delivery_event" channelId={ev.id} />
+                    </>
+                  )}
                 </div>
               </div>
             </div>

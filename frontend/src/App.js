@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Register from './pages/Register';
 import Map from './pages/Map';
+import OPGSettings from './pages/OPGSettings';
 import Stands from './pages/Stands';
 import Delivery from './pages/Delivery';
 import BuyStands from './pages/BuyStands';
@@ -20,6 +21,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/map" element={<Map />} />
+          <Route path="/opg" element={<OPGSettings />} />
           <Route path="/stands" element={<Stands />} />
           <Route path="/delivery" element={<Delivery />} />
           <Route path="/buy-stands" element={<BuyStands />} />

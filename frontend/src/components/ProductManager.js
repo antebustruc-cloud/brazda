@@ -3,10 +3,18 @@ import axios from 'axios';
 import { API } from '../config';
 
 // channelType is "stand", "parcel", or "delivery_event"; channelId is the id
+const CATEGORIES = [
+  { value: 'fruit', label: 'Fruit' },
+  { value: 'vegetable', label: 'Vegetable' },
+  { value: 'herb', label: 'Herb' },
+  { value: 'other', label: 'Other' },
+];
+
 function ProductManager({ channelType, channelId }) {
   const [products, setProducts] = useState([]);
   const [catalog, setCatalog] = useState([]);
   const [message, setMessage] = useState('');
+  const [category, setCategory] = useState('');
   const [form, setForm] = useState({ catalog_item: '', variety: '', price_per_kg: '' });
   const [editingId, setEditingId] = useState(null);
   const [editPrice, setEditPrice] = useState('');
@@ -30,6 +38,12 @@ function ProductManager({ channelType, channelId }) {
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
+  const handleCategoryChange = (e) => {
+    setCategory(e.target.value);
+    setForm({ ...form, catalog_item: '', variety: '' });
+  };
+
+  const filteredCatalog = category ? catalog.filter(c => c.category === category) : [];
   const selectedCatalog = catalog.find(c => String(c.id) === String(form.catalog_item));
 
   const handleAdd = async () => {
@@ -46,6 +60,7 @@ function ProductManager({ channelType, channelId }) {
       };
       await axios.post(`${API}/products/`, payload, authHeader);
       setMessage('Added! ✅');
+      setCategory('');
       setForm({ catalog_item: '', variety: '', price_per_kg: '' });
       fetchData();
     } catch (err) {
@@ -93,12 +108,21 @@ function ProductManager({ channelType, channelId }) {
       {message && <div className="small text-success">{message}</div>}
 
       <div className="row g-2 align-items-center mb-3">
-        <div className="col-auto" style={{ minWidth: '150px' }}>
-          <select name="catalog_item" className="form-select" value={form.catalog_item} onChange={handleChange}>
-            <option value="">-- Product --</option>
-            {catalog.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+        <div className="col-auto" style={{ minWidth: '140px' }}>
+          <select className="form-select" value={category} onChange={handleCategoryChange}>
+            <option value="">-- Category --</option>
+            {CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
           </select>
         </div>
+
+        {category && (
+          <div className="col-auto" style={{ minWidth: '160px' }}>
+            <select name="catalog_item" className="form-select" value={form.catalog_item} onChange={handleChange}>
+              <option value="">-- Product ({filteredCatalog.length}) --</option>
+              {filteredCatalog.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+            </select>
+          </div>
+        )}
 
         {selectedCatalog && selectedCatalog.varieties.length > 0 && (
           <div className="col-auto" style={{ minWidth: '120px' }}>

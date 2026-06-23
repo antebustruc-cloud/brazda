@@ -43,7 +43,7 @@
 3. Stands (full loop)
 4. Fields / PickYourOwn (full loop + request + ratings)
 5. Delivery events (full loop + request)
-6. Tailwind polish
+6. Bootstrap polish
 
 
 ## Controlled Product Catalog (admin-managed)
@@ -69,7 +69,7 @@
 5. Per-channel "manage products" view (stand/field/event)
 6. Buyer search: stands near me, fields near me, delivery
 7. Ratings (PickYourOwn)
-8. Tailwind polish
+8. Bootstrap polish
 
 ## Updated Architecture (Catalog + Channels + Ratings)
 
@@ -175,9 +175,8 @@
 
 ### Rule: phase transitions triggered by USERS + VOLUME, not calendar time
 
-## Frontend modernization (deliberate task, before more frontend / React Native)
-- Current: create-react-app (CRA) — deprecated, slow, fights Tailwind. Styling is inline.
-- DECISION: migrate CRA → Vite, then add Tailwind. Vite+Tailwind is the modern, supported, scalable combo; skills carry into React Native.
-- Do NOT waste effort on Tailwind-on-CRA (throwaway).
-- MVP ships plain (inline styles). "Judge the idea and functionality, not the looks."
-- Bootstrap = optional quick coat if ever needed, but Vite+Tailwind is the real answer.
+## Frontend styling (decided)
+- Stack: create-react-app (CRA) + Bootstrap. Settled choice — not a placeholder.
+- DECISION (supersedes earlier Vite+Tailwind plan): styling with Bootstrap directly on CRA. Login/Register/Navbar/Dashboard/buy pages (stands, delivery) already styled this way.
+- Vite migration is NOT planned. Dropped as unnecessary churn — Bootstrap-on-CRA works fine and ships faster.
+- Remaining: style any pages not yet covered (check Stands, Products, Map, BuyFields against the rest for consistency).

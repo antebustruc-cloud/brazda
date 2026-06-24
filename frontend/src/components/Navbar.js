@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import { API } from '../config';
+import { API, FEATURES } from '../config';
 
 function Navbar() {
   const [isSeller, setIsSeller] = useState(false);
@@ -45,7 +45,7 @@ function Navbar() {
             <li className="nav-item"><a className="nav-link" href="/buy-fields">{t('nav.findFields')}</a></li>
             <li className="nav-item"><a className="nav-link" href="/buy-stands">{t('nav.findStands')}</a></li>
             <li className="nav-item"><a className="nav-link" href="/buy-delivery">{t('nav.findDelivery')}</a></li>
-            <li className="nav-item"><a className="nav-link" href="/notifications">🔔</a></li>
+            {FEATURES.notifications && <li className="nav-item"><a className="nav-link" href="/notifications">🔔</a></li>}
           </ul>
           <div className="btn-group btn-group-sm me-2" role="group">
             <button onClick={() => switchLang('en')} className={`btn ${i18n.language === 'en' ? 'btn-light' : 'btn-outline-light'}`}>EN</button>

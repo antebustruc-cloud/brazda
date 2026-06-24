@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import Navbar from '../components/Navbar';
 import axios from 'axios';
 import 'leaflet/dist/leaflet.css';
-import { API } from '../config';
+import { API, FEATURES } from '../config';
 import ProductManager from '../components/ProductManager';
 import GetPaid from '../components/GetPaid';
 import NotifyNearby from '../components/NotifyNearby';
@@ -170,7 +170,7 @@ function Stands() {
                     <>
                       <ProductManager channelType="stand" channelId={s.id} />
                       <GetPaid channelType="stand" channelId={s.id} />
-                      <NotifyNearby channelType="stand" channelId={s.id} />
+                      {FEATURES.notifications && <NotifyNearby channelType="stand" channelId={s.id} />}
                     </>
                   )}
                 </div>

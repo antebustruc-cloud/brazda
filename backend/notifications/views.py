@@ -1,3 +1,4 @@
+from django.conf import settings
 from datetime import timedelta
 
 from django.contrib.gis.geos import Point
@@ -26,6 +27,12 @@ class SendNotificationView(APIView):
     permission_classes = [permissions.IsAuthenticated, IsSeller]
 
     def post(self, request):
+        if not settings.NOTIFICATIONS_ENABLED:
+            return Response(
+                {'detail': "Notifications aren't live yet - coming soon as a paid feature."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
         channel_type = request.data.get('channel_type')
         channel_id = request.data.get('channel_id')
         model = CHANNEL_MODELS.get(channel_type)

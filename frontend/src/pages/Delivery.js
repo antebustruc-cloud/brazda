@@ -6,7 +6,7 @@ import GetPaid from '../components/GetPaid';
 import NotifyNearby from '../components/NotifyNearby';
 import axios from 'axios';
 import 'leaflet/dist/leaflet.css';
-import { API } from '../config';
+import { API, FEATURES } from '../config';
 
 function LocationPicker({ onPick }) {
   useMapEvents({
@@ -183,7 +183,7 @@ function Delivery() {
                     <>
                       <ProductManager channelType="delivery_event" channelId={ev.id} />
                       <GetPaid channelType="delivery_event" channelId={ev.id} />
-                      <NotifyNearby channelType="delivery_event" channelId={ev.id} />
+                      {FEATURES.notifications && <NotifyNearby channelType="delivery_event" channelId={ev.id} />}
                     </>
                   )}
                 </div>

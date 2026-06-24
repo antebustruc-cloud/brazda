@@ -34,6 +34,11 @@ ALLOWED_HOSTS = ['165.245.248.246', '127.0.0.1', 'localhost', 'ubrano.com.hr', '
 # HTTPS (domain access) even though both terminate TLS at the proxy, not here.
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+# Phase 2 "Notify Nearby Buyers" - fully built, but intentionally OFF.
+# Free-for-everyone announcements get spammy fast; this is meant to be a
+# paid boost (Phase 4). Flip to True and redeploy once charging is ready.
+NOTIFICATIONS_ENABLED = False
+
 # Email - defaults to printing to the container logs (console backend) until
 # real SMTP credentials are set via env vars. Receipt sending is best-effort
 # and never blocks a payment confirmation either way.

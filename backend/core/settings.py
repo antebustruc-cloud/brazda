@@ -30,6 +30,10 @@ DEBUG = env.bool('DEBUG', default=False)
 
 ALLOWED_HOSTS = ['165.245.248.246', '127.0.0.1', 'localhost', 'ubrano.com.hr', 'www.ubrano.com.hr']
 
+# nginx sets X-Forwarded-Proto, so Django can tell HTTP (IP access) apart from
+# HTTPS (domain access) even though both terminate TLS at the proxy, not here.
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # Email - defaults to printing to the container logs (console backend) until
 # real SMTP credentials are set via env vars. Receipt sending is best-effort
 # and never blocks a payment confirmation either way.
@@ -177,9 +181,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",      # React web dev
     "http://165.245.248.246:3000",
     "http://165.245.248.246",   # React on local network
-    "http://ubrano.com.hr",
     "https://ubrano.com.hr",
-    "http://www.ubrano.com.hr",
     "https://www.ubrano.com.hr",
 ]
 

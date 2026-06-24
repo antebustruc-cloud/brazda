@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "Ubrano",
+    "slug": "ubrano",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "scheme": "ubrano",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ubrano.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Ubrano uses your location to find nearby fields, stands, and deliveries."
+      }
+    },
+    "android": {
+      "package": "com.ubrano.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#2d6a4f",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"],
+      "config": {
+        "googleMaps": {
+          "apiKey": "REPLACE_WITH_YOUR_GOOGLE_MAPS_ANDROID_API_KEY"
+        }
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Ubrano uses your location to find nearby fields, stands, and deliveries."
+        }
+      ]
+    ]
+  }
+}

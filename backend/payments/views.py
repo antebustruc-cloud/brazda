@@ -13,6 +13,7 @@ from delivery.models import DeliveryEvent
 from .models import Transaction
 from .serializers import TransactionSerializer
 from .hub3 import build_hub3_text, render_hub3_barcode_png
+from .email import send_receipt_email
 
 CHANNEL_MODELS = {
     'parcel': (Parcel, 'parcel_id'),
@@ -54,6 +55,9 @@ class CreateTransactionView(APIView):
         channel_id = request.data.get('channel_id')
 
         txn = Transaction(farmer=request.user, amount=amount)
+        buyer_email = (request.data.get('buyer_email') or '').strip()
+        if buyer_email:
+            txn.buyer_email = buyer_email
         channel_spec = CHANNEL_MODELS.get(channel_type)
         if channel_spec and channel_id:
             model, field_name = channel_spec
@@ -93,6 +97,7 @@ class ConfirmTransactionView(APIView):
         txn.is_confirmed = True
         txn.confirmed_at = timezone.now()
         txn.save()
+        send_receipt_email(txn)
         return Response(TransactionSerializer(txn).data)
 
 

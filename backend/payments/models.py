@@ -34,6 +34,7 @@ class Transaction(models.Model):
 
     amount = models.DecimalField(max_digits=8, decimal_places=2, default=1.00)
     reference = models.CharField(max_length=22, blank=True)
+    buyer_email = models.EmailField(blank=True, help_text="Optional - if set, a receipt PDF is emailed here on confirmation")
 
     is_confirmed = models.BooleanField(default=False)
     confirmed_at = models.DateTimeField(null=True, blank=True)

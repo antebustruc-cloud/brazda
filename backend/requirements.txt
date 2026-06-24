@@ -9,3 +9,4 @@ whitenoise
 django-cors-headers
 gunicorn
 pdf417gen
+fpdf2

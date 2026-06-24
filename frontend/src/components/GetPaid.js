@@ -5,6 +5,7 @@ import { API } from '../config';
 // channelType is "stand", "parcel", or "delivery_event"; channelId is the id
 function GetPaid({ channelType, channelId }) {
   const [amount, setAmount] = useState('1.00');
+  const [buyerEmail, setBuyerEmail] = useState('');
   const [txn, setTxn] = useState(null);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -17,6 +18,7 @@ function GetPaid({ channelType, channelId }) {
     try {
       const res = await axios.post(`${API}/payments/create/`, {
         amount,
+        buyer_email: buyerEmail,
         channel_type: channelType,
         channel_id: channelId,
       }, authHeader);
@@ -30,7 +32,7 @@ function GetPaid({ channelType, channelId }) {
     try {
       const res = await axios.patch(`${API}/payments/${txn.id}/confirm/`, {}, authHeader);
       setTxn(res.data);
-      setMessage('Payment confirmed ✅');
+      setMessage(res.data.buyer_email ? `Payment confirmed ✅ — receipt sent to ${res.data.buyer_email}` : 'Payment confirmed ✅');
     } catch (err) {
       setError('Could not confirm payment.');
     }
@@ -41,6 +43,7 @@ function GetPaid({ channelType, channelId }) {
     setMessage('');
     setError('');
     setAmount('1.00');
+    setBuyerEmail('');
   };
 
   return (
@@ -57,6 +60,11 @@ function GetPaid({ channelType, channelId }) {
               <input type="number" step="0.01" min="0.01" className="form-control" style={{ maxWidth: '100px' }}
                 value={amount} onChange={e => setAmount(e.target.value)} />
             </div>
+          </div>
+          <div className="col-auto">
+            <input type="email" className="form-control" placeholder="Buyer email (optional, for receipt)"
+              style={{ minWidth: '220px' }}
+              value={buyerEmail} onChange={e => setBuyerEmail(e.target.value)} />
           </div>
           <div className="col-auto">
             <button onClick={generate} className="btn text-white" style={{ background: '#2d6a4f' }}>

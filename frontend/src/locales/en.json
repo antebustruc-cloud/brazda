@@ -1,0 +1,55 @@
+{
+  "nav": {
+    "sell": "SELL",
+    "buy": "BUY",
+    "myOpg": "My OPG",
+    "myFields": "My Fields",
+    "myStands": "My Stands",
+    "myDelivery": "My Delivery",
+    "findFields": "Find Fields",
+    "findStands": "Find Stands",
+    "findDelivery": "Find Delivery",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "welcome": "Welcome to Ubrano 🌾",
+    "tagline": "Fresh produce, direct from local farmers.",
+    "buyTitle": "🧺 I want to buy",
+    "buyDesc": "Find fresh produce near you — pick it yourself, grab it from a stand, or get it delivered.",
+    "sellTitle": "🚜 I want to sell",
+    "sellDesc": "List your produce — open your fields for picking, set up a stand, or announce a delivery run."
+  },
+  "login": {
+    "tagline": "Fresh from local farmers",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Log In",
+    "noAccount": "Don't have an account?",
+    "register": "Register",
+    "error": "Invalid email or password"
+  },
+  "register": {
+    "title": "Join Ubrano",
+    "tagline": "Fresh from local farmers",
+    "email": "Email",
+    "password": "Password",
+    "phone": "Phone",
+    "roleLabel": "I am here as:",
+    "roleBuyer": "Buyer only",
+    "roleSeller": "Farmer / Seller only",
+    "roleBoth": "Both",
+    "opgDetails": "Your OPG details",
+    "opgName": "OPG name (e.g. OPG Marić)",
+    "mibpg": "MIBPG (your farm's unique number)",
+    "pinHint": "📍 Click the map to set your OPG location (private):",
+    "pinSet": "Pin set:",
+    "submit": "Register",
+    "haveAccount": "Already have an account?",
+    "login": "Log in",
+    "errEmailPassword": "Email and password are required.",
+    "errPhone": "As a farmer you must enter a phone number so buyers can contact you.",
+    "errOpg": "As a farmer you must enter OPG name, MIBPG, and drop your OPG pin on the map.",
+    "success": "Account created! Redirecting to login...",
+    "errFailed": "Registration failed."
+  }
+}

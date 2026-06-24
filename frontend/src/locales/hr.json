@@ -1,0 +1,55 @@
+{
+  "nav": {
+    "sell": "PRODAJA",
+    "buy": "KUPOVINA",
+    "myOpg": "Moj OPG",
+    "myFields": "Moja polja",
+    "myStands": "Moji štandovi",
+    "myDelivery": "Moja dostava",
+    "findFields": "Pronađi polja",
+    "findStands": "Pronađi štandove",
+    "findDelivery": "Pronađi dostavu",
+    "logout": "Odjava"
+  },
+  "dashboard": {
+    "welcome": "Dobrodošli na Ubrano 🌾",
+    "tagline": "Svježi domaći proizvodi, direktno od lokalnih poljoprivrednika.",
+    "buyTitle": "🧺 Želim kupiti",
+    "buyDesc": "Pronađite svježe proizvode u svojoj blizini — uberite sami, uzmite sa štanda ili naručite dostavu.",
+    "sellTitle": "🚜 Želim prodavati",
+    "sellDesc": "Objavite svoje proizvode — otvorite polja za samoberbu, postavite štand ili objavite dostavu."
+  },
+  "login": {
+    "tagline": "Svježe od lokalnih poljoprivrednika",
+    "email": "E-mail",
+    "password": "Lozinka",
+    "submit": "Prijava",
+    "noAccount": "Nemate račun?",
+    "register": "Registracija",
+    "error": "Neispravan e-mail ili lozinka"
+  },
+  "register": {
+    "title": "Pridruži se Ubranu",
+    "tagline": "Svježe od lokalnih poljoprivrednika",
+    "email": "E-mail",
+    "password": "Lozinka",
+    "phone": "Telefon",
+    "roleLabel": "Ja sam:",
+    "roleBuyer": "Samo kupac",
+    "roleSeller": "Samo poljoprivrednik / prodavač",
+    "roleBoth": "Oboje",
+    "opgDetails": "Podaci o vašem OPG-u",
+    "opgName": "Naziv OPG-a (npr. OPG Marić)",
+    "mibpg": "MIBPG (jedinstveni broj vašeg OPG-a)",
+    "pinHint": "📍 Kliknite na kartu za postavljanje lokacije OPG-a (privatno):",
+    "pinSet": "Pozicija postavljena:",
+    "submit": "Registracija",
+    "haveAccount": "Već imate račun?",
+    "login": "Prijavite se",
+    "errEmailPassword": "E-mail i lozinka su obavezni.",
+    "errPhone": "Kao poljoprivrednik morate unijeti broj telefona kako bi vas kupci mogli kontaktirati.",
+    "errOpg": "Kao poljoprivrednik morate unijeti naziv OPG-a, MIBPG, i postaviti pin OPG-a na karti.",
+    "success": "Račun je kreiran! Preusmjeravanje na prijavu...",
+    "errFailed": "Registracija nije uspjela."
+  }
+}

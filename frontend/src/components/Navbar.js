@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import { API } from '../config';
 
 function Navbar() {
   const [isSeller, setIsSeller] = useState(false);
   const token = localStorage.getItem('access_token');
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     if (!token) return;
@@ -19,6 +21,8 @@ function Navbar() {
     window.location.href = '/';
   };
 
+  const switchLang = (lng) => i18n.changeLanguage(lng);
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark" style={{ background: '#2d6a4f' }}>
       <div className="container-fluid">
@@ -30,19 +34,23 @@ function Navbar() {
           <ul className="navbar-nav me-auto">
             {isSeller && (
               <>
-                <li className="nav-item"><span className="nav-link text-white-50 small">SELL</span></li>
-                <li className="nav-item"><a className="nav-link" href="/opg">My OPG</a></li>
-                <li className="nav-item"><a className="nav-link" href="/map">My Fields</a></li>
-                <li className="nav-item"><a className="nav-link" href="/stands">My Stands</a></li>
-                <li className="nav-item"><a className="nav-link" href="/delivery">My Delivery</a></li>
+                <li className="nav-item"><span className="nav-link text-white-50 small">{t('nav.sell')}</span></li>
+                <li className="nav-item"><a className="nav-link" href="/opg">{t('nav.myOpg')}</a></li>
+                <li className="nav-item"><a className="nav-link" href="/map">{t('nav.myFields')}</a></li>
+                <li className="nav-item"><a className="nav-link" href="/stands">{t('nav.myStands')}</a></li>
+                <li className="nav-item"><a className="nav-link" href="/delivery">{t('nav.myDelivery')}</a></li>
               </>
             )}
-            <li className="nav-item"><span className="nav-link text-white-50 small">BUY</span></li>
-            <li className="nav-item"><a className="nav-link" href="/buy-fields">Find Fields</a></li>
-            <li className="nav-item"><a className="nav-link" href="/buy-stands">Find Stands</a></li>
-            <li className="nav-item"><a className="nav-link" href="/buy-delivery">Find Delivery</a></li>
+            <li className="nav-item"><span className="nav-link text-white-50 small">{t('nav.buy')}</span></li>
+            <li className="nav-item"><a className="nav-link" href="/buy-fields">{t('nav.findFields')}</a></li>
+            <li className="nav-item"><a className="nav-link" href="/buy-stands">{t('nav.findStands')}</a></li>
+            <li className="nav-item"><a className="nav-link" href="/buy-delivery">{t('nav.findDelivery')}</a></li>
           </ul>
-          <button onClick={logout} className="btn btn-outline-light btn-sm">Logout</button>
+          <div className="btn-group btn-group-sm me-2" role="group">
+            <button onClick={() => switchLang('en')} className={`btn ${i18n.language === 'en' ? 'btn-light' : 'btn-outline-light'}`}>EN</button>
+            <button onClick={() => switchLang('hr')} className={`btn ${i18n.language === 'hr' ? 'btn-light' : 'btn-outline-light'}`}>HR</button>
+          </div>
+          <button onClick={logout} className="btn btn-outline-light btn-sm">{t('nav.logout')}</button>
         </div>
       </div>
     </nav>

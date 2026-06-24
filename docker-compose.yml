@@ -60,9 +60,11 @@ services:
     volumes:
       - certbot_conf:/etc/letsencrypt
       - certbot_www:/var/www/certbot
-    entrypoint: "true"
-    # Not a long-running service - invoked manually:
-    #   docker compose run --rm certbot certonly --webroot -w /var/www/certbot -d ubrano.com.hr -d www.ubrano.com.hr ...
+    profiles: ["tools"]
+    # Not part of normal `docker compose up` - kept out via the "tools" profile.
+    # Invoked manually, which works regardless of the profile being active
+    # because explicitly naming the service activates it for that command:
+    #   docker compose run --rm certbot certonly --webroot -w /var/www/certbot -d ubrano.com.hr -d www.ubrano.com.hr --email YOU@EMAIL --agree-tos --no-eff-email
     #   docker compose run --rm certbot renew
 
   db_backup:

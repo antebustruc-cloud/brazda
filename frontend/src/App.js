@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard';
 import Register from './pages/Register';
 import Map from './pages/Map';
 import OPGSettings from './pages/OPGSettings';
+import Notifications from './pages/Notifications';
 import RequireSeller from './components/RequireSeller';
 import Stands from './pages/Stands';
 import Delivery from './pages/Delivery';
@@ -28,6 +29,7 @@ function App() {
           <Route path="/buy-stands" element={<BuyStands />} />
           <Route path="/buy-fields" element={<BuyFields />} />
           <Route path="/buy-delivery" element={<BuyDelivery />} />
+          <Route path="/notifications" element={<Notifications />} />
         </Routes>
       </div>
     </Router>

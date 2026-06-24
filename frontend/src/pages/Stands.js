@@ -6,6 +6,7 @@ import 'leaflet/dist/leaflet.css';
 import { API } from '../config';
 import ProductManager from '../components/ProductManager';
 import GetPaid from '../components/GetPaid';
+import NotifyNearby from '../components/NotifyNearby';
 
 function LocationPicker({ onPick }) {
   useMapEvents({
@@ -169,6 +170,7 @@ function Stands() {
                     <>
                       <ProductManager channelType="stand" channelId={s.id} />
                       <GetPaid channelType="stand" channelId={s.id} />
+                      <NotifyNearby channelType="stand" channelId={s.id} />
                     </>
                   )}
                 </div>

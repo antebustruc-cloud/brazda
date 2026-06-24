@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import Navbar from '../components/Navbar';
 import ProductManager from '../components/ProductManager';
 import GetPaid from '../components/GetPaid';
+import NotifyNearby from '../components/NotifyNearby';
 import axios from 'axios';
 import 'leaflet/dist/leaflet.css';
 import { API } from '../config';
@@ -182,6 +183,7 @@ function Delivery() {
                     <>
                       <ProductManager channelType="delivery_event" channelId={ev.id} />
                       <GetPaid channelType="delivery_event" channelId={ev.id} />
+                      <NotifyNearby channelType="delivery_event" channelId={ev.id} />
                     </>
                   )}
                 </div>

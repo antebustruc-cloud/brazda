@@ -22,7 +22,12 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"],
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ],
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyAEl0KpTAtIxqT7TPJSgYq5hbKrKeKn2Tk"
@@ -39,6 +44,11 @@
           "locationWhenInUsePermission": "Ubrano uses your location to find nearby fields, stands, and deliveries."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "1b9faabe-e2a5-4fed-ac84-324a1959c66e"
+      }
+    }
   }
 }

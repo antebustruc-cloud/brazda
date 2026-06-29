@@ -4,6 +4,7 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useTranslation } from 'react-i18next';
 import { API } from '../config';
+import GoogleSignInButton from '../components/GoogleSignInButton';
 
 function OPGLocationPicker({ onPick }) {
   useMapEvents({
@@ -139,6 +140,14 @@ function Register() {
           <button onClick={handleRegister} className="btn w-100 text-white" style={{ background: '#2d6a4f' }}>
             {t('register.submit')}
           </button>
+
+          <div className="d-flex align-items-center my-3">
+            <hr className="flex-grow-1" />
+            <span className="text-muted small mx-2">or, if you're just here to buy</span>
+            <hr className="flex-grow-1" />
+          </div>
+          <GoogleSignInButton />
+
           <p className="text-center mt-3 mb-0 text-muted">
             {t('register.haveAccount')} <a href="/" style={{ color: '#2d6a4f' }}>{t('register.login')}</a>
           </p>

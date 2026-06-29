@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { API } from '../config';
+import GoogleSignInButton from '../components/GoogleSignInButton';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -46,6 +47,14 @@ function Login() {
               {t('login.submit')}
             </button>
           </form>
+
+          <div className="d-flex align-items-center my-3">
+            <hr className="flex-grow-1" />
+            <span className="text-muted small mx-2">or</span>
+            <hr className="flex-grow-1" />
+          </div>
+          <GoogleSignInButton />
+
           <p className="text-center mt-3 mb-0 text-muted">
             {t('login.noAccount')} <a href="/register" style={{ color: '#2d6a4f' }}>{t('login.register')}</a>
           </p>

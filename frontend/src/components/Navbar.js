@@ -26,7 +26,10 @@ function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark" style={{ background: '#2d6a4f' }}>
       <div className="container-fluid">
-        <a className="navbar-brand fw-bold" href="/dashboard">🌾 Ubrano</a>
+        <a className="navbar-brand fw-bold d-flex align-items-center gap-2" href="/dashboard">
+          <img src="/logo192.png" alt="Ubrano" style={{ height: '28px', width: '28px' }} />
+          Ubrano
+        </a>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
           <span className="navbar-toggler-icon"></span>
         </button>

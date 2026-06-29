@@ -17,7 +17,7 @@
     "android": {
       "package": "com.ubrano.app",
       "adaptiveIcon": {
-        "backgroundColor": "#2d6a4f",
+        "backgroundColor": "#FFFFFF",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"

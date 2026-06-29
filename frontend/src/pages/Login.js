@@ -27,8 +27,11 @@ function Login() {
     <div className="container" style={{ maxWidth: '420px', marginTop: '80px' }}>
       <div className="card shadow-sm border-0">
         <div className="card-body p-4">
+          <div className="text-center mb-1">
+            <img src="/logo192.png" alt="Ubrano" style={{ height: '64px', width: '64px' }} />
+          </div>
           <h2 className="text-center mb-1" style={{ color: '#2d6a4f', fontWeight: 'bold' }}>
-            🌾 Ubrano
+            Ubrano
           </h2>
           <p className="text-center text-muted mb-4">{t('login.tagline')}</p>
           {error && <div className="alert alert-danger py-2">{error}</div>}

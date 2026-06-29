@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, Image } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 
 const GREEN = '#2d6a4f';
@@ -25,7 +25,8 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.container}>
-      <Text style={styles.title}>🌾 Ubrano</Text>
+      <Image source={require('../../assets/icon.png')} style={styles.logo} />
+      <Text style={styles.title}>Ubrano</Text>
       <Text style={styles.subtitle}>Fresh from local farmers</Text>
 
       {error ? <Text style={styles.error}>{error}</Text> : null}
@@ -59,6 +60,7 @@ export default function LoginScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', padding: 24, backgroundColor: '#fff' },
+  logo: { width: 80, height: 80, alignSelf: 'center', marginBottom: 8 },
   title: { fontSize: 28, fontWeight: 'bold', color: GREEN, textAlign: 'center' },
   subtitle: { textAlign: 'center', color: '#777', marginBottom: 24 },
   input: { borderWidth: 1, borderColor: '#ddd', borderRadius: 8, padding: 12, marginBottom: 12, fontSize: 16 },

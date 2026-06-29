@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, StyleSheet,
-  ScrollView, Alert,
+  ScrollView, Alert, Image,
 } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { useAuth } from '../context/AuthContext';
@@ -69,7 +69,8 @@ export default function RegisterScreen({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>🌾 Join Ubrano</Text>
+      <Image source={require('../../assets/icon.png')} style={styles.logo} />
+      <Text style={styles.title}>Join Ubrano</Text>
       <Text style={styles.subtitle}>Fresh from local farmers</Text>
 
       {error ? <Text style={styles.error}>{error}</Text> : null}
@@ -128,6 +129,7 @@ export default function RegisterScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: { padding: 24, backgroundColor: '#fff', flexGrow: 1 },
+  logo: { width: 64, height: 64, alignSelf: 'center', marginBottom: 8 },
   title: { fontSize: 26, fontWeight: 'bold', color: GREEN, textAlign: 'center' },
   subtitle: { textAlign: 'center', color: '#777', marginBottom: 20 },
   input: { borderWidth: 1, borderColor: '#ddd', borderRadius: 8, padding: 12, marginBottom: 12, fontSize: 16 },

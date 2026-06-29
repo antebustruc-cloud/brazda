@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import Navbar from '../components/Navbar';
 import axios from 'axios';
 import 'leaflet/dist/leaflet.css';
+import { useTranslation } from 'react-i18next';
 import { API, FEATURES } from '../config';
 import ProductManager from '../components/ProductManager';
 import GetPaid from '../components/GetPaid';
@@ -18,6 +19,7 @@ function LocationPicker({ onPick }) {
 }
 
 function Stands() {
+  const { t } = useTranslation();
   const [standName, setStandName] = useState('');
   const [pin, setPin] = useState(null);
   const [message, setMessage] = useState('');
@@ -39,11 +41,12 @@ function Stands() {
 
   useEffect(() => {
     fetchStands();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSave = async () => {
     if (!standName || !pin) {
-      setMessage('Please name the stand and drop a pin!');
+      setMessage(t('myStands.validationError'));
       return;
     }
     try {
@@ -52,12 +55,12 @@ function Stands() {
         lat: pin.lat,
         lng: pin.lng
       }, authHeader);
-      setMessage('Stand saved! ✅');
+      setMessage(t('myStands.saveSuccess'));
       setStandName('');
       setPin(null);
       fetchStands();
     } catch (err) {
-      setMessage('Error saving stand.');
+      setMessage(t('myStands.saveError'));
       console.log(err.response?.data);
     }
   };
@@ -78,7 +81,7 @@ function Stands() {
   };
 
   const deleteStand = async (s) => {
-    if (!window.confirm(`Delete stand "${s.name}"? This cannot be undone.`)) return;
+    if (!window.confirm(t('myStands.deleteConfirm', { name: s.name }))) return;
     try {
       await axios.delete(`${API}/stands/${s.id}/`, authHeader);
       fetchStands();
@@ -95,14 +98,14 @@ function Stands() {
           <div className="col-auto" style={{ minWidth: '300px' }}>
             <input
               className="form-control"
-              placeholder="Stand name (e.g. Market stand Split)"
+              placeholder={t('myStands.namePlaceholder')}
               value={standName}
               onChange={e => setStandName(e.target.value)}
             />
           </div>
           <div className="col-auto">
             <button onClick={handleSave} className="btn text-white" style={{ background: '#2d6a4f' }}>
-              Save Stand
+              {t('myStands.saveButton')}
             </button>
           </div>
           {message && <div className="col-auto text-success">{message}</div>}
@@ -110,7 +113,7 @@ function Stands() {
         </div>
       </div>
       <div className="container-fluid py-2 small" style={{ background: '#eef6f0' }}>
-        👆 Click the map to set your stand location
+        {t('myStands.mapHint')}
       </div>
       <MapContainer center={[45.1, 16.5]} zoom={7} style={{ height: '35vh', width: '100%' }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='© OpenStreetMap' />
@@ -118,8 +121,8 @@ function Stands() {
         {pin && <Marker position={pin} />}
       </MapContainer>
       <div className="container py-3">
-        <h3 className="mb-3">My Stands ({stands.length})</h3>
-        {stands.length === 0 && <p className="text-muted">No stands yet. Click the map to add one!</p>}
+        <h3 className="mb-3">{t('myStands.heading', { count: stands.length })}</h3>
+        {stands.length === 0 && <p className="text-muted">{t('myStands.empty')}</p>}
         <div className="row g-3">
           {stands.map(s => (
             <div className="col-12" key={s.id}>
@@ -137,30 +140,30 @@ function Stands() {
                         📍 {s.latitude?.toFixed(4)}, {s.longitude?.toFixed(4)}
                       </span>
                       <span className={`badge ms-2 ${s.is_active ? 'bg-success' : 'bg-secondary'}`}>
-                        {s.is_active ? 'Active' : 'Inactive'}
+                        {s.is_active ? t('common.active') : t('common.inactive')}
                       </span>
                     </div>
                     <div className="d-flex gap-2">
                       {editingId === s.id ? (
                         <>
                           <button onClick={() => saveEdit(s)} className="btn btn-sm text-white" style={{ background: '#2d6a4f' }}>
-                            Save
+                            {t('common.save')}
                           </button>
                           <button onClick={() => setEditingId(null)} className="btn btn-sm btn-secondary">
-                            Cancel
+                            {t('common.cancel')}
                           </button>
                         </>
                       ) : (
                         <>
                           <button onClick={() => setExpandedStand(expandedStand === s.id ? null : s.id)}
                             className="btn btn-sm text-white" style={{ background: '#2d6a4f' }}>
-                            {expandedStand === s.id ? 'Close' : 'Products'}
+                            {expandedStand === s.id ? t('common.close') : t('common.products')}
                           </button>
                           <button onClick={() => startEdit(s)} className="btn btn-sm text-white" style={{ background: '#5a8f73' }}>
-                            Edit
+                            {t('common.edit')}
                           </button>
                           <button onClick={() => deleteStand(s)} className="btn btn-sm btn-outline-danger">
-                            Delete
+                            {t('common.delete')}
                           </button>
                         </>
                       )}

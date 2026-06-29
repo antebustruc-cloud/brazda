@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import { API } from '../config';
 
 // channelType is "stand", "parcel", or "delivery_event"; channelId is the id
-const CATEGORIES = [
-  { value: 'fruit', label: 'Fruit' },
-  { value: 'vegetable', label: 'Vegetable' },
-  { value: 'herb', label: 'Herb' },
-  { value: 'other', label: 'Other' },
-];
-
 function ProductManager({ channelType, channelId }) {
+  const { t } = useTranslation();
+  const CATEGORIES = [
+    { value: 'fruit', label: t('buy.categoryFruit') },
+    { value: 'vegetable', label: t('buy.categoryVegetable') },
+    { value: 'herb', label: t('buy.categoryHerb') },
+    { value: 'other', label: t('buy.categoryOther') },
+  ];
   const [products, setProducts] = useState([]);
   const [catalog, setCatalog] = useState([]);
   const [message, setMessage] = useState('');
@@ -34,6 +35,7 @@ function ProductManager({ channelType, channelId }) {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [channelId]);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
@@ -48,7 +50,7 @@ function ProductManager({ channelType, channelId }) {
 
   const handleAdd = async () => {
     if (!form.catalog_item || !form.price_per_kg) {
-      setMessage('Pick a product and set a price!');
+      setMessage(t('productManager.validationError'));
       return;
     }
     try {
@@ -59,12 +61,12 @@ function ProductManager({ channelType, channelId }) {
         [channelType]: channelId
       };
       await axios.post(`${API}/products/`, payload, authHeader);
-      setMessage('Added! ✅');
+      setMessage(t('productManager.addSuccess'));
       setCategory('');
       setForm({ catalog_item: '', variety: '', price_per_kg: '' });
       fetchData();
     } catch (err) {
-      setMessage('Error adding product.');
+      setMessage(t('productManager.addError'));
       console.log(err.response?.data);
     }
   };
@@ -104,13 +106,13 @@ function ProductManager({ channelType, channelId }) {
 
   return (
     <div className="border-top mt-3 pt-3">
-      <h6 style={{ color: '#2d6a4f' }}>Products here</h6>
+      <h6 style={{ color: '#2d6a4f' }}>{t('productManager.title')}</h6>
       {message && <div className="small text-success">{message}</div>}
 
       <div className="row g-2 align-items-center mb-3">
         <div className="col-auto" style={{ minWidth: '140px' }}>
           <select className="form-select" value={category} onChange={handleCategoryChange}>
-            <option value="">-- Category --</option>
+            <option value="">{t('productManager.categoryOption')}</option>
             {CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
           </select>
         </div>
@@ -118,7 +120,7 @@ function ProductManager({ channelType, channelId }) {
         {category && (
           <div className="col-auto" style={{ minWidth: '160px' }}>
             <select name="catalog_item" className="form-select" value={form.catalog_item} onChange={handleChange}>
-              <option value="">-- Product ({filteredCatalog.length}) --</option>
+              <option value="">{t('productManager.productOption', { count: filteredCatalog.length })}</option>
               {filteredCatalog.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
           </div>
@@ -127,7 +129,7 @@ function ProductManager({ channelType, channelId }) {
         {selectedCatalog && selectedCatalog.varieties.length > 0 && (
           <div className="col-auto" style={{ minWidth: '120px' }}>
             <select name="variety" className="form-select" value={form.variety} onChange={handleChange}>
-              <option value="">-- Variety --</option>
+              <option value="">{t('productManager.varietyOption')}</option>
               {selectedCatalog.varieties.map(v => <option key={v.id} value={v.id}>{v.name}</option>)}
             </select>
           </div>
@@ -135,7 +137,7 @@ function ProductManager({ channelType, channelId }) {
 
         <div className="col-auto">
           <div className="input-group">
-            <span className="input-group-text">€/kg</span>
+            <span className="input-group-text">{t('productManager.pricePerKg')}</span>
             <input name="price_per_kg" type="number" className="form-control" style={{ maxWidth: '90px' }}
               value={form.price_per_kg} onChange={handleChange} />
           </div>
@@ -143,12 +145,12 @@ function ProductManager({ channelType, channelId }) {
 
         <div className="col-auto">
           <button onClick={handleAdd} className="btn text-white" style={{ background: '#2d6a4f' }}>
-            Add
+            {t('productManager.addButton')}
           </button>
         </div>
       </div>
 
-      {products.length === 0 && <p className="small text-muted">No products here yet.</p>}
+      {products.length === 0 && <p className="small text-muted">{t('productManager.empty')}</p>}
       <div className="list-group">
         {products.map(p => (
           <div key={p.id} className="list-group-item d-flex justify-content-between align-items-center flex-wrap gap-2">
@@ -163,27 +165,27 @@ function ProductManager({ channelType, channelId }) {
                 <span>€{p.price_per_kg}/kg</span>
               )}
               <span className={`badge ms-2 ${p.is_available ? 'bg-success' : 'bg-secondary'}`}>
-                {p.is_available ? 'Active' : 'Off'}
+                {p.is_available ? t('common.active') : t('productManager.off')}
               </span>
             </div>
             <div className="d-flex gap-2">
               {editingId === p.id ? (
                 <>
                   <button onClick={() => savePrice(p)} className="btn btn-sm text-white" style={{ background: '#2d6a4f' }}>
-                    Save
+                    {t('common.save')}
                   </button>
                   <button onClick={() => setEditingId(null)} className="btn btn-sm btn-secondary">
-                    Cancel
+                    {t('common.cancel')}
                   </button>
                 </>
               ) : (
                 <>
                   <button onClick={() => startPriceEdit(p)} className="btn btn-sm text-white" style={{ background: '#5a8f73' }}>
-                    € Edit
+                    {t('productManager.editPrice')}
                   </button>
                   <button onClick={() => toggleActive(p)} className={`btn btn-sm ${p.is_available ? 'btn-secondary' : 'text-white'}`}
                     style={!p.is_available ? { background: '#2d6a4f' } : {}}>
-                    {p.is_available ? 'Off' : 'On'}
+                    {p.is_available ? t('productManager.off') : t('productManager.on')}
                   </button>
                   <button onClick={() => removeProduct(p)} className="btn btn-sm btn-outline-danger">
                     ✕

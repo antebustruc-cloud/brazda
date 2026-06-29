@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import { API } from '../config';
 
 // channelType is "stand", "parcel", or "delivery_event"; channelId is the id
 function GetPaid({ channelType, channelId }) {
+  const { t } = useTranslation();
   const [amount, setAmount] = useState('1.00');
   const [buyerEmail, setBuyerEmail] = useState('');
   const [txn, setTxn] = useState(null);
@@ -24,7 +26,7 @@ function GetPaid({ channelType, channelId }) {
       }, authHeader);
       setTxn(res.data);
     } catch (err) {
-      setError(err.response?.data?.detail || 'Could not generate barcode.');
+      setError(err.response?.data?.detail || t('getPaid.generateError'));
     }
   };
 
@@ -32,9 +34,9 @@ function GetPaid({ channelType, channelId }) {
     try {
       const res = await axios.patch(`${API}/payments/${txn.id}/confirm/`, {}, authHeader);
       setTxn(res.data);
-      setMessage(res.data.buyer_email ? `Payment confirmed ✅ — receipt sent to ${res.data.buyer_email}` : 'Payment confirmed ✅');
+      setMessage(res.data.buyer_email ? t('getPaid.receiptSent', { email: res.data.buyer_email }) : t('getPaid.confirmButton'));
     } catch (err) {
-      setError('Could not confirm payment.');
+      setError(t('getPaid.confirmError'));
     }
   };
 
@@ -48,7 +50,7 @@ function GetPaid({ channelType, channelId }) {
 
   return (
     <div className="border-top mt-3 pt-3">
-      <h6 style={{ color: '#2d6a4f' }}>Get Paid 💳</h6>
+      <h6 style={{ color: '#2d6a4f' }}>{t('getPaid.title')}</h6>
       {error && <div className="small text-danger mb-2">{error}</div>}
       {message && <div className="small text-success mb-2">{message}</div>}
 
@@ -62,13 +64,13 @@ function GetPaid({ channelType, channelId }) {
             </div>
           </div>
           <div className="col-auto">
-            <input type="email" className="form-control" placeholder="Buyer email (optional, for receipt)"
+            <input type="email" className="form-control" placeholder={t('getPaid.buyerEmailPlaceholder')}
               style={{ minWidth: '220px' }}
               value={buyerEmail} onChange={e => setBuyerEmail(e.target.value)} />
           </div>
           <div className="col-auto">
             <button onClick={generate} className="btn text-white" style={{ background: '#2d6a4f' }}>
-              Generate barcode
+              {t('getPaid.generateButton')}
             </button>
           </div>
         </div>
@@ -77,7 +79,7 @@ function GetPaid({ channelType, channelId }) {
       {txn && (
         <div>
           <p className="small text-muted mb-2">
-            Buyer scans this with their own m-banking app — they can adjust the amount there before confirming.
+            {t('getPaid.scanHint')}
           </p>
           <img
             src={txn.barcode_image}
@@ -87,13 +89,13 @@ function GetPaid({ channelType, channelId }) {
           <div className="mt-2 d-flex gap-2 align-items-center">
             {!txn.is_confirmed ? (
               <button onClick={confirmPaid} className="btn btn-sm text-white" style={{ background: '#2d6a4f' }}>
-                Payment confirmed ✅
+                {t('getPaid.confirmButton')}
               </button>
             ) : (
-              <span className="badge bg-success">Confirmed</span>
+              <span className="badge bg-success">{t('getPaid.confirmedBadge')}</span>
             )}
             <button onClick={reset} className="btn btn-sm btn-secondary">
-              {txn.is_confirmed ? 'New barcode' : 'Cancel'}
+              {txn.is_confirmed ? t('getPaid.newBarcode') : t('common.cancel')}
             </button>
           </div>
         </div>

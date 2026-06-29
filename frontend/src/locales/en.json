@@ -51,5 +51,121 @@
     "errOpg": "As a farmer you must enter OPG name, MIBPG, and drop your OPG pin on the map.",
     "success": "Account created! Redirecting to login...",
     "errFailed": "Registration failed."
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "close": "Close",
+    "products": "Products",
+    "active": "Active",
+    "inactive": "Inactive",
+    "loading": "Loading...",
+    "saved": "Saved ✅"
+  },
+  "buy": {
+    "useMyLocation": "📍 Use my location",
+    "radiusKm": "Radius (km)",
+    "filterLabel": "Filter:",
+    "productPlaceholder": "Product (e.g. apple)",
+    "anyType": "Any type",
+    "categoryFruit": "Fruit",
+    "categoryVegetable": "Vegetable",
+    "categoryHerb": "Herb",
+    "categoryOther": "Other",
+    "maxPricePerKg": "Max €/kg",
+    "matchCount": "Matches: {{count}}",
+    "gpsNotAvailable": "GPS not available, tap the map instead.",
+    "gpsError": "Could not get GPS, tap the map instead.",
+    "setLocationFirst": "Set a location first — use GPS or tap the map.",
+    "searchError": "Search error.",
+    "call": "📞 Call"
+  },
+  "buyStands": {
+    "findButton": "Find stands",
+    "hint": "👆 Use GPS, or tap the map to search a different spot (e.g. where you're heading).",
+    "noResults": "No stands found in this area.",
+    "resultsHeading": "Stands ({{count}})"
+  },
+  "buyFields": {
+    "findButton": "Find fields",
+    "noResults": "No fields found in this area.",
+    "resultsHeading": "Fields ({{count}})"
+  },
+  "buyDelivery": {
+    "findButton": "Find deliveries",
+    "hint": "👆 Set where you want delivery — use GPS or tap the map. Shows deliveries whose range covers that spot.",
+    "noResults": "No deliveries reach this location.",
+    "resultsHeading": "Deliveries available ({{count}})"
+  },
+  "myFields": {
+    "namePlaceholder": "Field name (e.g. Apple orchard)",
+    "saveButton": "Save Field",
+    "mapHint": "👆 Click anywhere on the map to drop a pin for your field entrance",
+    "heading": "My Fields ({{count}})",
+    "empty": "No fields yet. Click the map to add one!",
+    "validationError": "Please click on the map to drop a pin and enter a name!",
+    "saveSuccess": "Field saved! ✅",
+    "saveError": "Error saving field. Try again.",
+    "deleteConfirm": "Delete field \"{{name}}\"? This cannot be undone."
+  },
+  "myStands": {
+    "namePlaceholder": "Stand name (e.g. Market stand Split)",
+    "saveButton": "Save Stand",
+    "mapHint": "👆 Click the map to set your stand location",
+    "heading": "My Stands ({{count}})",
+    "empty": "No stands yet. Click the map to add one!",
+    "validationError": "Please name the stand and drop a pin!",
+    "saveSuccess": "Stand saved! ✅",
+    "saveError": "Error saving stand.",
+    "deleteConfirm": "Delete stand \"{{name}}\"? This cannot be undone."
+  },
+  "myDelivery": {
+    "title": "Create a Delivery Event 🚚",
+    "namePlaceholder": "Event name (e.g. Tuesday Split run)",
+    "dateLabel": "Date",
+    "saveButton": "Save Delivery",
+    "mapHint": "👆 Click the map to set your delivery destination (e.g. Split center)",
+    "heading": "My Delivery Events ({{count}})",
+    "empty": "No delivery events yet.",
+    "validationError": "Name, date, and a destination pin are required!",
+    "saveSuccess": "Delivery event saved! ✅",
+    "saveError": "Error saving delivery event.",
+    "deleteConfirm": "Delete delivery \"{{name}}\"? This cannot be undone.",
+    "radiusSuffix": "km radius"
+  },
+  "opg": {
+    "title": "My OPG",
+    "ibanLabel": "IBAN (for receiving payments)",
+    "ibanHelp": "Used to generate your payment barcode. Never shown to buyers directly.",
+    "saveError": "Could not save IBAN."
+  },
+  "productManager": {
+    "title": "Products here",
+    "categoryOption": "-- Category --",
+    "productOption": "-- Product ({{count}}) --",
+    "varietyOption": "-- Variety --",
+    "pricePerKg": "€/kg",
+    "addButton": "Add",
+    "empty": "No products here yet.",
+    "validationError": "Pick a product and set a price!",
+    "addSuccess": "Added! ✅",
+    "addError": "Error adding product.",
+    "off": "Off",
+    "on": "On",
+    "editPrice": "€ Edit"
+  },
+  "getPaid": {
+    "title": "Get Paid 💳",
+    "buyerEmailPlaceholder": "Buyer email (optional, for receipt)",
+    "generateButton": "Generate barcode",
+    "scanHint": "Buyer scans this with their own m-banking app — they can adjust the amount there before confirming.",
+    "confirmButton": "Payment confirmed ✅",
+    "confirmedBadge": "Confirmed",
+    "newBarcode": "New barcode",
+    "confirmError": "Could not confirm payment.",
+    "generateError": "Could not generate barcode.",
+    "receiptSent": "Payment confirmed ✅ — receipt sent to {{email}}"
   }
 }

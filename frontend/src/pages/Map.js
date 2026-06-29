@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import Navbar from '../components/Navbar';
 import axios from 'axios';
 import 'leaflet/dist/leaflet.css';
+import { useTranslation } from 'react-i18next';
 import { API } from '../config';
 import ProductManager from '../components/ProductManager';
 import GetPaid from '../components/GetPaid';
@@ -17,6 +18,7 @@ function LocationPicker({ onPick }) {
 }
 
 function Map() {
+  const { t } = useTranslation();
   const [parcelName, setParcelName] = useState('');
   const [pin, setPin] = useState(null);
   const [message, setMessage] = useState('');
@@ -38,11 +40,12 @@ function Map() {
 
   useEffect(() => {
     fetchParcels();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSave = async () => {
     if (!parcelName || !pin) {
-      setMessage('Please click on the map to drop a pin and enter a name!');
+      setMessage(t('myFields.validationError'));
       return;
     }
     try {
@@ -51,12 +54,12 @@ function Map() {
         lat: pin.lat,
         lng: pin.lng
       }, authHeader);
-      setMessage('Field saved! ✅');
+      setMessage(t('myFields.saveSuccess'));
       setParcelName('');
       setPin(null);
       fetchParcels();
     } catch (err) {
-      setMessage('Error saving field. Try again.');
+      setMessage(t('myFields.saveError'));
       console.log(err.response?.data);
     }
   };
@@ -77,7 +80,7 @@ function Map() {
   };
 
   const deleteParcel = async (p) => {
-    if (!window.confirm(`Delete field "${p.name}"? This cannot be undone.`)) return;
+    if (!window.confirm(t('myFields.deleteConfirm', { name: p.name }))) return;
     try {
       await axios.delete(`${API}/parcels/${p.id}/`, authHeader);
       fetchParcels();
@@ -94,14 +97,14 @@ function Map() {
           <div className="col-auto" style={{ minWidth: '300px' }}>
             <input
               className="form-control"
-              placeholder="Field name (e.g. Apple orchard)"
+              placeholder={t('myFields.namePlaceholder')}
               value={parcelName}
               onChange={e => setParcelName(e.target.value)}
             />
           </div>
           <div className="col-auto">
             <button onClick={handleSave} className="btn text-white" style={{ background: '#2d6a4f' }}>
-              Save Field
+              {t('myFields.saveButton')}
             </button>
           </div>
           {message && <div className="col-auto text-success">{message}</div>}
@@ -109,7 +112,7 @@ function Map() {
         </div>
       </div>
       <div className="container-fluid py-2 small" style={{ background: '#eef6f0' }}>
-        👆 Click anywhere on the map to drop a pin for your field entrance
+        {t('myFields.mapHint')}
       </div>
       <MapContainer center={[45.1, 16.5]} zoom={7} style={{ height: '35vh', width: '100%' }}>
         <TileLayer
@@ -120,8 +123,8 @@ function Map() {
         {pin && <Marker position={pin} />}
       </MapContainer>
       <div className="container py-3">
-        <h3 className="mb-3">My Fields ({parcels.length})</h3>
-        {parcels.length === 0 && <p className="text-muted">No fields yet. Click the map to add one!</p>}
+        <h3 className="mb-3">{t('myFields.heading', { count: parcels.length })}</h3>
+        {parcels.length === 0 && <p className="text-muted">{t('myFields.empty')}</p>}
         <div className="row g-3">
           {parcels.map(p => (
             <div className="col-12" key={p.id}>
@@ -143,23 +146,23 @@ function Map() {
                       {editingId === p.id ? (
                         <>
                           <button onClick={() => saveEdit(p)} className="btn btn-sm text-white" style={{ background: '#2d6a4f' }}>
-                            Save
+                            {t('common.save')}
                           </button>
                           <button onClick={() => setEditingId(null)} className="btn btn-sm btn-secondary">
-                            Cancel
+                            {t('common.cancel')}
                           </button>
                         </>
                       ) : (
                         <>
                           <button onClick={() => setExpandedParcel(expandedParcel === p.id ? null : p.id)}
                             className="btn btn-sm text-white" style={{ background: '#2d6a4f' }}>
-                            {expandedParcel === p.id ? 'Close' : 'Products'}
+                            {expandedParcel === p.id ? t('common.close') : t('common.products')}
                           </button>
                           <button onClick={() => startEdit(p)} className="btn btn-sm text-white" style={{ background: '#5a8f73' }}>
-                            Edit
+                            {t('common.edit')}
                           </button>
                           <button onClick={() => deleteParcel(p)} className="btn btn-sm btn-outline-danger">
-                            Delete
+                            {t('common.delete')}
                           </button>
                         </>
                       )}

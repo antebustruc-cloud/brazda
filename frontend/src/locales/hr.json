@@ -51,5 +51,121 @@
     "errOpg": "Kao poljoprivrednik morate unijeti naziv OPG-a, MIBPG, i postaviti pin OPG-a na karti.",
     "success": "Račun je kreiran! Preusmjeravanje na prijavu...",
     "errFailed": "Registracija nije uspjela."
+  },
+  "common": {
+    "save": "Spremi",
+    "cancel": "Odustani",
+    "edit": "Uredi",
+    "delete": "Obriši",
+    "close": "Zatvori",
+    "products": "Proizvodi",
+    "active": "Aktivno",
+    "inactive": "Neaktivno",
+    "loading": "Učitavanje...",
+    "saved": "Spremljeno ✅"
+  },
+  "buy": {
+    "useMyLocation": "📍 Koristi moju lokaciju",
+    "radiusKm": "Radijus (km)",
+    "filterLabel": "Filter:",
+    "productPlaceholder": "Proizvod (npr. jabuka)",
+    "anyType": "Sve vrste",
+    "categoryFruit": "Voće",
+    "categoryVegetable": "Povrće",
+    "categoryHerb": "Začinsko bilje",
+    "categoryOther": "Ostalo",
+    "maxPricePerKg": "Maks. €/kg",
+    "matchCount": "Podudaranja: {{count}}",
+    "gpsNotAvailable": "GPS nije dostupan, dodirnite kartu.",
+    "gpsError": "Nije moguće dohvatiti GPS, dodirnite kartu.",
+    "setLocationFirst": "Najprije postavite lokaciju — koristite GPS ili dodirnite kartu.",
+    "searchError": "Greška pri pretraživanju.",
+    "call": "📞 Nazovi"
+  },
+  "buyStands": {
+    "findButton": "Pronađi štandove",
+    "hint": "👆 Koristite GPS ili dodirnite kartu za pretragu drugog mjesta (npr. kamo putujete).",
+    "noResults": "Nema štandova u ovom području.",
+    "resultsHeading": "Štandovi ({{count}})"
+  },
+  "buyFields": {
+    "findButton": "Pronađi polja",
+    "noResults": "Nema polja u ovom području.",
+    "resultsHeading": "Polja ({{count}})"
+  },
+  "buyDelivery": {
+    "findButton": "Pronađi dostave",
+    "hint": "👆 Postavite mjesto dostave — koristite GPS ili dodirnite kartu. Prikazuje dostave čiji raspon pokriva to mjesto.",
+    "noResults": "Nijedna dostava ne pokriva ovu lokaciju.",
+    "resultsHeading": "Dostupne dostave ({{count}})"
+  },
+  "myFields": {
+    "namePlaceholder": "Naziv polja (npr. Voćnjak jabuka)",
+    "saveButton": "Spremi polje",
+    "mapHint": "👆 Kliknite bilo gdje na karti za postavljanje pina ulaza u polje",
+    "heading": "Moja polja ({{count}})",
+    "empty": "Još nemate polja. Kliknite na kartu za dodavanje!",
+    "validationError": "Kliknite na kartu za postavljanje pina i unesite naziv!",
+    "saveSuccess": "Polje spremljeno! ✅",
+    "saveError": "Greška pri spremanju polja. Pokušajte ponovno.",
+    "deleteConfirm": "Obrisati polje \"{{name}}\"? Ovo se ne može poništiti."
+  },
+  "myStands": {
+    "namePlaceholder": "Naziv štanda (npr. Tržnica Split)",
+    "saveButton": "Spremi štand",
+    "mapHint": "👆 Kliknite na kartu za postavljanje lokacije štanda",
+    "heading": "Moji štandovi ({{count}})",
+    "empty": "Još nemate štandova. Kliknite na kartu za dodavanje!",
+    "validationError": "Unesite naziv štanda i postavite pin!",
+    "saveSuccess": "Štand spremljen! ✅",
+    "saveError": "Greška pri spremanju štanda.",
+    "deleteConfirm": "Obrisati štand \"{{name}}\"? Ovo se ne može poništiti."
+  },
+  "myDelivery": {
+    "title": "Stvori dostavu 🚚",
+    "namePlaceholder": "Naziv dostave (npr. Utorak Split)",
+    "dateLabel": "Datum",
+    "saveButton": "Spremi dostavu",
+    "mapHint": "👆 Kliknite na kartu za postavljanje odredišta dostave (npr. centar Splita)",
+    "heading": "Moje dostave ({{count}})",
+    "empty": "Još nemate dostava.",
+    "validationError": "Naziv, datum i pin odredišta su obavezni!",
+    "saveSuccess": "Dostava spremljena! ✅",
+    "saveError": "Greška pri spremanju dostave.",
+    "deleteConfirm": "Obrisati dostavu \"{{name}}\"? Ovo se ne može poništiti.",
+    "radiusSuffix": "km radijus"
+  },
+  "opg": {
+    "title": "Moj OPG",
+    "ibanLabel": "IBAN (za primanje plaćanja)",
+    "ibanHelp": "Koristi se za generiranje vašeg barkoda za plaćanje. Nikad se ne prikazuje kupcima.",
+    "saveError": "Nije moguće spremiti IBAN."
+  },
+  "productManager": {
+    "title": "Proizvodi ovdje",
+    "categoryOption": "-- Kategorija --",
+    "productOption": "-- Proizvod ({{count}}) --",
+    "varietyOption": "-- Sorta --",
+    "pricePerKg": "€/kg",
+    "addButton": "Dodaj",
+    "empty": "Još nema proizvoda ovdje.",
+    "validationError": "Odaberite proizvod i postavite cijenu!",
+    "addSuccess": "Dodano! ✅",
+    "addError": "Greška pri dodavanju proizvoda.",
+    "off": "Isklj",
+    "on": "Uklj",
+    "editPrice": "€ Uredi"
+  },
+  "getPaid": {
+    "title": "Naplati 💳",
+    "buyerEmailPlaceholder": "E-mail kupca (neobavezno, za račun)",
+    "generateButton": "Generiraj barkod",
+    "scanHint": "Kupac skenira ovo svojom bankovnom aplikacijom — može prilagoditi iznos prije potvrde.",
+    "confirmButton": "Plaćanje potvrđeno ✅",
+    "confirmedBadge": "Potvrđeno",
+    "newBarcode": "Novi barkod",
+    "confirmError": "Nije moguće potvrditi plaćanje.",
+    "generateError": "Nije moguće generirati barkod.",
+    "receiptSent": "Plaćanje potvrđeno ✅ — račun poslan na {{email}}"
   }
 }

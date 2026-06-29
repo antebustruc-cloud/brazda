@@ -6,6 +6,7 @@ import GetPaid from '../components/GetPaid';
 import NotifyNearby from '../components/NotifyNearby';
 import axios from 'axios';
 import 'leaflet/dist/leaflet.css';
+import { useTranslation } from 'react-i18next';
 import { API, FEATURES } from '../config';
 
 function LocationPicker({ onPick }) {
@@ -18,6 +19,7 @@ function LocationPicker({ onPick }) {
 }
 
 function Delivery() {
+  const { t } = useTranslation();
   const [form, setForm] = useState({ name: '', radius_km: '10', delivery_date: '' });
   const [pin, setPin] = useState(null);
   const [message, setMessage] = useState('');
@@ -39,13 +41,14 @@ function Delivery() {
 
   useEffect(() => {
     fetchEvents();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSave = async () => {
     if (!form.name || !form.delivery_date || !pin) {
-      setMessage('Name, date, and a destination pin are required!');
+      setMessage(t('myDelivery.validationError'));
       return;
     }
     try {
@@ -56,12 +59,12 @@ function Delivery() {
         lat: pin.lat,
         lng: pin.lng
       }, authHeader);
-      setMessage('Delivery event saved! ✅');
+      setMessage(t('myDelivery.saveSuccess'));
       setForm({ name: '', radius_km: '10', delivery_date: '' });
       setPin(null);
       fetchEvents();
     } catch (err) {
-      setMessage('Error saving delivery event.');
+      setMessage(t('myDelivery.saveError'));
       console.log(err.response?.data);
     }
   };
@@ -82,7 +85,7 @@ function Delivery() {
   };
 
   const deleteEvent = async (ev) => {
-    if (!window.confirm(`Delete delivery "${ev.name}"? This cannot be undone.`)) return;
+    if (!window.confirm(t('myDelivery.deleteConfirm', { name: ev.name }))) return;
     try {
       await axios.delete(`${API}/delivery/${ev.id}/`, authHeader);
       fetchEvents();
@@ -95,35 +98,35 @@ function Delivery() {
     <>
       <Navbar />
       <div className="container-fluid py-3" style={{ background: '#f5f5f5' }}>
-        <h5 className="mb-3" style={{ color: '#2d6a4f' }}>Create a Delivery Event 🚚</h5>
+        <h5 className="mb-3" style={{ color: '#2d6a4f' }}>{t('myDelivery.title')}</h5>
         <div className="row g-2 align-items-center">
           <div className="col-auto" style={{ minWidth: '250px' }}>
-            <input name="name" className="form-control" placeholder="Event name (e.g. Tuesday Split run)"
+            <input name="name" className="form-control" placeholder={t('myDelivery.namePlaceholder')}
               value={form.name} onChange={handleChange} />
           </div>
           <div className="col-auto">
             <div className="input-group">
-              <span className="input-group-text">Date</span>
+              <span className="input-group-text">{t('myDelivery.dateLabel')}</span>
               <input name="delivery_date" type="date" className="form-control" value={form.delivery_date} onChange={handleChange} />
             </div>
           </div>
           <div className="col-auto">
             <div className="input-group">
-              <span className="input-group-text">Radius (km)</span>
+              <span className="input-group-text">{t('buy.radiusKm')}</span>
               <input name="radius_km" type="number" className="form-control" style={{ maxWidth: '90px' }}
                 value={form.radius_km} onChange={handleChange} />
             </div>
           </div>
           <div className="col-auto">
             <button onClick={handleSave} className="btn text-white" style={{ background: '#2d6a4f' }}>
-              Save Delivery
+              {t('myDelivery.saveButton')}
             </button>
           </div>
           {message && <div className="col-auto text-success">{message}</div>}
         </div>
       </div>
       <div className="container-fluid py-2 small" style={{ background: '#eef6f0' }}>
-        👆 Click the map to set your delivery destination (e.g. Split center)
+        {t('myDelivery.mapHint')}
       </div>
       <MapContainer center={[45.1, 16.5]} zoom={7} style={{ height: '35vh', width: '100%' }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='© OpenStreetMap' />
@@ -131,8 +134,8 @@ function Delivery() {
         {pin && <Marker position={pin} />}
       </MapContainer>
       <div className="container py-3">
-        <h3 className="mb-3">My Delivery Events ({events.length})</h3>
-        {events.length === 0 && <p className="text-muted">No delivery events yet.</p>}
+        <h3 className="mb-3">{t('myDelivery.heading', { count: events.length })}</h3>
+        {events.length === 0 && <p className="text-muted">{t('myDelivery.empty')}</p>}
         <div className="row g-3">
           {events.map(ev => (
             <div className="col-12" key={ev.id}>
@@ -147,33 +150,33 @@ function Delivery() {
                         <strong>{ev.name}</strong>
                       )}
                       <span className="text-muted small ms-2">
-                        📅 {ev.delivery_date} · {ev.radius_km}km radius
+                        📅 {ev.delivery_date} · {ev.radius_km}{t('myDelivery.radiusSuffix')}
                       </span>
                       <span className={`badge ms-2 ${ev.is_active ? 'bg-success' : 'bg-secondary'}`}>
-                        {ev.is_active ? 'Active' : 'Inactive'}
+                        {ev.is_active ? t('common.active') : t('common.inactive')}
                       </span>
                     </div>
                     <div className="d-flex gap-2">
                       {editingId === ev.id ? (
                         <>
                           <button onClick={() => saveEdit(ev)} className="btn btn-sm text-white" style={{ background: '#2d6a4f' }}>
-                            Save
+                            {t('common.save')}
                           </button>
                           <button onClick={() => setEditingId(null)} className="btn btn-sm btn-secondary">
-                            Cancel
+                            {t('common.cancel')}
                           </button>
                         </>
                       ) : (
                         <>
                           <button onClick={() => setExpanded(expanded === ev.id ? null : ev.id)}
                             className="btn btn-sm text-white" style={{ background: '#2d6a4f' }}>
-                            {expanded === ev.id ? 'Close' : 'Products'}
+                            {expanded === ev.id ? t('common.close') : t('common.products')}
                           </button>
                           <button onClick={() => startEdit(ev)} className="btn btn-sm text-white" style={{ background: '#5a8f73' }}>
-                            Edit
+                            {t('common.edit')}
                           </button>
                           <button onClick={() => deleteEvent(ev)} className="btn btn-sm btn-outline-danger">
-                            Delete
+                            {t('common.delete')}
                           </button>
                         </>
                       )}

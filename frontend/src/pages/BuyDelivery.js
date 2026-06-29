@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import Navbar from '../components/Navbar';
 import axios from 'axios';
 import 'leaflet/dist/leaflet.css';
+import { useTranslation } from 'react-i18next';
 import { API } from '../config';
 
 function LocationPicker({ onPick }) {
@@ -11,6 +12,7 @@ function LocationPicker({ onPick }) {
 }
 
 function BuyDelivery() {
+  const { t } = useTranslation();
   const [pin, setPin] = useState(null);
   const [events, setEvents] = useState([]);
   const [message, setMessage] = useState('');
@@ -22,21 +24,21 @@ function BuyDelivery() {
   const authHeader = { headers: { Authorization: `Bearer ${token}` } };
 
   const useMyLocation = () => {
-    if (!navigator.geolocation) { setMessage('GPS not available, tap the map instead.'); return; }
+    if (!navigator.geolocation) { setMessage(t('buy.gpsNotAvailable')); return; }
     navigator.geolocation.getCurrentPosition(
       (pos) => setPin({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
-      () => setMessage('Could not get GPS, tap the map instead.')
+      () => setMessage(t('buy.gpsError'))
     );
   };
 
   const search = async () => {
-    if (!pin) { setMessage('Set a location first — use GPS or tap the map.'); return; }
+    if (!pin) { setMessage(t('buy.setLocationFirst')); return; }
     try {
       const res = await axios.get(`${API}/delivery/nearby/?lat=${pin.lat}&lng=${pin.lng}`, authHeader);
       setEvents(res.data);
-      setMessage(res.data.length === 0 ? 'No deliveries reach this location.' : '');
+      setMessage(res.data.length === 0 ? t('buyDelivery.noResults') : '');
     } catch (err) {
-      setMessage('Search error.');
+      setMessage(t('buy.searchError'));
       console.log(err.response?.data);
     }
   };
@@ -61,37 +63,37 @@ function BuyDelivery() {
       <div className="container-fluid py-3" style={{ background: '#f5f5f5' }}>
         <div className="row g-2 align-items-center">
           <div className="col-auto">
-            <button onClick={useMyLocation} className="btn text-white" style={{ background: '#2d6a4f' }}>📍 Use my location</button>
+            <button onClick={useMyLocation} className="btn text-white" style={{ background: '#2d6a4f' }}>{t('buy.useMyLocation')}</button>
           </div>
           <div className="col-auto">
-            <button onClick={search} className="btn text-white" style={{ background: '#2d6a4f' }}>Find deliveries</button>
+            <button onClick={search} className="btn text-white" style={{ background: '#2d6a4f' }}>{t('buyDelivery.findButton')}</button>
           </div>
           {message && <div className="col-auto text-success">{message}</div>}
         </div>
-        <div className="small text-muted mt-2">👆 Set where you want delivery — use GPS or tap the map. Shows deliveries whose range covers that spot.</div>
+        <div className="small text-muted mt-2">{t('buyDelivery.hint')}</div>
       </div>
 
       {events.length > 0 && (
         <div className="container-fluid py-2" style={{ background: '#eef6f0' }}>
           <div className="row g-2 align-items-center">
-            <div className="col-auto fw-bold">Filter:</div>
-            <div className="col-auto"><input className="form-control" placeholder="Product (e.g. apple)" value={fName} onChange={e => setFName(e.target.value)} /></div>
+            <div className="col-auto fw-bold">{t('buy.filterLabel')}</div>
+            <div className="col-auto"><input className="form-control" placeholder={t('buy.productPlaceholder')} value={fName} onChange={e => setFName(e.target.value)} /></div>
             <div className="col-auto">
               <select className="form-select" value={fType} onChange={e => setFType(e.target.value)}>
-                <option value="">Any type</option>
-                <option value="fruit">Fruit</option>
-                <option value="vegetable">Vegetable</option>
-                <option value="herb">Herb</option>
-                <option value="other">Other</option>
+                <option value="">{t('buy.anyType')}</option>
+                <option value="fruit">{t('buy.categoryFruit')}</option>
+                <option value="vegetable">{t('buy.categoryVegetable')}</option>
+                <option value="herb">{t('buy.categoryHerb')}</option>
+                <option value="other">{t('buy.categoryOther')}</option>
               </select>
             </div>
             <div className="col-auto">
               <div className="input-group">
-                <span className="input-group-text">Max €/kg</span>
+                <span className="input-group-text">{t('buy.maxPricePerKg')}</span>
                 <input type="number" className="form-control" style={{ maxWidth: '90px' }} value={fMaxPrice} onChange={e => setFMaxPrice(e.target.value)} />
               </div>
             </div>
-            <div className="col-auto text-muted">{visibleEvents.length} match</div>
+            <div className="col-auto text-muted">{t('buy.matchCount', { count: visibleEvents.length })}</div>
           </div>
         </div>
       )}
@@ -103,7 +105,7 @@ function BuyDelivery() {
       </MapContainer>
 
       <div className="container py-3">
-        <h3 style={{ marginTop: 0 }}>Deliveries available ({visibleEvents.length})</h3>
+        <h3 style={{ marginTop: 0 }}>{t('buyDelivery.resultsHeading', { count: visibleEvents.length })}</h3>
         <div className="row g-3">
           {visibleEvents.map(ev => (
             <div className="col-md-6" key={ev.id}>
@@ -113,11 +115,11 @@ function BuyDelivery() {
                     <div>
                       <h5 className="mb-0">{ev.name}</h5>
                       <span className="text-muted small">{ev.opg_name}</span>
-                      <div className="text-muted small">📅 {ev.delivery_date} · within {ev.radius_km}km</div>
+                      <div className="text-muted small">📅 {ev.delivery_date} · {ev.radius_km}{t('myDelivery.radiusSuffix')}</div>
                       {ev.owner_phone && <div className="small mt-1">📞 {ev.owner_phone}</div>}
                     </div>
                     {ev.owner_phone && (
-                      <a href={`tel:${ev.owner_phone}`} className="btn btn-sm text-white" style={{ background: '#2d6a4f' }}>📞 Call</a>
+                      <a href={`tel:${ev.owner_phone}`} className="btn btn-sm text-white" style={{ background: '#2d6a4f' }}>{t('buy.call')}</a>
                     )}
                   </div>
                   <ul className="list-unstyled mt-2 mb-0">

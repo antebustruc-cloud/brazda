@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import Navbar from '../components/Navbar';
 import axios from 'axios';
 import 'leaflet/dist/leaflet.css';
+import { useTranslation } from 'react-i18next';
 import { API } from '../config';
 
 function LocationPicker({ onPick }) {
@@ -11,6 +12,7 @@ function LocationPicker({ onPick }) {
 }
 
 function BuyStands() {
+  const { t } = useTranslation();
   const [pin, setPin] = useState(null);
   const [radius, setRadius] = useState(10);
   const [stands, setStands] = useState([]);
@@ -23,21 +25,21 @@ function BuyStands() {
   const authHeader = { headers: { Authorization: `Bearer ${token}` } };
 
   const useMyLocation = () => {
-    if (!navigator.geolocation) { setMessage('GPS not available, tap the map instead.'); return; }
+    if (!navigator.geolocation) { setMessage(t('buy.gpsNotAvailable')); return; }
     navigator.geolocation.getCurrentPosition(
       (pos) => setPin({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
-      () => setMessage('Could not get GPS, tap the map instead.')
+      () => setMessage(t('buy.gpsError'))
     );
   };
 
   const search = async () => {
-    if (!pin) { setMessage('Set a location first — use GPS or tap the map.'); return; }
+    if (!pin) { setMessage(t('buy.setLocationFirst')); return; }
     try {
       const res = await axios.get(`${API}/stands/nearby/?lat=${pin.lat}&lng=${pin.lng}&radius=${radius}`, authHeader);
       setStands(res.data);
-      setMessage(res.data.length === 0 ? 'No stands found in this area.' : '');
+      setMessage(res.data.length === 0 ? t('buyStands.noResults') : '');
     } catch (err) {
-      setMessage('Search error.');
+      setMessage(t('buy.searchError'));
       console.log(err.response?.data);
     }
   };
@@ -62,43 +64,43 @@ function BuyStands() {
       <div className="container-fluid py-3" style={{ background: '#f5f5f5' }}>
         <div className="row g-2 align-items-center">
           <div className="col-auto">
-            <button onClick={useMyLocation} className="btn text-white" style={{ background: '#2d6a4f' }}>📍 Use my location</button>
+            <button onClick={useMyLocation} className="btn text-white" style={{ background: '#2d6a4f' }}>{t('buy.useMyLocation')}</button>
           </div>
           <div className="col-auto">
             <div className="input-group">
-              <span className="input-group-text">Radius (km)</span>
+              <span className="input-group-text">{t('buy.radiusKm')}</span>
               <input type="number" className="form-control" style={{ maxWidth: '90px' }} value={radius} onChange={e => setRadius(e.target.value)} />
             </div>
           </div>
           <div className="col-auto">
-            <button onClick={search} className="btn text-white" style={{ background: '#2d6a4f' }}>Find stands</button>
+            <button onClick={search} className="btn text-white" style={{ background: '#2d6a4f' }}>{t('buyStands.findButton')}</button>
           </div>
           {message && <div className="col-auto text-success">{message}</div>}
         </div>
-        <div className="small text-muted mt-2">👆 Use GPS, or tap the map to search a different spot (e.g. where you're heading).</div>
+        <div className="small text-muted mt-2">{t('buyStands.hint')}</div>
       </div>
 
       {stands.length > 0 && (
         <div className="container-fluid py-2" style={{ background: '#eef6f0' }}>
           <div className="row g-2 align-items-center">
-            <div className="col-auto fw-bold">Filter:</div>
-            <div className="col-auto"><input className="form-control" placeholder="Product (e.g. apple)" value={fName} onChange={e => setFName(e.target.value)} /></div>
+            <div className="col-auto fw-bold">{t('buy.filterLabel')}</div>
+            <div className="col-auto"><input className="form-control" placeholder={t('buy.productPlaceholder')} value={fName} onChange={e => setFName(e.target.value)} /></div>
             <div className="col-auto">
               <select className="form-select" value={fType} onChange={e => setFType(e.target.value)}>
-                <option value="">Any type</option>
-                <option value="fruit">Fruit</option>
-                <option value="vegetable">Vegetable</option>
-                <option value="herb">Herb</option>
-                <option value="other">Other</option>
+                <option value="">{t('buy.anyType')}</option>
+                <option value="fruit">{t('buy.categoryFruit')}</option>
+                <option value="vegetable">{t('buy.categoryVegetable')}</option>
+                <option value="herb">{t('buy.categoryHerb')}</option>
+                <option value="other">{t('buy.categoryOther')}</option>
               </select>
             </div>
             <div className="col-auto">
               <div className="input-group">
-                <span className="input-group-text">Max €/kg</span>
+                <span className="input-group-text">{t('buy.maxPricePerKg')}</span>
                 <input type="number" className="form-control" style={{ maxWidth: '90px' }} value={fMaxPrice} onChange={e => setFMaxPrice(e.target.value)} />
               </div>
             </div>
-            <div className="col-auto text-muted">{visibleStands.length} match</div>
+            <div className="col-auto text-muted">{t('buy.matchCount', { count: visibleStands.length })}</div>
           </div>
         </div>
       )}
@@ -110,7 +112,7 @@ function BuyStands() {
       </MapContainer>
 
       <div className="container py-3">
-        <h3 style={{ marginTop: 0 }}>Stands ({visibleStands.length})</h3>
+        <h3 style={{ marginTop: 0 }}>{t('buyStands.resultsHeading', { count: visibleStands.length })}</h3>
         <div className="row g-3">
           {visibleStands.map(s => (
             <div className="col-md-6" key={s.id}>

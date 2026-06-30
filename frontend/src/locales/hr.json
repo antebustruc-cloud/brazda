@@ -135,7 +135,7 @@
     "deleteConfirm": "Obrisati dostavu \"{{name}}\"? Ovo se ne može poništiti.",
     "radiusSuffix": "km radijus",
     "corridorLabel": "Koridor (km)",
-    "corridorHint": "Neobavezno: kupci unutar ove udaljenosti od ravne linije rute od vašeg OPG-a do odredišta također će vidjeti ovu dostavu - i izvan radijusa odredišta (kao zaustavljanja \"na putu\", slično BlaBlaCaru). Ostavite na 0 za isključivanje."
+    "corridorHint": "Neobavezno: kupci unutar ove udaljenosti od ravne linije rute od vašeg OPG-a do odredišta također će vidjeti ovu dostavu - i izvan radijusa odredišta (kao zaustavljanja \"na putu\"). Ostavite na 0 za isključivanje."
   },
   "opg": {
     "title": "Moj OPG",

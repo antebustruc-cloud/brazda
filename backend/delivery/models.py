@@ -13,7 +13,7 @@ class DeliveryEvent(models.Model):
     radius_km = models.FloatField(default=10)  # how far around destination
     route_corridor_km = models.FloatField(
         default=0,
-        help_text="Optional narrower buffer along the straight-line route from the OPG to the destination (BlaBlaCar-style 'stops along the way'). 0 = off."
+        help_text="Optional narrower buffer along the straight-line route from the OPG to the destination (think 'stops along the way'). 0 = off."
     )
     delivery_date = models.DateField()
     time_from = models.TimeField(null=True, blank=True)

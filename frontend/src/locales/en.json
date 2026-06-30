@@ -135,7 +135,7 @@
     "deleteConfirm": "Delete delivery \"{{name}}\"? This cannot be undone.",
     "radiusSuffix": "km radius",
     "corridorLabel": "Corridor (km)",
-    "corridorHint": "Optional: buyers within this distance of the straight-line route from your OPG to the destination will see this delivery too - even outside the destination radius (BlaBlaCar-style \"stops along the way\"). Leave at 0 to turn off."
+    "corridorHint": "Optional: buyers within this distance of the straight-line route from your OPG to the destination will see this delivery too - even outside the destination radius (think \"stops along the way\"). Leave at 0 to turn off."
   },
   "opg": {
     "title": "My OPG",

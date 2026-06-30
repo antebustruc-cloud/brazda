@@ -27,8 +27,8 @@ class NearbyDeliveryView(APIView):
     """
     A buyer matches a delivery event if they're within radius_km of the
     destination pin, OR within route_corridor_km of the straight-line route
-    from the farmer's OPG to that destination (BlaBlaCar-style "stops along
-    the way"). The route is a straight line, not real road routing - that
+    from the farmer's OPG to that destination (think "stops along the way").
+    The route is a straight line, not real road routing - that
     would need an external routing API (Google Directions/OSRM), which is a
     bigger lift for later if the approximation ever proves too rough.
     """

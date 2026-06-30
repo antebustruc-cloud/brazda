@@ -5,7 +5,6 @@ import axios from 'axios';
 import 'leaflet/dist/leaflet.css';
 import { useTranslation } from 'react-i18next';
 import { API } from '../config';
-
 function LocationPicker({ onPick }) {
   useMapEvents({ click(e) { onPick(e.latlng); } });
   return null;
@@ -19,9 +18,19 @@ function BuyDelivery() {
   const [fType, setFType] = useState('');
   const [fName, setFName] = useState('');
   const [fMaxPrice, setFMaxPrice] = useState('');
+  const [interested, setInterested] = useState({});  // {eventId: true}
 
   const token = localStorage.getItem('access_token');
   const authHeader = { headers: { Authorization: `Bearer ${token}` } };
+
+  const expressInterest = async (eventId) => {
+    try {
+      await axios.post(`${API}/notifications/delivery-interest/${eventId}/`, {}, authHeader);
+      setInterested(prev => ({ ...prev, [eventId]: true }));
+    } catch (err) {
+      console.log('Interest error', err.response?.data);
+    }
+  };
 
   const useMyLocation = () => {
     if (!navigator.geolocation) { setMessage(t('buy.gpsNotAvailable')); return; }
@@ -132,6 +141,18 @@ function BuyDelivery() {
                       </li>
                     ))}
                   </ul>
+                  <div className="mt-3">
+                    {interested[ev.id] ? (
+                      <span className="text-success small">✅ Interest sent — the farmer can see you're interested.</span>
+                    ) : (
+                      <button
+                        onClick={() => expressInterest(ev.id)}
+                        className="btn btn-sm btn-outline-success"
+                      >
+                        I'm interested 👋
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

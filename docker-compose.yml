@@ -87,6 +87,26 @@ services:
       - BACKUP_KEEP_MONTHS=6
       - HEALTHCHECK_PORT=8080
 
+  # Runs daily maintenance tasks against the backend container's Django management commands.
+  # Uses the same backend image so it has all the same dependencies and env vars.
+  cron:
+    image: ubrano-backend
+    container_name: brazda_cron
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      backend:
+        condition: service_started
+    entrypoint: >
+      /bin/sh -c "
+      while true; do
+        python manage.py delete_old_deliveries;
+        sleep 86400;
+      done"
+
 volumes:
   postgres_data:
   certbot_conf:

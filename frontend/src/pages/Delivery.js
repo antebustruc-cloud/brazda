@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import ProductManager from '../components/ProductManager';
 import GetPaid from '../components/GetPaid';
 import NotifyNearby from '../components/NotifyNearby';
+import DeliveryLeads from '../components/DeliveryLeads';
 import axios from 'axios';
 import 'leaflet/dist/leaflet.css';
 import { useTranslation } from 'react-i18next';
@@ -191,6 +192,7 @@ function Delivery() {
                       <ProductManager channelType="delivery_event" channelId={ev.id} />
                       <GetPaid channelType="delivery_event" channelId={ev.id} />
                       {FEATURES.notifications && <NotifyNearby channelType="delivery_event" channelId={ev.id} />}
+                      <DeliveryLeads deliveryEventId={ev.id} deliveryEventName={ev.name} />
                     </>
                   )}
                 </div>

@@ -6,6 +6,7 @@ import Register from './pages/Register';
 import Map from './pages/Map';
 import OPGSettings from './pages/OPGSettings';
 import Notifications from './pages/Notifications';
+import AlertZones from './pages/AlertZones';
 import RequireSeller from './components/RequireSeller';
 import Stands from './pages/Stands';
 import Delivery from './pages/Delivery';
@@ -30,6 +31,7 @@ function App() {
           <Route path="/buy-fields" element={<BuyFields />} />
           <Route path="/buy-delivery" element={<BuyDelivery />} />
           <Route path="/notifications" element={<Notifications />} />
+          <Route path="/alert-zones" element={<AlertZones />} />
         </Routes>
       </div>
     </Router>

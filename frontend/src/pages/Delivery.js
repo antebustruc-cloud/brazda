@@ -20,7 +20,7 @@ function LocationPicker({ onPick }) {
 
 function Delivery() {
   const { t } = useTranslation();
-  const [form, setForm] = useState({ name: '', radius_km: '10', delivery_date: '' });
+  const [form, setForm] = useState({ name: '', radius_km: '10', route_corridor_km: '0', delivery_date: '' });
   const [pin, setPin] = useState(null);
   const [message, setMessage] = useState('');
   const [events, setEvents] = useState([]);
@@ -55,12 +55,13 @@ function Delivery() {
       await axios.post(`${API}/delivery/`, {
         name: form.name,
         radius_km: form.radius_km,
+        route_corridor_km: form.route_corridor_km,
         delivery_date: form.delivery_date,
         lat: pin.lat,
         lng: pin.lng
       }, authHeader);
       setMessage(t('myDelivery.saveSuccess'));
-      setForm({ name: '', radius_km: '10', delivery_date: '' });
+      setForm({ name: '', radius_km: '10', route_corridor_km: '0', delivery_date: '' });
       setPin(null);
       fetchEvents();
     } catch (err) {
@@ -118,12 +119,20 @@ function Delivery() {
             </div>
           </div>
           <div className="col-auto">
+            <div className="input-group">
+              <span className="input-group-text">{t('myDelivery.corridorLabel')}</span>
+              <input name="route_corridor_km" type="number" min="0" className="form-control" style={{ maxWidth: '90px' }}
+                value={form.route_corridor_km} onChange={handleChange} />
+            </div>
+          </div>
+          <div className="col-auto">
             <button onClick={handleSave} className="btn text-white" style={{ background: '#2d6a4f' }}>
               {t('myDelivery.saveButton')}
             </button>
           </div>
           {message && <div className="col-auto text-success">{message}</div>}
         </div>
+        <div className="small text-muted mt-2">{t('myDelivery.corridorHint')}</div>
       </div>
       <div className="container-fluid py-2 small" style={{ background: '#eef6f0' }}>
         {t('myDelivery.mapHint')}

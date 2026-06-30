@@ -19,13 +19,17 @@ class DeliveryEventSerializer(serializers.ModelSerializer):
     latitude = serializers.SerializerMethodField(read_only=True)
     longitude = serializers.SerializerMethodField(read_only=True)
     products = serializers.SerializerMethodField(read_only=True)
+    matched_via = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = DeliveryEvent
-        fields = ['id', 'name', 'opg_name', 'owner_phone', 'radius_km', 'delivery_date',
+        fields = ['id', 'name', 'opg_name', 'owner_phone', 'radius_km', 'route_corridor_km', 'delivery_date',
                   'time_from', 'time_until', 'is_active', 'created_at',
-                  'lat', 'lng', 'latitude', 'longitude', 'products']
+                  'lat', 'lng', 'latitude', 'longitude', 'products', 'matched_via']
         read_only_fields = ['owner', 'created_at']
+
+    def get_matched_via(self, obj):
+        return getattr(obj, 'matched_via', None)
 
     def get_latitude(self, obj):
         return obj.destination.y if obj.destination else None

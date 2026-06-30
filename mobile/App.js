@@ -10,6 +10,10 @@ import DashboardScreen from './src/screens/DashboardScreen';
 import BuyStandsScreen from './src/screens/BuyStandsScreen';
 import BuyFieldsScreen from './src/screens/BuyFieldsScreen';
 import BuyDeliveryScreen from './src/screens/BuyDeliveryScreen';
+import MyFieldsScreen from './src/screens/MyFieldsScreen';
+import MyStandsScreen from './src/screens/MyStandsScreen';
+import MyDeliveryScreen from './src/screens/MyDeliveryScreen';
+import OPGSettingsScreen from './src/screens/OPGSettingsScreen';
 
 const Stack = createNativeStackNavigator();
 const GREEN = '#2d6a4f';
@@ -38,6 +42,10 @@ function RootNavigator() {
           <Stack.Screen name="BuyStands" component={BuyStandsScreen} options={{ title: 'Find Stands' }} />
           <Stack.Screen name="BuyFields" component={BuyFieldsScreen} options={{ title: 'Find Fields' }} />
           <Stack.Screen name="BuyDelivery" component={BuyDeliveryScreen} options={{ title: 'Find Delivery' }} />
+          <Stack.Screen name="MyFields" component={MyFieldsScreen} options={{ title: 'My Fields' }} />
+          <Stack.Screen name="MyStands" component={MyStandsScreen} options={{ title: 'My Stands' }} />
+          <Stack.Screen name="MyDelivery" component={MyDeliveryScreen} options={{ title: 'My Delivery' }} />
+          <Stack.Screen name="OPGSettings" component={OPGSettingsScreen} options={{ title: 'My OPG' }} />
         </>
       )}
     </Stack.Navigator>

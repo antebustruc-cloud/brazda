@@ -2,19 +2,25 @@
 
 ## What's built
 
-Buyer-facing flows, fully working against the live API (https://ubrano.com.hr/api):
+Both buyer and seller flows, fully working against the live API (https://ubrano.com.hr/api):
 
-- Login / Register (including the OPG map pin for sellers who register)
-- Dashboard
-- Find Stands / Find Fields / Find Delivery - GPS or tap-to-set-location, radius,
-  category/price/name filters, tap-to-call for Fields and Delivery (matches
-  what the web app exposes)
+**Buyer:** Login / Register (including the OPG map pin for sellers who register),
+Dashboard, Find Stands / Find Fields / Find Delivery - GPS or tap-to-set-location,
+radius, category/price/name filters, tap-to-call for Fields and Delivery (matches
+what the web app exposes), route-corridor match indicator for deliveries.
+
+**Seller:** My OPG (IBAN settings), My Fields, My Stands, My Delivery (including
+the route corridor radius input), product management per channel (category ->
+product -> variety -> price), and the Get Paid HUB-3A barcode flow.
 
 ## Not built yet (next pass)
 
-- Seller-side screens (My Fields / My Stands / My Delivery, Get Paid barcode,
-  Notify Nearby) - sellers can keep using the web app at ubrano.com.hr for now
+- Notify Nearby Buyers - built (component exists, same as web), but hidden
+  behind a feature flag (`FEATURES.notifications` in `src/config.js`) until
+  the paid-boost model exists, same reasoning as the web app
 - Push notifications (this needs Firebase - a Phase 3 item on the web side too)
+- Mobile-native Google Sign-In (web has it; mobile needs a separate native
+  OAuth client setup)
 - iOS-specific testing (built to work on iOS, but Android is the near-term target
   since that's what's being published first)
 

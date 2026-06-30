@@ -116,6 +116,9 @@ function BuyDelivery() {
                       <h5 className="mb-0">{ev.name}</h5>
                       <span className="text-muted small">{ev.opg_name}</span>
                       <div className="text-muted small">📅 {ev.delivery_date} · {ev.radius_km}{t('myDelivery.radiusSuffix')}</div>
+                      {ev.matched_via === 'corridor' && (
+                        <div className="small" style={{ color: '#2d6a4f' }}>{t('buyDelivery.corridorMatch')}</div>
+                      )}
                       {ev.owner_phone && <div className="small mt-1">📞 {ev.owner_phone}</div>}
                     </div>
                     {ev.owner_phone && (

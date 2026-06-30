@@ -97,7 +97,8 @@
     "findButton": "Find deliveries",
     "hint": "👆 Set where you want delivery — use GPS or tap the map. Shows deliveries whose range covers that spot.",
     "noResults": "No deliveries reach this location.",
-    "resultsHeading": "Deliveries available ({{count}})"
+    "resultsHeading": "Deliveries available ({{count}})",
+    "corridorMatch": "🛣️ Along the route, not at the destination"
   },
   "myFields": {
     "namePlaceholder": "Field name (e.g. Apple orchard)",
@@ -133,7 +134,9 @@
     "saveSuccess": "Delivery event saved! ✅",
     "saveError": "Error saving delivery event.",
     "deleteConfirm": "Delete delivery \"{{name}}\"? This cannot be undone.",
-    "radiusSuffix": "km radius"
+    "radiusSuffix": "km radius",
+    "corridorLabel": "Corridor (km)",
+    "corridorHint": "Optional: buyers within this distance of the straight-line route from your OPG to the destination will see this delivery too - even outside the destination radius (BlaBlaCar-style \"stops along the way\"). Leave at 0 to turn off."
   },
   "opg": {
     "title": "My OPG",
@@ -167,5 +170,17 @@
     "confirmError": "Could not confirm payment.",
     "generateError": "Could not generate barcode.",
     "receiptSent": "Payment confirmed ✅ — receipt sent to {{email}}"
+  },
+  "payByCard": {
+    "button": "💳 Pay by card",
+    "confirm": "Pay",
+    "redirecting": "Redirecting...",
+    "hint": "You'll be redirected to Stripe's secure checkout.",
+    "error": "Could not start payment.",
+    "successTitle": "Payment received!",
+    "successDesc": "Thank you - your payment went through. A receipt may be emailed to you shortly.",
+    "backToDashboard": "Back to Dashboard",
+    "cancelledTitle": "Payment cancelled",
+    "cancelledDesc": "No charge was made. You can try again anytime."
   }
 }

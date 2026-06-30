@@ -97,7 +97,8 @@
     "findButton": "Pronađi dostave",
     "hint": "👆 Postavite mjesto dostave — koristite GPS ili dodirnite kartu. Prikazuje dostave čiji raspon pokriva to mjesto.",
     "noResults": "Nijedna dostava ne pokriva ovu lokaciju.",
-    "resultsHeading": "Dostupne dostave ({{count}})"
+    "resultsHeading": "Dostupne dostave ({{count}})",
+    "corridorMatch": "🛣️ Na ruti, ne na odredištu"
   },
   "myFields": {
     "namePlaceholder": "Naziv polja (npr. Voćnjak jabuka)",
@@ -133,7 +134,9 @@
     "saveSuccess": "Dostava spremljena! ✅",
     "saveError": "Greška pri spremanju dostave.",
     "deleteConfirm": "Obrisati dostavu \"{{name}}\"? Ovo se ne može poništiti.",
-    "radiusSuffix": "km radijus"
+    "radiusSuffix": "km radijus",
+    "corridorLabel": "Koridor (km)",
+    "corridorHint": "Neobavezno: kupci unutar ove udaljenosti od ravne linije rute od vašeg OPG-a do odredišta također će vidjeti ovu dostavu - i izvan radijusa odredišta (kao zaustavljanja \"na putu\", slično BlaBlaCaru). Ostavite na 0 za isključivanje."
   },
   "opg": {
     "title": "Moj OPG",
@@ -167,5 +170,17 @@
     "confirmError": "Nije moguće potvrditi plaćanje.",
     "generateError": "Nije moguće generirati barkod.",
     "receiptSent": "Plaćanje potvrđeno ✅ — račun poslan na {{email}}"
+  },
+  "payByCard": {
+    "button": "💳 Plati karticom",
+    "confirm": "Plati",
+    "redirecting": "Preusmjeravanje...",
+    "hint": "Bit ćete preusmjereni na Stripeovo sigurno plaćanje.",
+    "error": "Nije moguće pokrenuti plaćanje.",
+    "successTitle": "Plaćanje primljeno!",
+    "successDesc": "Hvala - vaše plaćanje je uspjelo. Račun će vam možda biti poslan e-mailom.",
+    "backToDashboard": "Povratak na početnu",
+    "cancelledTitle": "Plaćanje otkazano",
+    "cancelledDesc": "Nije naplaćeno ništa. Možete pokušati ponovno bilo kada."
   }
 }

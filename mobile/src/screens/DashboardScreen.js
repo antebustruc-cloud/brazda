@@ -31,10 +31,11 @@ export default function DashboardScreen({ navigation }) {
       {isSeller && (
         <View style={styles.card}>
           <Text style={styles.cardTitle}>🚜 I want to sell</Text>
-          <Text style={styles.cardDesc}>
-            Managing fields, stands, and delivery events from the phone is coming soon -
-            for now, use ubrano.com.hr on the web for your seller tools.
-          </Text>
+          <Text style={styles.cardDesc}>List your produce - open your fields for picking, set up a stand, or announce a delivery run.</Text>
+          <BigButton label="My OPG" onPress={() => navigation.navigate('OPGSettings')} />
+          <BigButton label="My Fields" onPress={() => navigation.navigate('MyFields')} />
+          <BigButton label="My Stands" onPress={() => navigation.navigate('MyStands')} />
+          <BigButton label="My Delivery" onPress={() => navigation.navigate('MyDelivery')} />
         </View>
       )}
 

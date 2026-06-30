@@ -109,6 +109,9 @@ export default function BuyDeliveryScreen() {
               <Text style={styles.cardTitle}>{ev.name}</Text>
               <Text style={styles.cardSubtitle}>{ev.opg_name}</Text>
               <Text style={styles.dateText}>📅 {ev.delivery_date} · within {ev.radius_km}km</Text>
+              {ev.matched_via === 'corridor' && (
+                <Text style={styles.corridorText}>🛣️ Along the route, not at the destination</Text>
+              )}
               {ev.owner_phone ? <Text style={styles.phoneText}>📞 {ev.owner_phone}</Text> : null}
             </View>
             {ev.owner_phone ? (
@@ -149,6 +152,7 @@ const styles = StyleSheet.create({
   cardTitle: { fontSize: 16, fontWeight: 'bold' },
   cardSubtitle: { color: '#777', marginBottom: 6 },
   dateText: { fontSize: 13, color: '#333' },
+  corridorText: { fontSize: 12, color: '#2d6a4f', fontWeight: '600' },
   phoneText: { fontSize: 13, color: '#333' },
   callButton: { backgroundColor: GREEN, borderRadius: 8, paddingVertical: 6, paddingHorizontal: 10 },
   productLine: { paddingVertical: 4, borderTopWidth: 1, borderTopColor: '#f0f0f0', fontSize: 14 },

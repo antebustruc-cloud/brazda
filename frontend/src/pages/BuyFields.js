@@ -20,9 +20,19 @@ function BuyFields() {
   const [fType, setFType] = useState('');
   const [fName, setFName] = useState('');
   const [fMaxPrice, setFMaxPrice] = useState('');
+  const [interested, setInterested] = useState({});
 
   const token = localStorage.getItem('access_token');
   const authHeader = { headers: { Authorization: `Bearer ${token}` } };
+
+  const expressInterest = async (fieldId) => {
+    try {
+      await axios.post(`${API}/ratings/field-interest/${fieldId}/`, {}, authHeader);
+      setInterested(prev => ({ ...prev, [fieldId]: true }));
+    } catch (err) {
+      console.log('Interest error', err.response?.data);
+    }
+  };
 
   const useMyLocation = () => {
     if (!navigator.geolocation) { setMessage(t('buy.gpsNotAvailable')); return; }
@@ -125,6 +135,11 @@ function BuyFields() {
                     <div>
                       <h5 className="mb-0">{f.name}</h5>
                       <span className="text-muted small">{f.opg_name}</span>
+                      {f.opg_rating > 0 && (
+                        <span className="ms-2 small" style={{ color: '#e6a817' }}>
+                          {'★'.repeat(Math.round(f.opg_rating))} <span className="text-muted">({f.opg_rating.toFixed(1)} · {f.opg_rating_count} ratings)</span>
+                        </span>
+                      )}
                       <div className="text-muted small">📍 {f.latitude?.toFixed(4)}, {f.longitude?.toFixed(4)}</div>
                       {f.owner_phone && <div className="small mt-1">📞 {f.owner_phone}</div>}
                     </div>
@@ -139,6 +154,15 @@ function BuyFields() {
                       </li>
                     ))}
                   </ul>
+                  <div className="mt-3">
+                    {interested[f.id] ? (
+                      <span className="text-success small">✅ Interest sent — the farmer can see you're interested.</span>
+                    ) : (
+                      <button onClick={() => expressInterest(f.id)} className="btn btn-sm btn-outline-success">
+                        I'm interested 👋
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

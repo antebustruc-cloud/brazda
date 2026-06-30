@@ -170,6 +170,7 @@ class DeliveryInterest(models.Model):
     """
     Recorded when a buyer taps "I'm interested" on a delivery event listing.
     Gives the farmer a lead list: who to expect, contact info, when they expressed interest.
+    surveyed_at is set once the 48h rating survey is shown/dismissed.
     """
     buyer = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -182,6 +183,7 @@ class DeliveryInterest(models.Model):
         related_name='interests',
     )
     created_at = models.DateTimeField(auto_now_add=True)
+    surveyed_at = models.DateTimeField(null=True, blank=True, help_text="Set when the survey prompt is dismissed (any answer)")
 
     class Meta:
         unique_together = ('buyer', 'delivery_event')

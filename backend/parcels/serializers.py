@@ -18,11 +18,14 @@ class ParcelSerializer(serializers.ModelSerializer):
     longitude = serializers.SerializerMethodField(read_only=True)
     opg_name = serializers.CharField(source='owner.opg.name', read_only=True, default='')
     owner_phone = serializers.CharField(source='owner.phone', read_only=True)
+    opg_rating = serializers.FloatField(source='owner.opg.rating', read_only=True, default=0.0)
+    opg_rating_count = serializers.IntegerField(source='owner.opg.rating_count', read_only=True, default=0)
     products = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Parcel
-        fields = ['id', 'name', 'area_sq_m', 'is_active', 'opg_name', 'owner_phone', 'products',
+        fields = ['id', 'name', 'area_sq_m', 'is_active', 'opg_name', 'owner_phone',
+                  'opg_rating', 'opg_rating_count', 'products',
                   'lat', 'lng', 'latitude', 'longitude']
         read_only_fields = ['owner']
 

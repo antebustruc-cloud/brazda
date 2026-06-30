@@ -124,6 +124,11 @@ function BuyDelivery() {
                     <div>
                       <h5 className="mb-0">{ev.name}</h5>
                       <span className="text-muted small">{ev.opg_name}</span>
+                      {ev.opg_rating > 0 && (
+                        <span className="ms-2 small" style={{ color: '#e6a817' }}>
+                          {'★'.repeat(Math.round(ev.opg_rating))} <span className="text-muted">({ev.opg_rating.toFixed(1)} · {ev.opg_rating_count} ratings)</span>
+                        </span>
+                      )}
                       <div className="text-muted small">📅 {ev.delivery_date} · {ev.radius_km}{t('myDelivery.radiusSuffix')}</div>
                       {ev.matched_via === 'corridor' && (
                         <div className="small" style={{ color: '#2d6a4f' }}>{t('buyDelivery.corridorMatch')}</div>

@@ -106,11 +106,6 @@ function Register() {
               <label className="form-check-label" htmlFor="roleBuyer">{t('register.roleBuyer')}</label>
             </div>
             <div className="form-check">
-              <input className="form-check-input" type="radio" name="role" id="roleSeller"
-                onChange={() => setForm({ ...form, is_buyer: false, is_seller: true })} />
-              <label className="form-check-label" htmlFor="roleSeller">{t('register.roleSeller')}</label>
-            </div>
-            <div className="form-check">
               <input className="form-check-input" type="radio" name="role" id="roleBoth"
                 onChange={() => setForm({ ...form, is_buyer: true, is_seller: true })} />
               <label className="form-check-label" htmlFor="roleBoth">{t('register.roleBoth')}</label>

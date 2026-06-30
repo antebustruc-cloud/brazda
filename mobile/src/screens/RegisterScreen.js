@@ -9,9 +9,8 @@ import { useAuth } from '../context/AuthContext';
 const GREEN = '#2d6a4f';
 
 const ROLES = [
-  { key: 'buyer', label: 'Buyer only', is_buyer: true, is_seller: false },
-  { key: 'seller', label: 'Farmer / Seller only', is_buyer: false, is_seller: true },
-  { key: 'both', label: 'Both', is_buyer: true, is_seller: true },
+  { key: 'buyer', label: 'Buyer', is_buyer: true, is_seller: false },
+  { key: 'both', label: 'Producer / Seller', is_buyer: true, is_seller: true },
 ];
 
 export default function RegisterScreen({ navigation }) {

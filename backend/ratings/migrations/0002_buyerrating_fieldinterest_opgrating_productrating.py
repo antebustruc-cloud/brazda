@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('catalog', '0001_initial'),
-        ('opg', '0003_opg_stripe_account_id_opg_stripe_ready'),
+        ('opg', '0002_opg_iban'),
         ('parcels', '0003_alter_parcel_area_sq_m_alter_parcel_location'),
         ('ratings', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),

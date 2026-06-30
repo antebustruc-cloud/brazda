@@ -134,8 +134,8 @@
     "saveError": "Error saving delivery event.",
     "deleteConfirm": "Delete delivery \"{{name}}\"? This cannot be undone.",
     "radiusSuffix": "km radius",
-    "corridorLabel": "Corridor (km)",
-    "corridorHint": "Optional: buyers within this distance of the straight-line route from your OPG to the destination will see this delivery too - even outside the destination radius (think \"stops along the way\"). Leave at 0 to turn off."
+    "radiusLabel": "Radius around delivery destination (km)",
+    "corridorLabel": "Radius around route to destination (km)"
   },
   "opg": {
     "title": "My OPG",

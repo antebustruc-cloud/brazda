@@ -112,18 +112,14 @@ function Delivery() {
             </div>
           </div>
           <div className="col-auto">
-            <div className="input-group">
-              <span className="input-group-text">{t('buy.radiusKm')}</span>
-              <input name="radius_km" type="number" className="form-control" style={{ maxWidth: '90px' }}
-                value={form.radius_km} onChange={handleChange} />
-            </div>
+            <label className="form-label small mb-1 d-block">{t('myDelivery.radiusLabel')}</label>
+            <input name="radius_km" type="number" className="form-control" style={{ maxWidth: '110px' }}
+              value={form.radius_km} onChange={handleChange} />
           </div>
           <div className="col-auto">
-            <div className="input-group">
-              <span className="input-group-text">{t('myDelivery.corridorLabel')}</span>
-              <input name="route_corridor_km" type="number" min="0" className="form-control" style={{ maxWidth: '90px' }}
-                value={form.route_corridor_km} onChange={handleChange} />
-            </div>
+            <label className="form-label small mb-1 d-block">{t('myDelivery.corridorLabel')}</label>
+            <input name="route_corridor_km" type="number" min="0" className="form-control" style={{ maxWidth: '110px' }}
+              value={form.route_corridor_km} onChange={handleChange} />
           </div>
           <div className="col-auto">
             <button onClick={handleSave} className="btn text-white" style={{ background: '#2d6a4f' }}>
@@ -132,7 +128,6 @@ function Delivery() {
           </div>
           {message && <div className="col-auto text-success">{message}</div>}
         </div>
-        <div className="small text-muted mt-2">{t('myDelivery.corridorHint')}</div>
       </div>
       <div className="container-fluid py-2 small" style={{ background: '#eef6f0' }}>
         {t('myDelivery.mapHint')}

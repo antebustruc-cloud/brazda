@@ -96,18 +96,14 @@ export default function MyDeliveryScreen() {
       />
       <View style={styles.row}>
         <View style={styles.smallBox}>
-          <Text style={styles.smallLabel}>Radius (km)</Text>
+          <Text style={styles.smallLabel}>Radius around delivery destination (km)</Text>
           <TextInput style={styles.smallInput} keyboardType="numeric" value={form.radius_km} onChangeText={(v) => setField('radius_km', v)} />
         </View>
         <View style={styles.smallBox}>
-          <Text style={styles.smallLabel}>Corridor (km)</Text>
+          <Text style={styles.smallLabel}>Radius around route to destination (km)</Text>
           <TextInput style={styles.smallInput} keyboardType="numeric" value={form.route_corridor_km} onChangeText={(v) => setField('route_corridor_km', v)} />
         </View>
       </View>
-      <Text style={styles.hint}>
-        Corridor (optional): buyers within this distance of the straight-line route from your OPG to the
-        destination see this too - even outside the destination radius. Leave at 0 to turn off.
-      </Text>
       <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
         <Text style={styles.saveButtonText}>Save Delivery</Text>
       </TouchableOpacity>

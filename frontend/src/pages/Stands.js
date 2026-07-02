@@ -8,6 +8,7 @@ import { API, FEATURES } from '../config';
 import ProductManager from '../components/ProductManager';
 import GetPaid from '../components/GetPaid';
 import NotifyNearby from '../components/NotifyNearby';
+import StandSupplierManager from '../components/StandSupplierManager';
 
 function LocationPicker({ onPick }) {
   useMapEvents({
@@ -173,6 +174,7 @@ function Stands() {
                     <>
                       <ProductManager channelType="stand" channelId={s.id} />
                       <GetPaid channelType="stand" channelId={s.id} />
+                      <StandSupplierManager standId={s.id} />
                       {FEATURES.notifications && <NotifyNearby channelType="stand" channelId={s.id} />}
                     </>
                   )}

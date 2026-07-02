@@ -20,9 +20,19 @@ function BuyStands() {
   const [fType, setFType] = useState('');
   const [fName, setFName] = useState('');
   const [fMaxPrice, setFMaxPrice] = useState('');
+  const [interested, setInterested] = useState({});
 
   const token = localStorage.getItem('access_token');
   const authHeader = { headers: { Authorization: `Bearer ${token}` } };
+
+  const expressInterest = async (standId) => {
+    try {
+      await axios.post(`${API}/stands/${standId}/interest/`, {}, authHeader);
+      setInterested(prev => ({ ...prev, [standId]: true }));
+    } catch (err) {
+      console.log('Interest error', err.response?.data);
+    }
+  };
 
   const useMyLocation = () => {
     if (!navigator.geolocation) { setMessage(t('buy.gpsNotAvailable')); return; }
@@ -124,9 +134,26 @@ function BuyStands() {
                     {s.filtered.map(p => (
                       <li key={p.id} className="small py-1 border-top">
                         🥬 {p.catalog_name}{p.variety_name ? ` (${p.variety_name})` : ''} — <strong>€{p.price_per_kg}/kg</strong>
+                        {p.supplier_opg_name && (
+                          <span className="text-muted ms-1">
+                            · {p.supplier_opg_name}
+                            {p.supplier_opg_rating > 0 && (
+                              <span style={{ color: '#e6a817' }}> ★{p.supplier_opg_rating.toFixed(1)}</span>
+                            )}
+                          </span>
+                        )}
                       </li>
                     ))}
                   </ul>
+                  <div className="mt-3">
+                    {interested[s.id] ? (
+                      <span className="text-success small">✅ Interest sent — the stand owner can see you're interested.</span>
+                    ) : (
+                      <button onClick={() => expressInterest(s.id)} className="btn btn-sm btn-outline-success">
+                        I'm interested 👋
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

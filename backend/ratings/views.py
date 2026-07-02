@@ -96,6 +96,66 @@ class PendingSurveysView(APIView):
                 })
                 break
 
+        # Stand interests - products route to SUPPLYING OPG, not the stand owner
+        if not surveys:
+            from stands.models import StandInterest, StandSupplierRequest
+            stand_interests = StandInterest.objects.filter(
+                buyer=request.user,
+                created_at__lte=cutoff,
+                surveyed_at__isnull=True,
+            ).select_related('stand__owner__opg').order_by('created_at')
+
+            for si in stand_interests:
+                # Build per-product supplier OPG mapping
+                approved = StandSupplierRequest.objects.filter(
+                    stand=si.stand,
+                    status='accepted',
+                ).select_related('farmer__opg', 'catalog_item')
+
+                # Group products by supplier OPG
+                opg_products = {}
+                for req in approved:
+                    try:
+                        opg = req.farmer.opg
+                    except Exception:
+                        continue
+                    if opg.id not in opg_products:
+                        opg_products[opg.id] = {'opg_id': opg.id, 'opg_name': opg.name, 'products': []}
+                    opg_products[opg.id]['products'].append({
+                        'id': req.catalog_item.id,
+                        'name': req.catalog_item.name,
+                        'category': req.catalog_item.category,
+                    })
+
+                if opg_products:
+                    # Show the first supplier group; re-open if multiple (handled by dismissing one at a time)
+                    first = list(opg_products.values())[0]
+                    surveys.append({
+                        'type': 'stand',
+                        'interest_id': si.id,
+                        'opg_id': first['opg_id'],
+                        'opg_name': first['opg_name'],
+                        'channel_name': si.stand.name,
+                        'products': first['products'],
+                        'has_more_suppliers': len(opg_products) > 1,
+                    })
+                else:
+                    # Stand has no approved suppliers, just rate the stand owner's OPG
+                    try:
+                        opg = si.stand.owner.opg
+                        surveys.append({
+                            'type': 'stand',
+                            'interest_id': si.id,
+                            'opg_id': opg.id,
+                            'opg_name': opg.name,
+                            'channel_name': si.stand.name,
+                            'products': _opg_products(opg),
+                            'has_more_suppliers': False,
+                        })
+                    except Exception:
+                        pass
+                break
+
         return Response(surveys)
 
 
@@ -129,8 +189,11 @@ class DismissSurveyView(APIView):
             FieldInterest.objects.filter(pk=interest_id, buyer=request.user).update(surveyed_at=now)
         elif interest_type == 'delivery':
             DeliveryInterest.objects.filter(pk=interest_id, buyer=request.user).update(surveyed_at=now)
+        elif interest_type == 'stand':
+            from stands.models import StandInterest
+            StandInterest.objects.filter(pk=interest_id, buyer=request.user).update(surveyed_at=now)
         else:
-            return Response({'detail': 'type must be field or delivery.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': 'type must be field, delivery or stand.'}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({'status': 'ok'})
 
@@ -242,6 +305,23 @@ class BuyerRatingView(APIView):
                     'buyer_phone': di.buyer.phone or '',
                     'channel_name': di.delivery_event.name,
                     'interested_at': di.created_at,
+                })
+
+        from stands.models import StandInterest
+        for si in StandInterest.objects.filter(
+            stand__owner=request.user,
+            created_at__lte=cutoff,
+        ).select_related('buyer', 'stand').order_by('-created_at'):
+            if si.buyer_id not in already_rated_ids:
+                pending.append({
+                    'interest_type': 'stand',
+                    'interest_id': si.id,
+                    'buyer_id': si.buyer_id,
+                    'buyer_name': si.buyer.get_full_name() or si.buyer.email,
+                    'buyer_email': si.buyer.email,
+                    'buyer_phone': si.buyer.phone or '',
+                    'channel_name': si.stand.name,
+                    'interested_at': si.created_at,
                 })
 
         return Response(pending)

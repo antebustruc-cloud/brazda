@@ -42,6 +42,7 @@ function Navbar() {
                 <li className="nav-item"><a className="nav-link" href="/map">{t('nav.myFields')}</a></li>
                 <li className="nav-item"><a className="nav-link" href="/stands">{t('nav.myStands')}</a></li>
                 <li className="nav-item"><a className="nav-link" href="/delivery">{t('nav.myDelivery')}</a></li>
+                <li className="nav-item"><a className="nav-link" href="/supply-requests">{t('nav.supplyRequests')}</a></li>
               </>
             )}
             <li className="nav-item"><span className="nav-link text-white-50 small">{t('nav.buy')}</span></li>
